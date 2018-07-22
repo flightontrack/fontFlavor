@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        applicationId "com.flightontrack"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 100
+        versionName "100.1"
+    }
+    buildTypes {
+        release {
+            //runProguard true
+            minifyEnabled true
+            shrinkResources true
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            //runProguard false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+    flavorDimensions "client"
+    productFlavors {
+        clientApiMin {
+            minSdkVersion 19
+            dimension "client"
+            targetSdkVersion 26
+//            applicationIdSuffix '.client_pu'
+        }
+        clientApiCurrent {
+            minSdkVersion 21
+            dimension "client"
+            targetSdkVersion 26
+//            applicationIdSuffix '.client_pu'
+        }
+    }
+//    sourceSets {
+//        clientApi19 {
+//            java.srcDirs = ['src/clientApi19/java']
+//        }
+//        clientApiCurrent {
+//            java.srcDirs = ['src/clientApiCurrent/java']
+//        }
+//    }
+//    sourceSets {
+//        clientApiMin {
+//            java.srcDirs = ['src/clientApiMin/java', 'src/clientApiMin/java/com.flightontrack']
+//        }
+//        clientApiCurrent {
+//            java.srcDirs = ['src/clientApiCurrent/java', 'src/clientApiCurrent/java/com.flightontrack']
+//        }
+    sourceSets {
+        clientApiMin {
+            java.srcDirs = ['src/clientApiMin/java/com.flightontrack']
+        }
+        clientApiCurrent {
+            java.srcDirs = ['src/clientApiCurrent/java/com.flightontrack']
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.facebook.android:facebook-share:4.32.0'
+}
+
+apply plugin: 'com.google.gms.google-services'

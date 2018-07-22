@@ -1,0 +1,28 @@
+/**
+ * The buildscript block is where you configure the repositories and
+ * dependencies for Gradle itself—meaning, you should not include dependencies
+ * for your modules here. For example, this block includes the Android plugin for
+ * Gradle as a dependency because it provides the additional instructions Gradle
+ * needs to build Android app modules.
+ */
+
+buildscript {
+    repositories {
+        //maven { url 'https://maven.google.com' }
+        jcenter()
+        google()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.google.gms:google-services:3.1.2'
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        //maven { url 'https://maven.fabric.io/public' }
+        google()
+    }
+}
