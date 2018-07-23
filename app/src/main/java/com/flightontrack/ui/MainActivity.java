@@ -31,7 +31,6 @@ import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.shared.Util;
-import com.flightontrack.flight.RouteBase;
 import com.flightontrack.pilot.MyPhone;
 import com.flightontrack.pilot.Pilot;
 //import com.flightontrack.receiver.ReceiverHealthCheckAlarm;
@@ -42,6 +41,7 @@ import com.flightontrack.pilot.Pilot;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
 import shared.AppConfig;
+import ui.MainActivityExt;
 //import static shared.AppConfig.*;
 
 import static com.flightontrack.shared.Const.*;
@@ -226,16 +226,17 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             case R.id.action_aircraft:
                 acftActivity();
                 return true;
-            case R.id.privpolicy:
-                privacyPolicy();
-                return true;
-            case R.id.action_facebook:
-                if (!(RouteBase.activeFlight == null)) facebActivity();
-                else
-                    Toast.makeText(MainActivity.this, getString(R.string.start_flight_first), Toast.LENGTH_LONG).show();
-                return true;
+//            case R.id.privpolicy:
+//                privacyPolicy();
+//                return true;
+//            case R.id.action_facebook:
+//                if (!(RouteBase.activeFlight == null)) facebActivity();
+//                else
+//                    Toast.makeText(MainActivity.this, getString(R.string.start_flight_first), Toast.LENGTH_LONG).show();
+//                return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return (new MainActivityExt().onOptionsItemSelected(item));
+                //return super.onOptionsItemSelected(item);
         }
     }
 
@@ -361,10 +362,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         startActivity(intent);
     }
 
-    public void facebActivity() {
-        Intent intent = new Intent(this, FaceBookActivity.class);
-        startActivity(intent);
-    }
+//    public void facebActivity() {
+//        Intent intent = new Intent(this, FaceBookActivity.class);
+//        startActivity(intent);
+//    }
 
     void helpPage() {
         try {
@@ -374,14 +375,14 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
         }
     }
-    void privacyPolicy() {
-        try {
-            Intent intent = new Intent(ctxApp, PrivacyPolicyActivity.class);
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    void privacyPolicy() {
+//        try {
+//            Intent intent = new Intent(ctxApp, PrivacyPolicyActivity.class);
+//            startActivity(intent);
+//        } catch (ActivityNotFoundException ex) {
+//            Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     void logBookPage() {
         try {
