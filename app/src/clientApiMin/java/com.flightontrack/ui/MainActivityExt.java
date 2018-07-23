@@ -20,6 +20,6 @@ public class MainActivityExt {
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
     }
-    
+
 }
 
