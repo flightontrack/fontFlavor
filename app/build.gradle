@@ -63,6 +63,7 @@ android {
     sourceSets {
         clientApiMin {
             java.srcDirs = ['src/clientApiMin/java/com.flightontrack']
+            res.srcDirs = ['src/clientApiMin/res', 'src/clientApiMin/res/']
         }
         clientApiCurrent {
             java.srcDirs = ['src/clientApiCurrent/java/com.flightontrack']
