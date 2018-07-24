@@ -46,7 +46,7 @@
         android:required="false" />
 
     <application
-        android:name=".other.MyApplication"
+        android:name="shared.MyApplication"
         android:label="@string/app_label"
         android:icon="@drawable/ic_launcher_96"
         android:allowBackup="true"
@@ -79,9 +79,9 @@
         </activity>
 
         <activity
-            android:name=".ui.PrivacyPolicyActivity"
+            android:name="ui.PrivacyPolicyActivity"
             android:label="@string/action_privpolicy"
-            android:parentActivityName=".ui.PrivacyPolicyActivity">
+            android:parentActivityName="ui.PrivacyPolicyActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.flightontrack.ui.MainActivity" />
@@ -107,47 +107,13 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.FaceBookActivity"
+        <activity android:name="ui.FaceBookActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.flightontrack.ui.MainActivity" />
         </activity>
-         <receiver
-             android:enabled="true"
-             android:name="receiver.ReceiverBoot"
-             >
-             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                 <action android:name="com.flightontrack.START_FONT_ACTIVITY"/>
-             </intent-filter>
-         </receiver>
-        <receiver
-            android:enabled="true"
-            android:name="receiver.ReceiverShutDown"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWEROFF"/>
-            </intent-filter>
-        </receiver>
-        <!--<receiver-->
-            <!--android:enabled="true"-->
-            <!--android:name=".receiver.ReceiverBatteryLevel">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BATTERY_LOW"/>-->
-                <!--<action android:name="android.intent.action.BATTERY_OKAY"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <receiver
-            android:enabled="true"
-            android:name="receiver.ReceiverHealthCheckAlarm"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.com.flightontrack.BROADCAST_HEALTHCHECK"/>
-            </intent-filter>
-        </receiver>
 
         <service
             android:name=".locationclock.SvcLocationClock"
@@ -155,12 +121,6 @@
             android:exported="true"
             android:stopWithTask="false"></service>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <provider android:authorities="com.facebook.app.FacebookContentProvider{@string/facebook_app_id}"
-            android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
