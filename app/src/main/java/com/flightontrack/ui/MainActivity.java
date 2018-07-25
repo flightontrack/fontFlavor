@@ -42,6 +42,7 @@ import com.flightontrack.pilot.Pilot;
 
 import shared.AppConfig;
 import ui.MainActivityExt;
+//import SimpleSettingsActivity;
 //import static shared.AppConfig.*;
 
 import static com.flightontrack.shared.Const.*;
@@ -188,12 +189,13 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         } else txtUserName.setText(Pilot.getPilotUserName());
 
         //if (AppConfig.pAutostart) {
-        if (SessionProp.pIsOnReboot && SessionProp.pIsStartedOnReboot) {
-            trackingButton.performClick();
-            SessionProp.pIsStartedOnReboot=false;
-            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
-            //AppConfig.pAutostart = false;
-        }
+//        if (SessionProp.pIsOnReboot && !SessionProp.pIsStartedOnReboot) {
+//            trackingButton.performClick();
+//            SessionProp.pIsStartedOnReboot=true;
+//            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
+//            //AppConfig.pAutostart = false;
+//        }
+        new MainActivityExt().startOnReboot(this);
         isToDestroy = true;
     }
 

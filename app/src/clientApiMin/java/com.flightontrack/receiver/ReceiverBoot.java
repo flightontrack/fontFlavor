@@ -1,4 +1,4 @@
-package com.flightontrack.receiver;
+package receiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

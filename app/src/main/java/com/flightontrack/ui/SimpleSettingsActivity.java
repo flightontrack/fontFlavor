@@ -19,24 +19,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.pilot.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Util;
-import com.flightontrack.pilot.Pilot;
 
 import shared.AppConfig;
+import ui.SimpleSettingsActivityExt;
 
-import static com.flightontrack.shared.Const.*;
-import static com.flightontrack.shared.Props.*;
-//import static com.flightontrack.shared.Props.AppConfig.pIsRelease;
+import static com.flightontrack.shared.Const.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
+import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
 import static shared.AppConfig.pIsRelease;
 
+//import static com.flightontrack.shared.Props.AppConfig.pIsRelease;
+
 public class SimpleSettingsActivity extends Activity implements AdapterView.OnItemSelectedListener,EventBus {
 
-    final String TAG = "SimpleSettingsActivity";
+    final String TAG = "SimpleSettingsActivityExt";
     TextView txtUser;
     public static TextView txtPsw;
     public static TextView txtBuild;
@@ -46,9 +48,8 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
     Button sendCacheButton;
     Button getPswButton;
     Spinner spinnerUrls;
-    Spinner spinnerTextTo;
+    //Spinner spinnerTextTo;
     CheckBox chBoxIsDebug;
-    CheckBox chBoxIsOnReboot;
     CheckBox chBoxIsRoad;
     ProgressDialog progressBar;
     public static SimpleSettingsActivity simpleSettingsActivityInstance;
@@ -83,24 +84,24 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
             }
             txtPsw.setVisibility(View.VISIBLE);
         });
-        if(!AppConfig.pIsAppTypePublic) {
-            chBoxIsOnReboot = findViewById(R.id.isOnRebootCheckBox);
-            if (null!=chBoxIsOnReboot) {
-                chBoxIsOnReboot.setChecked(SessionProp.pIsOnReboot);
-                chBoxIsOnReboot.setOnCheckedChangeListener((compoundButton, b) -> {
-                    SessionProp.pIsOnReboot = b;
-                });
-            }
-            spinnerTextTo = findViewById(R.id.spinnerTextTo);
-            ArrayAdapter<CharSequence> adapterTextTo = ArrayAdapter.createFromResource(this,R.array.textto_array, android.R.layout.simple_spinner_item);
-            adapterTextTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerTextTo.setAdapter(adapterTextTo);
-            spinnerTextTo.setOnItemSelectedListener(this);
-        }
-        else{
-            findViewById(R.id.layoutTextTo).setVisibility(View.INVISIBLE);
-            findViewById(R.id.layoutStartOnReboot).setVisibility(View.INVISIBLE);
-        }
+//        if(!AppConfig.pIsAppTypePublic) {
+//            chBoxIsOnReboot = findViewById(R.id.isOnRebootCheckBox);
+//            if (null!=chBoxIsOnReboot) {
+//                chBoxIsOnReboot.setChecked(SessionProp.pIsOnReboot);
+//                chBoxIsOnReboot.setOnCheckedChangeListener((compoundButton, b) -> {
+//                    SessionProp.pIsOnReboot = b;
+//                });
+//            }
+//            spinnerTextTo = findViewById(R.id.spinnerTextTo);
+//            ArrayAdapter<CharSequence> adapterTextTo = ArrayAdapter.createFromResource(this,R.array.textto_array, android.R.layout.simple_spinner_item);
+//            adapterTextTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            spinnerTextTo.setAdapter(adapterTextTo);
+//            spinnerTextTo.setOnItemSelectedListener(this);
+//        }
+//        else{
+//            findViewById(R.id.layoutTextTo).setVisibility(View.INVISIBLE);
+//            findViewById(R.id.layoutStartOnReboot).setVisibility(View.INVISIBLE);
+//        }
         chBoxIsDebug = findViewById(R.id.isDebugCheckBoxCheckBox);
         //chBoxIsDebug.setChecked(SessionProp.pIsDebug);
         chBoxIsDebug.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -139,7 +140,9 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
             }
             finish();
         });
+        new SimpleSettingsActivityExt().init(this);
         updateUI();
+
     }
     @Override
     public void onResume() {
@@ -222,7 +225,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
 
     private void updateUI(){
         spinnerUrls.setSelection(SessionProp.pSpinnerUrlsPos);
-        if(!AppConfig.pIsAppTypePublic) spinnerTextTo.setSelection(SessionProp.pSpinnerTextToPos);
+        //if(!AppConfig.pIsAppTypePublic) spinnerTextTo.setSelection(SessionProp.pSpinnerTextToPos);
         chBoxIsDebug.setChecked(SessionProp.pIsDebug);
         chBoxIsRoad.setChecked(SessionProp.pIsRoad);
     }

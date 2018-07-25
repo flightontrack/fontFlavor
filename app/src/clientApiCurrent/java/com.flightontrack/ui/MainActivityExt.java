@@ -1,18 +1,24 @@
 package ui;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.flightontrack.R;
+import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.flight.RouteBase;
+import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.shared.Const;
+import com.flightontrack.shared.Props;
+import com.flightontrack.ui.MainActivity;
 
 import static com.flightontrack.shared.Props.ctxApp;
 import static com.flightontrack.shared.Props.mainactivityInstance;
 
 public class MainActivityExt {
-    static final String TAG = "MainActivity";
+    static final String TAG = "MainActivityExt";
 
     public boolean onOptionsItemSelected(MenuItem item) {
         //Util.setUserName(txtUserName.getText().toString());
@@ -43,5 +49,10 @@ public class MainActivityExt {
         ctxApp.startActivity(intent);
     }
 
+    public void startOnReboot(MainActivity ctx){
+        /// do nothing
+        }
 }
+
+
 
