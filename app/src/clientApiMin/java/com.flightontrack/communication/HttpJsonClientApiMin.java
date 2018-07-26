@@ -1,4 +1,4 @@
-package com.flightontrack.communication;
+package communication;
 
 import com.flightontrack.R;
 import com.flightontrack.entities.EntityLogMessage;

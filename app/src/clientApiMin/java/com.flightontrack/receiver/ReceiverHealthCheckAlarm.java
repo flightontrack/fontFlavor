@@ -6,7 +6,7 @@ import android.content.Intent;
 //import android.content.BroadcastReceiver;
 //import android.os.IBinder;
 
-import com.flightontrack.communication.HttpJsonClientApiMin;
+import communication.HttpJsonClientApiMin;
 import com.flightontrack.communication.ResponseJsonObj;
 import entities.EntityRequestHealthCheck;
 import com.flightontrack.log.FontLogAsync;

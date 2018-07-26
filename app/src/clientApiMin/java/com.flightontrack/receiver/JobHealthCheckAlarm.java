@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.flightontrack.communication.HttpJsonClientApiMin;
+import communication.HttpJsonClientApiMin;
 import com.flightontrack.communication.ResponseJsonObj;
 import com.flightontrack.entities.EntityLogMessage;
 import entities.EntityRequestHealthCheck;
