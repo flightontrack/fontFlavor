@@ -354,7 +354,7 @@ android:weightSum="100">
     </LinearLayout>
     <View
         android:id="@+id/TagView"
-        android:tag= "Comercial"
+        android:tag= "ClientApiMin"
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="0dp"
