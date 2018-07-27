@@ -148,11 +148,11 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
     public void onResume() {
         super.onResume();
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.simple_settings, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.simple_settings, menu);
+//        return true;
+//    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -168,13 +168,15 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
                 super.onBackPressed(); //done to get to recreate (not to create) activity
     }
 
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view,int pos, long id) {
-        if (parent.getId()==R.id.spinnerUrlId) {
-            SessionProp.pSpinnerUrlsPos=pos;
-        }
-        if (parent.getId()==R.id.spinnerTextTo) {
-            SessionProp.pSpinnerTextToPos=pos;
-        }
+        new SimpleSettingsActivityExt().onItemSelected(parent, view,pos,id);
+//        if (parent.getId()==R.id.spinnerUrlId) {
+//            SessionProp.pSpinnerUrlsPos=pos;
+//        }
+//        if (parent.getId()==R.id.spinnerTextTo) {
+//            SessionProp.pSpinnerTextToPos=pos;
+//        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {

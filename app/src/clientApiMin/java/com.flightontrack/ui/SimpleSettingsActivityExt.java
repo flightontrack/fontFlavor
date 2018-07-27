@@ -1,6 +1,8 @@
 package ui;
 
 
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
@@ -29,5 +31,14 @@ public class SimpleSettingsActivityExt{
             adapterTextTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerTextTo.setAdapter(adapterTextTo);
             spinnerTextTo.setOnItemSelectedListener(ctx);
-}
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        if (parent.getId()==R.id.spinnerUrlId) {
+            SessionProp.pSpinnerUrlsPos=pos;
+        }
+        if (parent.getId()==R.id.spinnerTextTo) {
+            SessionProp.pSpinnerTextToPos=pos;
+        }
+    }
 }
