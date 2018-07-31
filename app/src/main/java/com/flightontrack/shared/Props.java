@@ -68,7 +68,7 @@ public final class Props implements EventBus{
         //public static String[]      pMinSpeedArray=ctxApp.getResources().getStringArray(R.array.speed_array);
         public static int[]        pUpdateIntervalSec= {3, 5, 10, 15, 20, 30, 60, 120, 300, 600, 900, 1800};
         public static boolean       pIsOnReboot=!pIsAppTypePublic;
-        public static boolean       pIsStartedOnReboot =false;
+        //public static boolean       pIsStartedOnReboot =false;
         public static boolean pIsActivityFinished =false;
 
         public static SQLHelper sqlHelper;
@@ -108,7 +108,7 @@ public final class Props implements EventBus{
             //pTextRed = sharedPreferences.getString("pTextRed", ctxApp.getString(R.string.start_flight));
             pTrackingButtonText = sharedPreferences.getString("pTrackingButtonText", ctxApp.getString(R.string.start_flight));
             pIsOnReboot=sharedPreferences.getBoolean("pIsOnReboot", false);
-            pIsStartedOnReboot =sharedPreferences.getBoolean("pIsStartedOnReboot", false);
+            //pIsStartedOnReboot =sharedPreferences.getBoolean("pIsStartedOnReboot", false);
             pIsActivityFinished =sharedPreferences.getBoolean("pIsActivityFinished", false);
         }
 

@@ -195,7 +195,12 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 //            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
 //            //AppConfig.pAutostart = false;
 //        }
-        new MainActivityExt().startOnReboot(this);
+        if (SessionProp.pIsOnReboot && trackingButtonState==BUTTONREQUEST.BUTTON_STATE_RED) {
+            trackingButton.performClick();
+//            SessionProp.pIsStartedOnReboot=true;
+//            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
+        }
+        //new MainActivityExt().startOnReboot(this);
         isToDestroy = true;
     }
 
@@ -316,35 +321,57 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
     void init_listeners() {
 
-        trackingButton.setOnClickListener(view -> {
-            //Util.appendLog(TAG + "trackingButton: onClick",'d');
-            //if (RouteBase._routeStatus == RSTATUS.PASSIVE) {
-            switch (trackingButtonState) {
-                case BUTTON_STATE_RED:
-                    //Util.setAcftNum(txtAcftNum.getText().toString());
-                    //TODO pAutostart  need to be replaced with pIsStartedOnReboot
-                    //TODO ???? что это
-                    //if (!AppConfig.pAutostart && !is_services_available()) return;
-                    if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
-
-                        new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
-                        if (!SessionProp.pIsEmptyAcftOk) return;
-                    }
-                    EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
-                    break;
-                default:
-                    EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
-                    break;
-            }
-            //Crashlytics.getInstance().crash(); // Force a crash
-            //throw new NullPointerException();
-        });
+//        trackingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Util.appendLog(TAG + "trackingButton: onClick",'d');
+//                //if (RouteBase._routeStatus == RSTATUS.PASSIVE) {
+//                switch (trackingButtonState) {
+//                    case BUTTON_STATE_RED:
+//                        //Util.setAcftNum(txtAcftNum.getText().toString());
+//                        //TODO pAutostart  need to be replaced with pIsStartedOnReboot
+//                        //TODO ???? что это
+//                        //if (!AppConfig.pAutostart && !is_services_available()) return;
+//                        if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
+//
+//                            new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
+//                            if (!SessionProp.pIsEmptyAcftOk) return;
+//                        }
+//                        EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
+//                        break;
+//                    default:
+//                        EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
+//                        break;
+//                }
+//            }
+//            //Crashlytics.getInstance().crash(); // Force a crash
+//            //throw new NullPointerException();
+//        });
 
         chBoxIsMultiLeg.setOnCheckedChangeListener((compoundButton, b) -> {
             EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
         });
     }
 
+    public void  trackingButtonOnClick(View v){
+        switch (trackingButtonState) {
+            case BUTTON_STATE_RED:
+                //Util.setAcftNum(txtAcftNum.getText().toString());
+                //TODO pAutostart  need to be replaced with pIsStartedOnReboot
+                //TODO ???? что это
+                //if (!AppConfig.pAutostart && !is_services_available()) return;
+                if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
+
+                    new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
+                    if (!SessionProp.pIsEmptyAcftOk) return;
+                }
+                EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
+                break;
+            default:
+                EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
+                break;
+        }
+    }
     private boolean isGPSEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         return (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));

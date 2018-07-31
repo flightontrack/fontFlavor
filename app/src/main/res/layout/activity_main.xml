@@ -53,7 +53,7 @@
             android:background="@drawable/bttn_status_red"
             android:id="@+id/btnTracking"
             style="@style/track_button_small"
-
+            android:onClick="trackingButtonOnClick"
             />
     </LinearLayout>
     <LinearLayout

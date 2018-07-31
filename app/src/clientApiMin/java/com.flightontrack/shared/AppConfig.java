@@ -37,7 +37,7 @@ public final class AppConfig {
         AlarmManagerCtrl.setAlarm();
         receiverBatteryLevel = new ReceiverBatteryLevel();
         ctx.registerReceiver(receiverBatteryLevel, new IntentFilter("android.intent.action.BATTERY_LOW"));
-        Props.SessionProp.pIsStartedOnReboot=true;
+        //Props.SessionProp.pIsStartedOnReboot=true;
     }
     public static void get(){
         //pIsAppTypePublic = false;

@@ -13,11 +13,12 @@ public class MainActivityExt {
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
     }
-    public void startOnReboot(MainActivity ctx){
-        if (SessionProp.pIsOnReboot && !SessionProp.pIsStartedOnReboot) {
-            ctx.trackingButton.performClick();
-            SessionProp.pIsStartedOnReboot=true;
-            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
-        }
-}}
+//    public void startOnReboot(MainActivity ctx){
+//        if (SessionProp.pIsOnReboot && !SessionProp.pIsStartedOnReboot) {
+//            ctx.trackingButton.performClick();
+//            //SessionProp.pIsStartedOnReboot=true;
+//            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
+//        }
+//}
+}
 
