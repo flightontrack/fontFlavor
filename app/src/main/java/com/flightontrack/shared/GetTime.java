@@ -30,4 +30,9 @@ public interface GetTime {
         dateFormat.setTimeZone(TimeZone.getDefault());
         return dateFormat.format(currTime);
     }
+
+//    void speakTime(){
+//
+//
+//    }
 }

@@ -8,11 +8,13 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.entities.EntityFlightTimeMessage;
 import com.flightontrack.entities.EntityRequestNewFlight;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.mysql.DBSchema;
+import com.flightontrack.other.TalkAsync;
 import com.flightontrack.pilot.MyPhone;
 import com.flightontrack.pilot.Pilot;
 import com.flightontrack.shared.EventBus;
@@ -133,7 +135,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             .set("isdebug", String.valueOf(SessionProp.pIsDebug))
             .set("routeid", route.routeNumber.equals(ROUTE_NUMBER_DEFAULT)?null:route.routeNumber);
             try(
-                    HttpJsonClient client = new HttpJsonClient(entityRequestNewFlight);
+                    HttpJsonClient client = new HttpJsonClient(entityRequestNewFlight)
                     //FontLogAsync myLog = new FontLogAsync()
             ) {
                 client.post(new JsonHttpResponseHandler() {
@@ -263,6 +265,10 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         flightTimeString = dateFormat.format(elapsedTime);
         EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
+        Double remainderSec = (double)_flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
+        if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
+            new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
+        }
     }
 
     double get_cutoffSpeed() {

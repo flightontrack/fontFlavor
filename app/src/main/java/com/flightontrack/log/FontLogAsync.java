@@ -40,7 +40,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
             //e.printStackTrace();
         }
         return true;
-}
+    }
     public void appendLogcat(String text,char type) {
 
         switch (type) {
@@ -75,7 +75,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
 //        }
         File logFile = new File(dir, "FONTLog_"+_myPhoneId+"_"+android.os.Process.myPid()+".txt");
         try (
-                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+                BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true))
         ){
             succcess =  logFile.createNewFile();
 //            if (!logFile.exists()) {

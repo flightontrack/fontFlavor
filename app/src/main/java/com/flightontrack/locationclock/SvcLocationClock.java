@@ -95,7 +95,9 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         _intervalClockSecCurrent = timeSec;
         //Util.appendLog(TAG + "set_intervalClockSecCurrent: "+_intervalClockSecCurrent, 'd');
     }
-
+    public static int get_intervalClockSecCurrent(){
+        return _intervalClockSecCurrent;
+    }
     @Override
     public void onLocationChanged(final Location location) {
         if(_mode==MODE.CLOCK_ONLY && RouteBase.activeFlight==null){
