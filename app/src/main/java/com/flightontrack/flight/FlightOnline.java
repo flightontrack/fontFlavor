@@ -2,6 +2,7 @@ package com.flightontrack.flight;
 
 import android.content.ContentValues;
 import android.location.Location;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -267,8 +268,18 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
         EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
         Double remainderSec = (double)_flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
         if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
-            new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
+            TalkAsync.TalkTime = new TextToSpeech(ctxApp, new TextToSpeech.OnInitListener(){
+                @Override
+                public void onInit(int status) {
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "!!!!!!!!onInit Status "+status, 'd'));
+                    if (status == TextToSpeech.SUCCESS){
+                        new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
+
+                    }
+                }
+            });
         }
+        else if (TalkAsync.TalkTime!=null) TalkAsync.TalkTime.shutdown();
     }
 
     double get_cutoffSpeed() {
