@@ -144,16 +144,18 @@ public final class Props implements EventBus{
             pIsDebug = false;
         }
         public static void clearToDefault() {
-            editor.remove("pIsMultileg").commit();
-            editor.remove("pIntervalLocationUpdateSec").commit();
-            editor.remove("pIntervalSelectedItem").commit();
-            editor.remove("pIsEmptyAcftOk").commit();
-            editor.remove("pSpinnerUrlsPos").commit();
-            editor.remove("pSpinnerTextToPos").commit();
-            editor.remove("pSpinnerMinSpeedPos").commit();
-            editor.remove("pTrackingButtonText").commit();
+            editor.remove("pIsMultileg");
+            editor.remove("pIntervalLocationUpdateSec");
+            editor.remove("pIntervalSelectedItem");
+            editor.remove("pIsEmptyAcftOk");
+            editor.remove("pSpinnerUrlsPos");
+            editor.remove("pSpinnerTextToPos");
+            editor.remove("pSpinnerMinSpeedPos");
+            editor.remove("pTrackingButtonText");
+            editor.commit();
             pIsRoad = false;
             pIsDebug = false;
+            editor.clear();
         }
         public static void resetSessionProp() {
             clearToDefault();
@@ -173,7 +175,7 @@ public final class Props implements EventBus{
     }
     @Override
     public void eventReceiver(EventMessage eventMessage){
-        new FontLogAsync().execute(new EntityLogMessage(TAG, " eventReceiver Interface is called on Props", 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "eventReceiver Interface is called on Props", 'd'));
         EVENT ev = eventMessage.event;
         switch(ev){
             case MACT_MULTILEG_ONCLICK:

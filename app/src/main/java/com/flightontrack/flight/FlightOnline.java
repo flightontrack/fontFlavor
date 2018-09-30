@@ -2,7 +2,6 @@ package com.flightontrack.flight;
 
 import android.content.ContentValues;
 import android.location.Location;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.mysql.DBSchema;
-import com.flightontrack.other.TalkAsync;
 import com.flightontrack.pilot.MyPhone;
 import com.flightontrack.pilot.Pilot;
 import com.flightontrack.shared.EventBus;
@@ -35,6 +33,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
+import other.Talk;
 
 import static com.flightontrack.flight.FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
 import static com.flightontrack.shared.Const.*;
@@ -51,11 +50,13 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     float _speedCurrent = 0;
     float speedPrev = 0;
     int _flightTimeSec;
+    int talkCount;
     private long _flightStartTimeGMT;
-    boolean isElevationCheckDone;
     double cutoffSpeed;
+    boolean isElevationCheckDone;
     boolean isGettingFlight = false;
     boolean isGetFlightCallSuccess = false;
+    boolean isSpoken = false;
     List<Integer> dbIdList = new ArrayList<>();
 
     public FlightOnline(Route r) {
@@ -266,20 +267,26 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         flightTimeString = dateFormat.format(elapsedTime);
         EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
-        Double remainderSec = (double)_flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
-        if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
-            TalkAsync.TalkTime = new TextToSpeech(ctxApp, new TextToSpeech.OnInitListener(){
-                @Override
-                public void onInit(int status) {
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "!!!!!!!!onInit Status "+status, 'd'));
-                    if (status == TextToSpeech.SUCCESS){
-                        new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
-
-                    }
-                }
-            });
+        int c = _flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
+        new FontLogAsync().execute(new EntityLogMessage(TAG," c =  "+c, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG," talkCount =  "+talkCount, 'd'));
+        if (c>talkCount){
+            talkCount=c;
+            new Talk(new EntityFlightTimeMessage(_flightTimeSec));
         }
-        else if (TalkAsync.TalkTime!=null) TalkAsync.TalkTime.shutdown();
+            //Double remainderSec = (double)_flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
+        //if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
+//            Talk.tts = new TextToSpeech(ctxApp, new TextToSpeech.OnInitListener(){
+//                @Override
+//                public void onInit(int status) {
+//                    new FontLogAsync().execute(new EntityLogMessage(TAG, "!!!!!!!!onInit Status "+status, 'd'));
+//                    if (status == TextToSpeech.SUCCESS){
+//                        new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
+//
+//                    }
+//                }
+//            });
+
     }
 
     double get_cutoffSpeed() {

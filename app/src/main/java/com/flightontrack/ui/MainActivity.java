@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             minSpeedSpinnerSetup();
             SessionProp.set_isMultileg(true);
             SessionProp.save();
-            txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+            //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
         } catch (Exception e) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "EXCEPTION!!!!: " + e.toString(), 'e'));
         }
@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         //Util.setAcftNum(Util.getAcftNum(4));
         txtAcftNum.setText(Util.getAcftNum(4));
         BigButton.setTrackingButton(trackingButtonState);
+        txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
 
         init_listeners();
         int permissionCheckPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);

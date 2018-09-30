@@ -12,23 +12,32 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.flightontrack.R;
+import com.flightontrack.entities.EntityAcft;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.shared.Props;
 import com.flightontrack.pilot.Pilot;
 
 import static com.flightontrack.shared.Const.*;
-import static shared.AppConfig.*;
 import static shared.AppConfig.pIsNFCcapable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 //import shared.AppConfig;
 
@@ -36,11 +45,11 @@ public class AircraftActivity extends Activity {
     private static final String TAG = "AircraftActivity";
 
     TextView txtBlueText;
-    TextView txtAcftMake;
-    TextView txtAcftModel;
-    TextView txtAcftSeries;
-    EditText txtAcftRegNum;
+    //EditText txtAcftRegNum;
     EditText txtAcftName;
+    ArrayAdapter<String> arrayAdapter;
+    String[] stringArray= new String[100];
+    AutoCompleteTextView autoCompleteTextView;
     TextView txtAcftTagId;
     TextView txtUserName;
     Button doneButton;
@@ -53,6 +62,8 @@ public class AircraftActivity extends Activity {
     IntentFilter ndefDetected;
     IntentFilter[] nfcFilters;
     PendingIntent pendingIntent;
+    ArrayList acftNumArray = new ArrayList<String>();
+    ArrayList acftNameArray = new ArrayList<String>();
 
     public static void clearAcftPreferences() {
         //Log.d.d(TAG, "clearPref()");
@@ -80,11 +91,13 @@ public class AircraftActivity extends Activity {
 
     @Override
     public void onResume() {
+        super.onResume();
         new FontLogAsync().execute(new EntityLogMessage(TAG, "AircraftActivity onResume", 'd'));
         txtUserName = findViewById(R.id.txtUserName);
         txtUserName.setText(Pilot.getPilotUserName());
         txtAcftName = findViewById(R.id.txtAcftName);
-        txtAcftRegNum = findViewById(R.id.txtAcftRegNum);
+        autoCompleteTextView = findViewById(R.id.txtAcftRegNum);
+        autoCompleteTextView.setThreshold(1);
 
         doneButton = findViewById(R.id.btn_acft_done);
         cancelButton = findViewById(R.id.btn_acft_cancel);
@@ -100,10 +113,45 @@ public class AircraftActivity extends Activity {
 //            txtAcftTagId = (TextView) findViewById(R.id.txtAcftTagId);
             setAcft(getAcft());
         }
-        setAcft_nonfc(getAcft());
+
+        String acftSet = Props.sharedPreferences.getString("defaultAcftSet",null);
+        if (null != acftSet) try {
+            JSONObject jsonDefaultAcftSet = new JSONObject(acftSet);
+            autoCompleteTextView.setText(jsonDefaultAcftSet.getString("AcftRegNum"));
+            txtAcftName.setText(jsonDefaultAcftSet.getString("AcftName"));
+        }
+        catch(JSONException e){
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "JSONException: JSONObject jsonDefaultAcftSet ", 'e'));
+        }
+
+        Set<String> autoCompleteAcftSet = Props.sharedPreferences.getStringSet("autoCompleteAcftSet",null);
+        if (null!=autoCompleteAcftSet) {
+
+        for (String acft:autoCompleteAcftSet) {
+//            //acft.
+            try {
+                JSONObject json = new JSONObject(acft);
+                String acftNum = json.getString("AcftRegNum");
+                acftNumArray.add(acftNum);
+                String acftName = json.getString("AcftName");
+                acftNameArray.add(acftName);
+                //json.getJSONArray(acft);
+            }
+            catch (JSONException e) {
+                        //Log.e(GLOBALTAG,TAG+ "Couldn't parse JSON: ", e);
+                    }
+        }
+        }
+        //if (acftSet!=null) stringArray = Arrays.copyOf(acftSet.toArray(), acftSet.size(),String[].class);
+        //if (autoCompleteAcftSet!=null) stringArray = Arrays.copyOf(autoCompleteAcftSet.toArray(), autoCompleteAcftSet.size(),String[].class);
+        if (autoCompleteAcftSet!=null) stringArray = (String[]) acftNumArray.toArray(new String[0]);
+
+        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, stringArray);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+//        String AcftRegNum = Props.sharedPreferences.getString("AcftRegNum", null);
+//        String AcftName = Props.sharedPreferences.getString("AcftName", null);
         init_listeners();
 
-        super.onResume();
     }
 
     @Override
@@ -120,21 +168,38 @@ public class AircraftActivity extends Activity {
     void init_listeners() {
 
         doneButton.setOnClickListener(view -> {
-            JSONObject json = new JSONObject();
-            try {
-                json.put("AcftRegNum", txtAcftRegNum.getText().toString());
-                json.put("AcftName", txtAcftName.getText().toString());
-                setAcft_nonfc(json);
-                if (pIsNFCcapable) {
-//                    json.put("AcftMake", txtAcftMake.getText().toString());
-//                    json.put("AcftModel", txtAcftModel.getText().toString());
-//                    json.put("AcftSeries", txtAcftSeries.getText().toString());
-//                    json.put("AcftTagId", txtAcftTagId.getText().toString());
-                    setAcft(json);
-                }
-            } catch (JSONException e) {
-                //Log.e(GLOBALTAG,TAG+ "Couldn't parse JSON: ", e);
-            }
+//            JSONObject json = new JSONObject();
+//            try {
+////                json.put("AcftRegNum", txtAcftRegNum.getText().toString());
+//                json.put("AcftName", txtAcftName.getText().toString());
+//                setAcft_nonfc(json);
+//                if (pIsNFCcapable) {
+////                    json.put("AcftMake", txtAcftMake.getText().toString());
+////                    json.put("AcftModel", txtAcftModel.getText().toString());
+////                    json.put("AcftSeries", txtAcftSeries.getText().toString());
+////                    json.put("AcftTagId", txtAcftTagId.getText().toString());
+//                    setAcft(json);
+//                }
+//            } catch (JSONException e) {
+//                //Log.e(GLOBALTAG,TAG+ "Couldn't parse JSON: ", e);
+//            }
+            Set<String> acftSet = Props.sharedPreferences.getStringSet("acftSet",null);
+            if (null==acftSet) acftSet = new HashSet();
+            EntityAcft entityAcft = new EntityAcft(
+                    autoCompleteTextView.getText().toString().trim(),
+                    txtAcftName.getText().toString().trim()
+                    );
+            entityAcft.save();
+
+//            String acftNum = autoCompleteTextView.getText().toString();
+//            String acftName = txtAcftName.getText().toString();
+//            if (null!=acftNum) acftSet.add(acftNum);
+//
+//            // Put an ArrayList to SharedPreferences
+//            Props.editor.putStringSet("acftSet",acftSet);
+//            Props.editor.putString("AcftRegNum", acftNum.trim());
+//            Props.editor.putString("AcftName", acftName.trim());
+//            Props.editor.commit();
             Pilot.setPilotUserName(txtUserName.getText().toString());
             finish();
         });
@@ -179,9 +244,35 @@ public class AircraftActivity extends Activity {
                 Pilot.setPilotUserName(input);
             }
         });
+//        autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+//
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                String item = (String) adapterView.getItemAtPosition(i);
+//                new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemSelectedListener "+item, 'd'));
+//                //Don't use this method
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//                new FontLogAsync().execute(new EntityLogMessage(TAG, "onNothingSelected ", 'd'));
+//
+//                System.out.println("Nothing selected");
+//            }
+//        });
+        autoCompleteTextView.setOnItemClickListener (new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                //String item = (String) parent.getItemAtPosition(position);
+
+                String acftName = (String) acftNameArray.get(position);
+                //new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemClickListener "+item, 'd'));
+                //new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemClickListener acftName "+acftName, 'd'));
+                txtAcftName.setText(acftName);
+            }
+        });
     }
 
-    //void setAcft(String AcftMake,String AcftModel,String AcftSeries,String AcftRegNum,String AcftTagId){
     void setAcft(JSONObject json) {
         try {
             new FontLogAsync().execute(new EntityLogMessage(TAG, json.toString(), 'd'));
@@ -202,7 +293,7 @@ public class AircraftActivity extends Activity {
             //txtAcftMake.setText(AcftMake);
             //txtAcftModel.setText(AcftModel);
             //txtAcftSeries.setText(AcftSeries);
-            txtAcftRegNum.setText(AcftRegNum);
+            autoCompleteTextView.setText(AcftRegNum);
             //txtAcftTagId.setText(AcftTagId);
             txtAcftName.setText(AcftName);
 
@@ -214,13 +305,23 @@ public class AircraftActivity extends Activity {
     void setAcft_nonfc(JSONObject json) {
         try {
             new FontLogAsync().execute(new EntityLogMessage(TAG, json.toString(), 'd'));
+
+            Set<String> autoCompleteAcftSet = Props.sharedPreferences.getStringSet("autoCompleteAcftSet",null);
+            if (null== autoCompleteAcftSet) autoCompleteAcftSet = new HashSet();
+            String acftToAdd = autoCompleteTextView.getText().toString();
+            if (null!=acftToAdd) autoCompleteAcftSet.add(acftToAdd);
+
+            // Put an ArrayList to SharedPreferences
+            Props.editor.putStringSet("autoCompleteAcftSet", autoCompleteAcftSet);
+            Props.editor.commit();
+
             String AcftRegNum = json.getString("AcftRegNum").replace(" ", "");
             String AcftName = json.getString("AcftName");
             Props.editor.putString("AcftRegNum", AcftRegNum.trim());
             Props.editor.putString("AcftName", AcftName.trim());
             Props.editor.commit();
 
-            txtAcftRegNum.setText(AcftRegNum);
+            autoCompleteTextView.setText(AcftRegNum);
             txtAcftName.setText(AcftName);
 
         } catch (JSONException e) {
@@ -229,11 +330,16 @@ public class AircraftActivity extends Activity {
     }
 
     JSONObject getAcft() {
-//        txtAcftMake.setText(sharedPreferences.getString("AcftMake",""));
-//        txtAcftModel.setText(sharedPreferences.getString("AcftModel",""));
-//        txtAcftSeries.setText(sharedPreferences.getString("AcftSeries",""));
-//        txtAcftRegNum.setText(sharedPreferences.getString("AcftRegNum",getString(R.string.default_acft_N)));
-//        txtAcftRegNum.setText(sharedPreferences.getString("AcftTagId",""));
+        //String[] adapterArray= new String[100];
+        Set<String> acftSet = Props.sharedPreferences.getStringSet("acftSet",null);
+                //getResources().getString(R.string.sp_key_colors),
+//                null
+//        );
+        if (acftSet!=null) stringArray = Arrays.copyOf(acftSet.toArray(), acftSet.size(),String[].class);
+
+        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, stringArray);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
         JSONObject json = new JSONObject();
         try {
             json.put("AcftMake", Props.sharedPreferences.getString("AcftMake", ""));

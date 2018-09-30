@@ -23,7 +23,7 @@
             android:layout_weight="6.5"
             />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/txtAcftRegNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

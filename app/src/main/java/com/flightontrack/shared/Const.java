@@ -42,7 +42,7 @@ public abstract class Const {
 
     public static final String SPACE=" ";
     public static final String FLIGHT_TIME_ZERO ="00:00";
-    public static final int    TIME_TALK_INTERVAL_MIN =1;
+    public static final int    TIME_TALK_INTERVAL_MIN =5;
 
     public static final int WAY_POINT_HARD_LIMIT = 1200;
     public static final int LEG_COUNT_HARD_LIMIT = 15;
