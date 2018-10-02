@@ -67,9 +67,6 @@ public class AircraftActivity extends Activity {
 
     public static void clearAcftPreferences() {
         //Log.d.d(TAG, "clearPref()");
-        Props.editor.remove("AcftMake").commit();
-        Props.editor.remove("AcftModel").commit();
-        Props.editor.remove("AcftSeries").commit();
         Props.editor.remove("AcftRegNum").commit();
         Props.editor.remove("AcftTagId").commit();
         Props.editor.remove("AcftName").commit();
@@ -107,10 +104,6 @@ public class AircraftActivity extends Activity {
             nfcSwitch = findViewById(R.id.switch_nfc);
             txtBlueText = findViewById(R.id.txtBlueText);
             nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-//            txtAcftMake = (TextView) findViewById(R.id.txtAcftMake);
-//            txtAcftModel = (TextView) findViewById(R.id.txtAcftModel);
-//            txtAcftSeries = (TextView) findViewById(R.id.txtAcftSeries);
-//            txtAcftTagId = (TextView) findViewById(R.id.txtAcftTagId);
             setAcft(getAcft());
         }
 
@@ -121,14 +114,13 @@ public class AircraftActivity extends Activity {
             txtAcftName.setText(jsonDefaultAcftSet.getString("AcftName"));
         }
         catch(JSONException e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "JSONException: JSONObject jsonDefaultAcftSet ", 'e'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onResume -> JSONException", 'e',e));
         }
 
         Set<String> autoCompleteAcftSet = Props.sharedPreferences.getStringSet("autoCompleteAcftSet",null);
         if (null!=autoCompleteAcftSet) {
 
         for (String acft:autoCompleteAcftSet) {
-//            //acft.
             try {
                 JSONObject json = new JSONObject(acft);
                 String acftNum = json.getString("AcftRegNum");
@@ -138,18 +130,15 @@ public class AircraftActivity extends Activity {
                 //json.getJSONArray(acft);
             }
             catch (JSONException e) {
-                        //Log.e(GLOBALTAG,TAG+ "Couldn't parse JSON: ", e);
-                    }
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "setAcft -> " + e.getMessage(), 'e',e));
+            }
         }
         }
-        //if (acftSet!=null) stringArray = Arrays.copyOf(acftSet.toArray(), acftSet.size(),String[].class);
-        //if (autoCompleteAcftSet!=null) stringArray = Arrays.copyOf(autoCompleteAcftSet.toArray(), autoCompleteAcftSet.size(),String[].class);
+
         if (autoCompleteAcftSet!=null) stringArray = (String[]) acftNumArray.toArray(new String[0]);
 
         arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, stringArray);
         autoCompleteTextView.setAdapter(arrayAdapter);
-//        String AcftRegNum = Props.sharedPreferences.getString("AcftRegNum", null);
-//        String AcftName = Props.sharedPreferences.getString("AcftName", null);
         init_listeners();
 
     }
@@ -244,30 +233,11 @@ public class AircraftActivity extends Activity {
                 Pilot.setPilotUserName(input);
             }
         });
-//        autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                String item = (String) adapterView.getItemAtPosition(i);
-//                new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemSelectedListener "+item, 'd'));
-//                //Don't use this method
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//                new FontLogAsync().execute(new EntityLogMessage(TAG, "onNothingSelected ", 'd'));
-//
-//                System.out.println("Nothing selected");
-//            }
-//        });
         autoCompleteTextView.setOnItemClickListener (new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //String item = (String) parent.getItemAtPosition(position);
-
                 String acftName = (String) acftNameArray.get(position);
-                //new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemClickListener "+item, 'd'));
-                //new FontLogAsync().execute(new EntityLogMessage(TAG, "OnItemClickListener acftName "+acftName, 'd'));
                 txtAcftName.setText(acftName);
             }
         });
@@ -276,29 +246,20 @@ public class AircraftActivity extends Activity {
     void setAcft(JSONObject json) {
         try {
             new FontLogAsync().execute(new EntityLogMessage(TAG, json.toString(), 'd'));
-            String AcftMake = json.getString("AcftMake");
-            String AcftModel = json.getString("AcftModel").replace(" ", "");
-            String AcftSeries = json.getString("AcftSeries").replace(" ", "");
             String AcftRegNum = json.getString("AcftRegNum").replace(" ", "");
             String AcftTagId = json.getString("AcftTagId");
             String AcftName = json.getString("AcftName");
-            Props.editor.putString("AcftMake", AcftMake.trim());
-            Props.editor.putString("AcftModel", AcftModel.trim());
-            Props.editor.putString("AcftSeries", AcftSeries.trim());
             Props.editor.putString("AcftRegNum", AcftRegNum.trim());
             Props.editor.putString("AcftTagId", AcftTagId.trim());
             Props.editor.putString("AcftName", AcftName.trim());
             Props.editor.commit();
 
-            //txtAcftMake.setText(AcftMake);
-            //txtAcftModel.setText(AcftModel);
-            //txtAcftSeries.setText(AcftSeries);
             autoCompleteTextView.setText(AcftRegNum);
             //txtAcftTagId.setText(AcftTagId);
             txtAcftName.setText(AcftName);
 
         } catch (JSONException e) {
-            Log.e(GLOBALTAG, TAG + "Couldn't parse JSON: ");
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "setAcft -> " + e.getMessage(), 'e',e));
         }
     }
 
@@ -325,7 +286,7 @@ public class AircraftActivity extends Activity {
             txtAcftName.setText(AcftName);
 
         } catch (JSONException e) {
-            Log.e(GLOBALTAG, TAG + "Couldn't parse JSON: ");
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "setAcft_nonfc -> " + e.getMessage(), 'e',e));
         }
     }
 
@@ -342,14 +303,11 @@ public class AircraftActivity extends Activity {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("AcftMake", Props.sharedPreferences.getString("AcftMake", ""));
-            json.put("AcftModel", Props.sharedPreferences.getString("AcftModel", ""));
-            json.put("AcftSeries", Props.sharedPreferences.getString("AcftSeries", ""));
             json.put("AcftRegNum", Props.sharedPreferences.getString("AcftRegNum", getString(R.string.default_acft_N)));
             json.put("AcftTagId", Props.sharedPreferences.getString("AcftTagId", ""));
             json.put("AcftName", Props.sharedPreferences.getString("AcftName", ""));
         } catch (JSONException e) {
-            //Log.e(GLOBALTAG,TAG+ "Couldn't parse JSON: ", e);
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "getAcft -> " + e.getMessage(), 'e',e));
         }
         return json;
     }
@@ -362,7 +320,7 @@ public class AircraftActivity extends Activity {
                 nfcSwitch.setChecked(tagstate);
             }
             catch(Exception e){
-                throw new RuntimeException(e);
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "setTagNFCState -> " + e.getMessage(), 'e',e));
             }
         }
         Props.editor.putBoolean("nfctagstate", tagstate).commit();
@@ -381,7 +339,7 @@ public class AircraftActivity extends Activity {
         try {
             ndefDetected.addDataType("application/com.flightontrack");
         } catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("Could not add MIME type.", e);
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "enableNfcForegroundMode -> " + e.getMessage(), 'e',e));
         }
         nfcFilters = new IntentFilter[]{tagDetected, ndefDetected};
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -431,7 +389,7 @@ public class AircraftActivity extends Activity {
                 j.put("AcftName", txtAcftName.getText().toString());
                 setAcft(j);
             } catch (JSONException e) {
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "Couldn't create json from NFC: " + e.getMessage(), 'e'));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "onNewIntent -> Couldn't create json from NFC: " + e.getMessage(), 'e',e));
             }
         }
     }

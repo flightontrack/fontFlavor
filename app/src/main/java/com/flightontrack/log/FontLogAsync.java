@@ -34,6 +34,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
             text += msgobj[0].msg;
             appendLogcat(text, msgobj[0].msgType);
             if (Props.SessionProp.pIsDebug) appendCustomLog(text);
+            if (msgobj[0].e !=null)  throw new RuntimeException(text,msgobj[0].e);
         }
         catch(Exception e){
             Log.d(TAG,"FontLogAsync Exception");
@@ -41,6 +42,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
         }
         return true;
     }
+
     public void appendLogcat(String text,char type) {
 
         switch (type) {
@@ -50,9 +52,9 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
             case 'e':
                 Log.e(GLOBALTAG, text);
                 //startLogcat("appendLog"); TODO need to check permission first
-                break;
         }
     }
+
     void appendCustomLog(String text){
         String timeStr = "[" + getDateTimeNow() + "]";
         String af = " no active flight";
