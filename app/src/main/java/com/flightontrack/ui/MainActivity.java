@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flightontrack.entities.EntityAcft;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 //import receiver.AlarmManagerCtrl;
@@ -172,7 +173,8 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
         SessionProp.get();
         //Util.setAcftNum(Util.getAcftNum(4));
-        txtAcftNum.setText(Util.getAcftNum(4));
+        //txtAcftNum.setText(Util.getAcftNum(4));
+        txtAcftNum.setText(new EntityAcft().AcftNum);
         BigButton.setTrackingButton(trackingButtonState);
         txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
 

@@ -55,7 +55,7 @@ public final class Props implements EventBus{
 //    }
 
     public static class SessionProp implements EventBus{
-        public static boolean       pIsMultileg;
+        public static boolean      pIsMultileg;
         public static int          pIntervalLocationUpdateSec;
         public static int          pIntervalSelectedItem;
         public static boolean      pIsEmptyAcftOk;
@@ -67,9 +67,9 @@ public final class Props implements EventBus{
         public static boolean      pIsDebug = false;
         //public static String[]      pMinSpeedArray=ctxApp.getResources().getStringArray(R.array.speed_array);
         public static int[]        pUpdateIntervalSec= {3, 5, 10, 15, 20, 30, 60, 120, 300, 600, 900, 1800};
-        public static boolean       pIsOnReboot=!pIsAppTypePublic;
+        public static boolean      pIsOnReboot=!pIsAppTypePublic;
         //public static boolean       pIsStartedOnReboot =false;
-        public static boolean pIsActivityFinished =false;
+        public static boolean      pIsActivityFinished =false;
 
         public static SQLHelper sqlHelper;
         public static int dbLocationRecCountNormal = 0;
