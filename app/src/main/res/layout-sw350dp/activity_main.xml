@@ -170,7 +170,8 @@
                         android:gravity="start|top"
                         android:scaleX="2"
                         android:scaleY="2"
-                        android:theme="@style/checkBoxComponent" />
+                        android:theme="@style/MyCheckbox"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

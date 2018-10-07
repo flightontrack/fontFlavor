@@ -60,7 +60,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         simpleSettingsActivityInstance=this;
         setContentView(R.layout.activity_simple_settings);
         txtBuild= findViewById((R.id.txtBuild));
-        txtBuild.setText((getString(R.string.app_label)+" "+ AppConfig.pAppRelease+ AppConfig.pAppReleaseSuffix));
+        txtBuild.setText((" "+getString(R.string.build_label)+" "+ AppConfig.pAppRelease+ AppConfig.pAppReleaseSuffix));
         resetButton = findViewById(R.id.btnReset);
         resetButton.setOnClickListener(view -> {
             SessionProp.resetSessionProp();

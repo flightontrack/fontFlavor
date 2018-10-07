@@ -4,7 +4,7 @@ package shared;
 import android.content.Context;
 
 public final class AppConfig {
-    public static String pAppRelease = "1.81";
+    public static String pAppRelease = "1.9";
     public static boolean pIsNFCcapable=true;
     public static boolean pIsNFCEnabled =true;
     public static boolean pIsAppTypePublic=true;

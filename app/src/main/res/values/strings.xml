@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Flight On Track</string>
-    <string name="app_label">FONT</string>
+    <string name="app_label">flightontrack.com</string>
+    <string name="build_label">FONT</string>
     <!--<string name="app_ver">1.71u</string>-->
 
     <string name="action_settings">Settings</string>

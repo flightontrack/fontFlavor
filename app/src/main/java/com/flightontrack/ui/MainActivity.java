@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             });
             toolbarTop = findViewById(R.id.toolbar_top);
             setSupportActionBar(toolbarTop);
-            getSupportActionBar().setTitle(getString(R.string.app_label) + " " + AppConfig.pAppRelease + AppConfig.pAppReleaseSuffix);
+            //getSupportActionBar().setTitle(getString(R.string.app_label) + " " + AppConfig.pAppRelease + AppConfig.pAppReleaseSuffix);
+            getSupportActionBar().setTitle(getString(R.string.app_label));
             txtAcftNum = findViewById(R.id.txtAcftNum);
             txtUserName = findViewById(R.id.txtUserName);
             chBoxIsMultiLeg = findViewById(R.id.patternCheckBox);
