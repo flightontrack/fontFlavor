@@ -101,10 +101,10 @@ public class FlightOffline implements EventBus{
     void getNewFlightID() {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-getNewFlightID: " +flightNumber, 'd'));
         EntityRequestNewFlightOffline entityRequestNewFlightOffline = new EntityRequestNewFlightOffline()
-            .set("phonenumber", MyPhone._myPhoneId)
+            .set("phonenumber", MyPhone.myPhoneId)
             .set("username", Pilot.getPilotUserName())
             .set("userid", Pilot.getUserID())
-            .set("deviceid", MyPhone._myDeviceId)
+            .set("deviceid", MyPhone.myDeviceId)
             .set("aid", MyPhone.getMyAndroidID())
             .set("versioncode", String.valueOf(MyPhone.getVersionCode()))
             .set("AcftNum", Util.getAcftNum(4))
@@ -180,32 +180,32 @@ public class FlightOffline implements EventBus{
         )
         {
             client.post(new JsonHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int code, Header[] headers, JSONObject jsonObject) {
-                                new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight OnSuccess", 'd'));
-                                ResponseJsonObj response = new ResponseJsonObj(jsonObject);
+                @Override
+                public void onSuccess(int code, Header[] headers, JSONObject jsonObject) {
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight OnSuccess", 'd'));
+                    ResponseJsonObj response = new ResponseJsonObj(jsonObject);
 
-                                if (response.responseAckn != null) {
-                                    new FontLogAsync().execute(new EntityLogMessage(TAG, "onSuccess|Flight closed: " + flightNumber, 'd'));
-                                }
-                                if (response.responseException != null) {
-                                    new FontLogAsync().execute(new EntityLogMessage(TAG, "onSuccess|RESPONSE_TYPE_NOTIF:" + response.responseException, 'd'));
-                                }
-                            }
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
-                                new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight onFailure: " + flightNumber, 'd'));
-                            }
+                    if (response.responseAckn != null) {
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "onSuccess|Flight closed: " + flightNumber, 'd'));
+                    }
+                    if (response.responseException != null) {
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "onSuccess|RESPONSE_TYPE_NOTIF:" + response.responseException, 'd'));
+                    }
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight onFailure: " + flightNumber, 'd'));
+                }
 
-                            @Override
-                            public void onFinish() {
-                                set_flightState(FLIGHT_STATE.CLOSED);
-                            }
-                        }
+                @Override
+                public void onFinish() {
+                    set_flightState(FLIGHT_STATE.CLOSED);
+                }
+            }
             );
         }
         catch (Exception e) {
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlightNew " + e.getMessage(), 'd'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlightNew " + e.getMessage(), 'e'));
         }
     }
 

@@ -2,31 +2,33 @@ package com.flightontrack.pilot;
 
 import com.flightontrack.shared.Props;
 
+import static com.flightontrack.definitions.SHPREF.PILOTUSERNAME;
+
 /**
  * Created by hotvk on 5/15/2017.
  */
 
 public class Pilot extends MyPhone {
 
-    static String _userId = null;
-    static String _userName = null;
+    static String userId = null;
+    static String userName = null;
 
     Pilot(){
     }
 
     public static String getUserID() {
         getMyPhoneID();
-        _userId = _myPhoneId + "." + _myDeviceId.substring(_myDeviceId.length() - 4); //combination of phone num. 4 digits of deviceid
-        return _userId;
+        userId = myPhoneId + "." + myDeviceId.substring(myDeviceId.length() - 4); //combination of phone num. 4 digits of deviceid
+        return userId;
     }
 
     public static String getUserName() {
-        _userName = _myPhoneId.substring(0,3)+deviceBrand.substring(0,4)+_myPhoneId.substring(8);
-        return _userName;
+        userName = myPhoneId.substring(0,3)+deviceBrand.substring(0,4)+ myPhoneId.substring(8);
+        return userName;
     }
 
     public static void setPilotUserName(String un) {
-        Props.editor.putString("pilot_UserName", un.trim().replace(" ","")).commit();
+        Props.editor.putString(PILOTUSERNAME, un.trim().replace(" ","")).commit();
         //editor.putString("userName", un.trim()).commit();
         //MainActivity.txtUserName.setText(un);
         //AircraftActivity.txtUserName.setText(un);
@@ -36,8 +38,8 @@ public class Pilot extends MyPhone {
         getBuldProp();
         getMyPhoneID();
         int deviceBrandLength = deviceBrand.length()>3?3:deviceBrand.length();
-        _userName = _myPhoneId.substring(0,3)+deviceBrand.substring(0,deviceBrandLength).toUpperCase()+_myPhoneId.substring(3+deviceBrandLength);
-        //String r = sharedPreferences.getString("pilot_UserName", _userName);
-        return Props.sharedPreferences.getString("pilot_UserName", _userName);
+        userName = myPhoneId.substring(0,3)+deviceBrand.substring(0,deviceBrandLength).toUpperCase()+ myPhoneId.substring(3+deviceBrandLength);
+        //String r = sharedPreferences.getString(PILOTUSERNAME, userName);
+        return Props.sharedPreferences.getString(PILOTUSERNAME, userName);
     }
 }

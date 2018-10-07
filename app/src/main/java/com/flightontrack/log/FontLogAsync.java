@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import static com.flightontrack.pilot.MyPhone._myPhoneId;
+import static com.flightontrack.pilot.MyPhone.myPhoneId;
 import static com.flightontrack.shared.Const.GLOBALTAG;
 
 
@@ -75,7 +75,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
 //        if (!dir.exists()) {
 //            dir.mkdir();
 //        }
-        File logFile = new File(dir, "FONTLog_"+_myPhoneId+"_"+android.os.Process.myPid()+".txt");
+        File logFile = new File(dir, "FONTLog_"+myPhoneId+"_"+android.os.Process.myPid()+".txt");
         try (
                 BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true))
         ){

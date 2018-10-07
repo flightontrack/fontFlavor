@@ -14,8 +14,8 @@ public class EntityRequestGetPsw extends RequestParams implements AutoCloseable{
     public EntityRequestGetPsw() {
         put("rcode", REQUEST_PSW);
         put("userid", Pilot.getUserID());
-        put("phonenumber", MyPhone._myPhoneId);
-        put("deviceid", MyPhone._myDeviceId);
+        put("phonenumber", MyPhone.myPhoneId);
+        put("deviceid", MyPhone.myDeviceId);
     }
 
     @Override

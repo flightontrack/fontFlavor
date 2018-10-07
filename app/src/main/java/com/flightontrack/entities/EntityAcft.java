@@ -29,7 +29,7 @@ public class EntityAcft {
 
     public EntityAcft(String p1,String p2,String p3){
         AcftNum=p1.replace(" ","");
-        AcftName=p2.replace(" ","");
+        if(null!=p2) AcftName=p2.trim();
         AcftTagId=p3;
     }
 

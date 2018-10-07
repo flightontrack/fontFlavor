@@ -11,18 +11,18 @@ import com.flightontrack.shared.Props;
 public class MyPhone {
 
     //static Context  ctx;
-    public static int      versionCode;
-    static String   deviceMmnufacturer = "unknown";
-    static String   deviceBrand = "unknown";
-    public static String   deviceProduct = "unknown";
-    public static String   deviceModel = "unknown";
-    static String   codeName = "unknown";
-    static String   codeRelease = "unknown";
-    static int      codeSDK;
+    public static int       versionCode;
+    static String           deviceMmnufacturer = "unknown";
+    static String           deviceBrand         = "unknown";
+    public static String    deviceProduct       = "unknown";
+    public static String    deviceModel         = "unknown";
+    static String           codeName            = "unknown";
+    static String           codeRelease         = "unknown";
+    static int              codeSDK;
 
-    public static String _myDeviceId = null;
-    public static String _myPhoneId = getMyPhoneID();
-    public static String _phoneNumber = null;
+    public static String myDeviceId = null;
+    public static String myPhoneId = getMyPhoneID();
+    public static String phoneNumber = null;
 
     public MyPhone() {
         getBuldProp();
@@ -50,11 +50,11 @@ public class MyPhone {
     }
 
     static String getMyPhoneID() {
-        _phoneNumber = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
-        _myDeviceId = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        String strId = (_phoneNumber == null||_phoneNumber.isEmpty()) ? _myDeviceId : _phoneNumber;
-        _myPhoneId = strId.substring(strId.length() - 10); /// 10 digits number
-        return _myPhoneId;
+        phoneNumber = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+        myDeviceId = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        String strId = (phoneNumber == null|| phoneNumber.isEmpty()) ? myDeviceId : phoneNumber;
+        myPhoneId = strId.substring(strId.length() - 10); /// 10 digits number
+        return myPhoneId;
     }
 
     public static String getMyAndroidID() {

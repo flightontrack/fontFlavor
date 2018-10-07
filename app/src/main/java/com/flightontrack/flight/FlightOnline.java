@@ -122,10 +122,10 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     void getNewFlightID() {
         isGettingFlight = true;
             EntityRequestNewFlight entityRequestNewFlight = new EntityRequestNewFlight()
-            .set("phonenumber", MyPhone._myPhoneId)
+            .set("phonenumber", MyPhone.myPhoneId)
             .set("username", Pilot.getPilotUserName())
             .set("userid", Pilot.getUserID())
-            .set("deviceid", MyPhone._myDeviceId)
+            .set("deviceid", MyPhone.myDeviceId)
             .set("aid", MyPhone.getMyAndroidID())
             .set("versioncode", String.valueOf(MyPhone.getVersionCode()))
             .set("AcftNum", Util.getAcftNum(4))
