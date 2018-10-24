@@ -1,8 +1,5 @@
 package com.flightontrack.shared;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +18,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.flightontrack.definitions.SHPREF.*;
 import static com.flightontrack.shared.Const.*;
 import static com.flightontrack.shared.Props.*;
 
@@ -30,14 +28,15 @@ public class Util {
     public Util() {
     }
 
-     public static String getTrackingURL() {
-        String[] spinnerUrls = ctxApp.getResources().getStringArray(R.array.url_array);
-        return "http://"+spinnerUrls[SessionProp.pSpinnerUrlsPos].trim();
-    }
-    public static String getWebserverURL() {
-        String url = ctxApp.getString(R.string.app_webserver_azure);
-        return "http://"+url;
-    }
+//     public static String getTrackingURL() {
+//        String[] spinnerUrls = ctxApp.getResources().getStringArray(R.array.posturl_array);
+//        return "http://"+spinnerUrls[SessionProp.pSpinnerUrlsPos].trim();
+//    }
+//    public static String getWebserverURL() {
+//        String[] url = ctxApp.getResources().getStringArray(R.array.webserverurl_array);
+//        //String url = ctxApp.getString(R.string.app_webserver_azure);
+//        return "http://"+url[SessionProp.pSpinnerUrlsPos].trim();
+//    }
     public static int getWayPointLimit() {
         return sharedPreferences.getInt("wayPointLimit", WAY_POINT_HARD_LIMIT);
     }
@@ -77,10 +76,10 @@ public class Util {
     }
 
     public static String getPsw() {
-        return sharedPreferences.getString("cloudpsw",null);
+        return sharedPreferences.getString(CLOUDPSW,null);
     }
     public static void setPsw(String psw) {
-        editor.putString("cloudpsw", psw).commit();
+        editor.putString(CLOUDPSW, psw).commit();
         SimpleSettingsActivity.txtPsw.setText(psw);
     }
 
@@ -99,13 +98,7 @@ public class Util {
         return sharedPreferences.getBoolean("a_isOnBoot", false);
     }
 
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) ctxApp.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        Boolean isNetworkAvailable = activeNetworkInfo != null&&activeNetworkInfo.isConnected();
-        if (!isNetworkAvailable) Toast.makeText(mainactivityInstance, R.string.toast_noconnectivity, Toast.LENGTH_SHORT).show();
-        return isNetworkAvailable ;
-    }
+
 
     public static void setCloudPsw(View view){
 //        final ProgressDialog progressBar;

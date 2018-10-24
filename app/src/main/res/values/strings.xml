@@ -163,16 +163,23 @@
         <item>5088687885</item>
     </string-array>
 
-    <string-array name="url_array">
+    <string-array name="posturl_array">
         <item>postnget.azurewebsites.net</item>
         <item>postnget-test.azurewebsites.net</item>
         <item>192.168.1.10/PostngetWebApi</item>
         <!--<item>http://192.168.1.3/PostngetWebApi/api/router</item>-->
         <item>96.230.122.177/PostngetWebApi</item>
-
         <item>10.0.2.2/PostngetWebApi</item>
         <!--<item>http://192.168.1.11/postnget</item>-->
 
+    </string-array>
+
+    <string-array name="webserverurl_array">
+        <item>flightontrack.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
     </string-array>
     <string-array name="url_array_release">
         <item>postnget.azurewebsites.net</item>

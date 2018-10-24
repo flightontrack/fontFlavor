@@ -14,6 +14,7 @@ import com.flightontrack.shared.Util;
 
 import static com.flightontrack.shared.Const.*;
 import static com.flightontrack.shared.Props.*;
+import static com.flightontrack.definitions.SHPREF.*;
 
 public class ReceiverBatteryLevel extends BroadcastReceiver {
     private static final String TAG = "ReceiverBatteryLevel";
@@ -49,10 +50,10 @@ public class ReceiverBatteryLevel extends BroadcastReceiver {
     }
 
     static void setBattery(String text) {
-        editor.putString("batteryLevel", text).commit();
+        editor.putString(BATTERYLEVEL, text).commit();
     }
 
     public static String getBattery() {
-        return sharedPreferences.getString("batteryLevel","0");
+        return sharedPreferences.getString(BATTERYLEVEL,"0");
     }
 }

@@ -18,7 +18,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.flightontrack.flight.RouteBase;
 
-import static com.flightontrack.shared.Util.getWebserverURL;
+import static com.flightontrack.communication.URLs.*;
 
 public class FaceBookActivity extends FragmentActivity{
     private CallbackManager callbackManager;

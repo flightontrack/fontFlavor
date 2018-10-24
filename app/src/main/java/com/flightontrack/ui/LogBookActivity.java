@@ -50,7 +50,7 @@ public class LogBookActivity extends Activity {
                 }
             }
         });
-        List<String> spinnerUrls = Arrays.asList(this.getResources().getStringArray(R.array.url_array));
+        List<String> spinnerUrls = Arrays.asList(this.getResources().getStringArray(R.array.posturl_array));
         String url ="/Member/PilotLogBookMobile?pilotUserName=" + Pilot.getUserID();
         switch (spinnerUrls.indexOf(Util.getTrackingURL())){
             case 0:

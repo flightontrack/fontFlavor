@@ -1,7 +1,11 @@
 package com.flightontrack.flight;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
 
+import com.flightontrack.R;
 import com.flightontrack.ui.MainActivity;
 
 //import static com.flightontrack.communication.SvcComm.commBatchSize;
@@ -75,6 +79,13 @@ public class Session implements EventBus{
 //        eventReaction.put(FLIGHT_REMOTENUMBER_RECEIVED:
 
 
+    }
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctxApp.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        Boolean isNetworkAvailable = activeNetworkInfo != null&&activeNetworkInfo.isConnected();
+        if (!isNetworkAvailable) Toast.makeText(mainactivityInstance, R.string.toast_noconnectivity, Toast.LENGTH_SHORT).show();
+        return isNetworkAvailable ;
     }
     void addLocToRequestList(EntityLocation l){
         if (locRequestList.containsKey((int) l.itemId)) return;
@@ -162,7 +173,7 @@ public class Session implements EventBus{
                 if(eventMessage.eventMessageValueAlertResponse== ALERT_RESPONSE.POS) mainactivityInstance.finishActivity();
                 break;
             case SEND_CACHED_LOCATIONS:
-                    if (Util.isNetworkAvailable()) {
+                    if (isNetworkAvailable()) {
                         startLocationRequest();
                     } else {
                         new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't send location", 'd'));
@@ -175,7 +186,7 @@ public class Session implements EventBus{
 
                 for (String flightNumTemp:sqlHelper.getTempFlightList()){
                     new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
-                    if (Util.isNetworkAvailable()) new FlightOffline(flightNumTemp).set_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).set_flightState(FLIGHT_STATE.GETTINGFLIGHT);
                     else {
                         new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
                         EventBus.distribute(new EventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
@@ -199,7 +210,7 @@ public class Session implements EventBus{
     }
 
     void postLocation(int k, EntityLocation loc){
-        if (Util.isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             try (
                     EntityRequestPostLocation entityRequestPostLocation = new EntityRequestPostLocation(loc);
                     HttpJsonClient client= new HttpJsonClient(entityRequestPostLocation)

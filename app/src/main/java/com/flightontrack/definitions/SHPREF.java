@@ -10,4 +10,9 @@ public final class SHPREF {
 
     public static final String PILOTUSERNAME    = "pilotUserName";
 
+
+    public static final String BATTERYLEVEL = "batteryLevel";
+    public static final String CLOUDPSW = "cloudpsw";
+
+
 }
