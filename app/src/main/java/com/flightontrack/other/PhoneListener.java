@@ -4,10 +4,14 @@ import android.content.Context;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.shared.Props;
 import com.flightontrack.shared.Util;
+
+import static com.flightontrack.definitions.SHPREF.*;
+import static com.flightontrack.shared.Props.editor;
 
 public class PhoneListener extends PhoneStateListener
 {
@@ -25,25 +29,11 @@ public class PhoneListener extends PhoneStateListener
         enableSignalStrengthListen(false);
 
         if (signalStrength.isGsm()) {
-            Util.setSignalStregth("gsmsignalstrength", signalStrength.getGsmSignalStrength());
-//            Log.i(TAG, "onSignalStrengthsChanged: getGsmBitErrorRate "
-//                    + signalStrength.getGsmBitErrorRate());
-//            Log.i(TAG, "onSignalStrengthsChanged: getGsmSignalStrength "
-//                    + signalStrength.getGsmSignalStrength());
+            setSignalStregth(GSMSIGNALSTRENGTH, signalStrength.getGsmSignalStrength());
         } else if (signalStrength.getCdmaDbm() > 0) {
-            Util.setSignalStregth("cdmasignalstrength", signalStrength.getCdmaDbm());
-//            Log.i(TAG, "onSignalStrengthsChanged: getCdmaDbm "
-//                    + signalStrength.getCdmaDbm());
-//            Log.i(TAG, "onSignalStrengthsChanged: getCdmaEcio "
-//                    + signalStrength.getCdmaEcio());
+            setSignalStregth(CDMASIGNALSTRENGTH, signalStrength.getCdmaDbm());
         } else {
-            Util.setSignalStregth("cdmasignalstrength", signalStrength.getEvdoDbm());
-//            Log.i(TAG, "onSignalStrengthsChanged: getEvdoDbm "
-//                    + signalStrength.getEvdoDbm());
-//            Log.i(TAG, "onSignalStrengthsChanged: getEvdoEcio "
-//                    + signalStrength.getEvdoEcio());
-//            Log.i(TAG, "onSignalStrengthsChanged: getEvdoSnr "
-//                    + signalStrength.getEvdoSnr());
+            setSignalStregth(CDMASIGNALSTRENGTH, signalStrength.getEvdoDbm());
         }
     }
 
@@ -55,6 +45,14 @@ public class PhoneListener extends PhoneStateListener
             ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(SvcLocationClock.phStateListener, PhoneStateListener.LISTEN_NONE);
         }
 
+    }
+
+    public static void setSignalStregth(String name, int value) {
+        try {
+            editor.putInt(name, value).commit();
+        }
+        catch (Exception e) {
+            Log.e(TAG,"!!!!!!!!!!!!!!"+e.getMessage());}
     }
 
 }

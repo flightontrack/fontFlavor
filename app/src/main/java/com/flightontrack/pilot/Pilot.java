@@ -1,15 +1,31 @@
 package com.flightontrack.pilot;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.flightontrack.R;
+import com.flightontrack.communication.HttpJsonClient;
+import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.entities.EntityProgressBarGetPsw;
+import com.flightontrack.entities.EntityRequestGetPsw;
+import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.shared.Props;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-import static com.flightontrack.definitions.SHPREF.PILOTUSERNAME;
+import org.json.JSONObject;
 
+import cz.msebera.android.httpclient.Header;
+
+import static com.flightontrack.definitions.SHPREF.*;
+import static com.flightontrack.shared.Props.*;
 /**
  * Created by hotvk on 5/15/2017.
  */
 
 public class Pilot extends MyPhone {
-
+    private static final String TAG = "Pilot";
     static String userId = null;
     static String userName = null;
 
@@ -41,5 +57,60 @@ public class Pilot extends MyPhone {
         userName = myPhoneId.substring(0,3)+deviceBrand.substring(0,deviceBrandLength).toUpperCase()+ myPhoneId.substring(3+deviceBrandLength);
         //String r = sharedPreferences.getString(PILOTUSERNAME, userName);
         return Props.sharedPreferences.getString(PILOTUSERNAME, userName);
+    }
+
+    public static void setCloudPsw(String psw) {
+        editor.putString(CLOUDPSW, psw).commit();
+        //SimpleSettingsActivity.txtPsw.setText(psw);
+    }
+
+    public static void getCloudPsw(View view){
+        try(
+                FontLogAsync mylog = new FontLogAsync();
+                EntityProgressBarGetPsw progressBar = new EntityProgressBarGetPsw(view.getContext());
+                HttpJsonClient client = new HttpJsonClient(new EntityRequestGetPsw())
+        )
+        {
+            progressBar.show();
+            client.post(new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int code, Header[] headers, JSONObject jsonObject) {
+                                //progressBar.dismiss();
+                                mylog.execute(new EntityLogMessage(TAG, "getCloudPsw OnSuccess", 'd'));
+                                ResponseJsonObj response = new ResponseJsonObj(jsonObject);
+                                if (response.responsePsw!=null) {
+                                    new FontLogAsync().execute(new EntityLogMessage(TAG, "ap=" + response.responsePsw, 'd'));
+                                    setCloudPsw(response.responsePsw);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+                                mylog.execute(new EntityLogMessage(TAG, "getCloudPsw onFailure:", 'd'));
+                                //progressBar.dismiss();
+                                Toast.makeText(mainactivityInstance, R.string.reachability_error, Toast.LENGTH_LONG).show();
+                                //setPsw("FailedToGet");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String s, Throwable e) {
+                                Log.i(TAG, "onFailure: " + e.getMessage());
+                                mylog.execute(new EntityLogMessage(TAG, "getCloudPsw onFailure:", 'd'));
+                                Toast.makeText(mainactivityInstance, R.string.reachability_error, Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFinish(){
+                                progressBar.dismiss();
+                            }
+                        }
+            );
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    public static String getPsw() {
+        return sharedPreferences.getString(CLOUDPSW,null);
     }
 }

@@ -528,7 +528,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             new ShowAlertClass(this).showGPSDisabledAlertToUser();
             return false;
         }
-        if (!Util.isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             new ShowAlertClass(this).showNetworkDisabledAlertToUser();
             return false;
         }

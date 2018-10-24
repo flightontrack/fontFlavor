@@ -14,6 +14,7 @@ import com.loopj.android.http.RequestParams;
 
 import static com.flightontrack.shared.Util.*;
 import static com.flightontrack.shared.Props.*;
+import static com.flightontrack.communication.URLs.*;
 
 public class HttpJsonClient  extends AsyncHttpClient implements AutoCloseable{
     static final String TAG = "HttpJsonClient";

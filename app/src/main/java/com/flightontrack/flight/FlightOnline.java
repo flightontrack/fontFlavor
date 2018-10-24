@@ -36,6 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import other.Talk;
 
 import static com.flightontrack.flight.FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
+import static com.flightontrack.flight.Session.isNetworkAvailable;
 import static com.flightontrack.shared.Const.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
@@ -368,7 +369,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             //                    new FontLogAsync().execute(new LogMessage(TAG, "StackTrace: "+s,'d');
             saveLocCheckSpeed(eventMessage.eventMessageValueLocation);
         }
-        if (Util.isNetworkAvailable() && !isGettingFlight) {
+        if (isNetworkAvailable() && !isGettingFlight) {
             if (flightNumStatus == FLIGHTNUMBER_SRC.LOCAL) getNewFlightID();
         }
         if (flightState == FLIGHT_STATE.STOPPED && sqlHelper.getLocationFlightCount(flightNumber) == 0) {

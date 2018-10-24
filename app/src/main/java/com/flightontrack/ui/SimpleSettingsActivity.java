@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,26 +20,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flightontrack.R;
+import com.flightontrack.communication.HttpJsonClient;
+import com.flightontrack.communication.ResponseJsonObj;
 import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.entities.EntityProgressBarGetPsw;
+import com.flightontrack.entities.EntityRequestGetPsw;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.pilot.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Util;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 import shared.AppConfig;
 import ui.SimpleSettingsActivityExt;
 
 import static com.flightontrack.shared.Const.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
 import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
+import static com.flightontrack.shared.Props.mainactivityInstance;
 import static shared.AppConfig.pIsRelease;
 
 //import static com.flightontrack.shared.Props.AppConfig.pIsRelease;
 
 public class SimpleSettingsActivity extends Activity implements AdapterView.OnItemSelectedListener,EventBus {
 
-    final String TAG = "SimpleSettingsActivityExt";
+    final static String TAG = "SimpleSettingsActivityExt";
     TextView txtUser;
     public static TextView txtPsw;
     public static TextView txtBuild;
@@ -66,7 +76,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
             SessionProp.resetSessionProp();
             updateUI();
             //spinnerUrls.setSelection(SessionProp.pSpinnerUrlsPos);
-            Util.setPsw(null);
+            Pilot.setCloudPsw(null);
             getPswButton.setText(R.string.label_btnpsw_get);
             //MainActivity.spinnerMinSpeed.setSelection(Util.getSpinnerSpeedPos());
         });
@@ -79,8 +89,8 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         });
         getPswButton = findViewById(R.id.btnGetPsw);
         getPswButton.setOnClickListener(view -> {
-            if (Util.getPsw()==null) {
-                Util.setCloudPsw(view);
+            if (Pilot.getPsw()==null) {
+                Pilot.getCloudPsw(view);
             }
             txtPsw.setVisibility(View.VISIBLE);
         });
@@ -117,10 +127,10 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         txtUser= findViewById((R.id.txtWebsiteUser));
         txtUser.setText(Pilot.getUserID());
         txtPsw= findViewById((R.id.txtWebsitePsw));
-        txtPsw.setText(Util.getPsw());
+        txtPsw.setText(Pilot.getPsw());
         //chBoxIsDebug.setChecked(Util.getIsDebug());
         spinnerUrls = findViewById(R.id.spinnerUrlId);
-        ArrayAdapter<CharSequence> adapterUrl = ArrayAdapter.createFromResource(this,pIsRelease?R.array.url_array_release:R.array.url_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterUrl = ArrayAdapter.createFromResource(this,pIsRelease?R.array.url_array_release:R.array.posturl_array, android.R.layout.simple_spinner_item);
         adapterUrl.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerUrls.setAdapter(adapterUrl);
         spinnerUrls.setOnItemSelectedListener(this);
@@ -144,6 +154,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         updateUI();
 
     }
+
     @Override
     public void onResume() {
         super.onResume();

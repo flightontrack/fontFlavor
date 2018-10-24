@@ -14,5 +14,8 @@ public final class SHPREF {
     public static final String BATTERYLEVEL = "batteryLevel";
     public static final String CLOUDPSW = "cloudpsw";
 
+    public static final String GSMSIGNALSTRENGTH = "gsmsignalstrength";
+    public static final String CDMASIGNALSTRENGTH = "cdmasignalstrength";
+
 
 }
