@@ -15,10 +15,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 import java.util.TimeZone;
 
-import static com.flightontrack.pilot.MyPhone.myPhoneId;
+import static com.flightontrack.objects.MyPhone.myPhoneId;
 import static com.flightontrack.shared.Const.GLOBALTAG;
 
 
@@ -124,7 +123,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 }

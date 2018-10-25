@@ -6,16 +6,16 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.objects.Aircraft;
 import com.flightontrack.entities.EntityRequestCloseFlight;
 import com.flightontrack.entities.EntityRequestNewFlightOffline;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
-import com.flightontrack.pilot.MyPhone;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.MyPhone;
+import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Props;
-import com.flightontrack.shared.Util;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
@@ -100,21 +100,24 @@ public class FlightOffline implements EventBus{
 
     void getNewFlightID() {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-getNewFlightID: " +flightNumber, 'd'));
-        EntityRequestNewFlightOffline entityRequestNewFlightOffline = new EntityRequestNewFlightOffline()
+        try (
+                Aircraft aircraft = new Aircraft();
+                EntityRequestNewFlightOffline entityRequestNewFlightOffline = new EntityRequestNewFlightOffline()
             .set("phonenumber", MyPhone.myPhoneId)
             .set("username", Pilot.getPilotUserName())
             .set("userid", Pilot.getUserID())
             .set("deviceid", MyPhone.myDeviceId)
             .set("aid", MyPhone.getMyAndroidID())
             .set("versioncode", String.valueOf(MyPhone.getVersionCode()))
-            .set("AcftNum", Util.getAcftNum(4))
-            .set("AcftTagId", Util.getAcftNum(5))
-            .set("AcftName", Util.getAcftNum(6))
+            .set("AcftNum", aircraft.AcftNum)
+            .set("AcftTagId", aircraft.AcftTagId)
+            .set("AcftName", aircraft.AcftName)
             .set("isFlyingPattern", String.valueOf(Props.SessionProp.pIsMultileg))
             .set("freq", Integer.toString(SessionProp.pIntervalLocationUpdateSec))
             .set("speed_thresh", String.valueOf(Math.round(SessionProp.pSpinnerMinSpeed)))
             .set("isdebug", String.valueOf(SessionProp.pIsDebug));
-        try (HttpJsonClient client = new HttpJsonClient(entityRequestNewFlightOffline)) {
+                HttpJsonClient client = new HttpJsonClient(entityRequestNewFlightOffline)
+        ) {
             client.post(new JsonHttpResponseHandler() {
 
             @Override

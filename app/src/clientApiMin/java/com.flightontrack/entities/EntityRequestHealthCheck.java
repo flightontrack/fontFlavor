@@ -3,7 +3,7 @@ package entities;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.pilot.MyPhone;
+import com.flightontrack.objects.MyPhone;
 
 import receiver.ReceiverBatteryLevel;
 import com.flightontrack.shared.Props;

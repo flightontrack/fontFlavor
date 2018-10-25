@@ -8,14 +8,15 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.objects.Aircraft;
 import com.flightontrack.entities.EntityFlightTimeMessage;
 import com.flightontrack.entities.EntityRequestNewFlight;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.mysql.DBSchema;
-import com.flightontrack.pilot.MyPhone;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.MyPhone;
+import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.GetTime;
@@ -122,24 +123,25 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
 
     void getNewFlightID() {
         isGettingFlight = true;
-            EntityRequestNewFlight entityRequestNewFlight = new EntityRequestNewFlight()
+        try(
+                Aircraft aircraft = new Aircraft();
+                EntityRequestNewFlight entityRequestNewFlight = new EntityRequestNewFlight()
             .set("phonenumber", MyPhone.myPhoneId)
             .set("username", Pilot.getPilotUserName())
             .set("userid", Pilot.getUserID())
             .set("deviceid", MyPhone.myDeviceId)
             .set("aid", MyPhone.getMyAndroidID())
             .set("versioncode", String.valueOf(MyPhone.getVersionCode()))
-            .set("AcftNum", Util.getAcftNum(4))
-            .set("AcftTagId", Util.getAcftNum(5))
-            .set("AcftName", Util.getAcftNum(6))
+            .set("AcftNum", aircraft.AcftNum)
+            .set("AcftTagId", aircraft.AcftTagId)
+            .set("AcftName", aircraft.AcftName)
             .set("isFlyingPattern", String.valueOf(Props.SessionProp.pIsMultileg))
             .set("freq", Integer.toString(SessionProp.pIntervalLocationUpdateSec))
             .set("speed_thresh", String.valueOf(Math.round(SessionProp.pSpinnerMinSpeed)))
             .set("isdebug", String.valueOf(SessionProp.pIsDebug))
             .set("routeid", route.routeNumber.equals(ROUTE_NUMBER_DEFAULT)?null:route.routeNumber);
-            try(
-                    HttpJsonClient client = new HttpJsonClient(entityRequestNewFlight)
-                    //FontLogAsync myLog = new FontLogAsync()
+
+                HttpJsonClient client = new HttpJsonClient(entityRequestNewFlight)
             ) {
                 client.post(new JsonHttpResponseHandler() {
 
@@ -246,7 +248,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             values.put(DBSchema.COLUMN_NAME_COL8, Float.toString(location.getAccuracy())); //accuracy
             values.put(DBSchema.COLUMN_NAME_COL9, Math.round(location.getAltitude())); //extrainfo
             values.put(DBSchema.LOC_wpntnum, p); //wpntnum
-            values.put(DBSchema.COLUMN_NAME_COL11, Integer.toString(Util.getSignalStregth())); //gsmsignal
+            values.put(DBSchema.COLUMN_NAME_COL11, Integer.toString(Pilot.getSignalStregth())); //gsmsignal
             values.put(DBSchema.LOC_date, URLEncoder.encode(getDateTimeNow(), "UTF-8")); //date
             values.put(DBSchema.LOC_is_elevetion_check, iselevecheck);
             long r = sqlHelper.rowLocationInsert(values);

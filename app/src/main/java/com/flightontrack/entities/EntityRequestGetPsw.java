@@ -1,8 +1,8 @@
 package com.flightontrack.entities;
 
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.pilot.MyPhone;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.MyPhone;
+import com.flightontrack.objects.Pilot;
 import com.loopj.android.http.RequestParams;
 import static com.flightontrack.shared.Const.REQUEST_PSW;
 
@@ -19,7 +19,7 @@ public class EntityRequestGetPsw extends RequestParams implements AutoCloseable{
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 }

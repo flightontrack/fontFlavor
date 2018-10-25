@@ -1,16 +1,26 @@
-package com.flightontrack.pilot;
+package com.flightontrack.objects;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.shared.Props;
 
-public class MyPhone {
+import static com.flightontrack.definitions.SHPREF.CDMASIGNALSTRENGTH;
+import static com.flightontrack.definitions.SHPREF.GSMSIGNALSTRENGTH;
+import static com.flightontrack.shared.Props.editor;
+import static com.flightontrack.shared.Props.sharedPreferences;
 
-    //static Context  ctx;
+public class MyPhone extends PhoneStateListener {
+
+    private static final String TAG = " MyPhone";
+
     public static int       versionCode;
     static String           deviceMmnufacturer = "unknown";
     static String           deviceBrand         = "unknown";
@@ -25,11 +35,11 @@ public class MyPhone {
     public static String phoneNumber = null;
 
     public MyPhone() {
-        getBuldProp();
+        getBuildProp();
         getMyPhoneID();
     }
 
-    static void getBuldProp(){
+    static void getBuildProp(){
         deviceMmnufacturer = Build.MANUFACTURER;
         deviceBrand        = Build.BRAND;
         deviceProduct      = Build.PRODUCT;
@@ -64,4 +74,43 @@ public class MyPhone {
     public String   getMyAndroidVersion() {
         return  codeName +' ' +codeRelease+' ' +codeSDK;
     }
+
+
+    @Override
+    public void onSignalStrengthsChanged(SignalStrength signalStrength)
+    {
+        super.onSignalStrengthsChanged(signalStrength);
+        //Util.appendLog(TAG + " onSignalStrengthsChanged: " + signalStrength,'d');
+        //enableSignalStrengthListen(false);
+
+        if (signalStrength.isGsm()) {
+            setSignalStregth(GSMSIGNALSTRENGTH, signalStrength.getGsmSignalStrength());
+        } else if (signalStrength.getCdmaDbm() > 0) {
+            setSignalStregth(CDMASIGNALSTRENGTH, signalStrength.getCdmaDbm());
+        } else {
+            setSignalStregth(CDMASIGNALSTRENGTH, signalStrength.getEvdoDbm());
+        }
+    }
+
+//    public  void enableSignalStrengthListen(boolean start){
+//        if (Props.ctxApp==null) return;
+//        if (start) {
+//            ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(this, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+//        } else {
+//            ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(this, PhoneStateListener.LISTEN_NONE);
+//        }
+//    }
+
+    public static void setSignalStregth(String name, int value) {
+        try {
+            editor.putInt(name, value).commit();
+        }
+        catch (Exception e) {
+            Log.e(TAG,"!!!!!!!!!!!!!!"+e.getMessage());}
+    }
+
+    public static int getSignalStregth() {
+        return sharedPreferences.getInt(GSMSIGNALSTRENGTH, -1);
+    }
+
 }

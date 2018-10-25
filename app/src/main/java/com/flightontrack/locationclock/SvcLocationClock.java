@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
-import com.flightontrack.other.PhoneListener;
+import com.flightontrack.objects.MyPhone;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.GetTime;
@@ -31,7 +31,6 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     static final String TAG = "SvcLocationClock";
     //private static Context ctx;
     static LocationManager locationManager;
-    public static PhoneListener phStateListener;
     public static SvcLocationClock instanceSvcLocationClock = null;
     static boolean isBound = false;
     static int tryCounter = 0;
@@ -40,6 +39,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     static int _intervalClockSecCurrent = MIN_TIME_BW_GPS_UPDATES_SEC;
     public static int intervalClockSecPrev = _intervalClockSecCurrent;
     public static long  alarmNextTimeUTCmsec;
+    MyPhone phStateListener;
 
     public SvcLocationClock() {
     }
@@ -144,6 +144,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        phStateListener = new MyPhone();
         setSignalStrengthListener(true);
         _mode = MODE.CLOCK_LOCATION;
         requestLocationUpdate((int)MIN_TIME_BW_GPS_UPDATES/1000, DISTANCE_CHANGE_FOR_UPDATES_MIN);
@@ -169,11 +170,12 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
 
     }
 
-    public static void setSignalStrengthListener(Boolean start) {
+    public  void setSignalStrengthListener(boolean start){
+        if (Props.ctxApp==null) return;
         if (start) {
-            phStateListener = new PhoneListener();
-            ((TelephonyManager) ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(phStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+            ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(phStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
         } else {
+            ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).listen(phStateListener, PhoneStateListener.LISTEN_NONE);
         }
     }
 
@@ -223,7 +225,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     void setToNull(){
         instanceSvcLocationClock =null;
         //ctx=null;
-        phStateListener=null;
+        //phStateListener=null;
     }
 
     void setClockNextTimeLocalMsec(int intervalSec) {

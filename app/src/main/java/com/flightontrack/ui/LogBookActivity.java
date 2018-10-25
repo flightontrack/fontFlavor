@@ -12,8 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.flightontrack.R;
-import com.flightontrack.shared.Util;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.Pilot;
 import static com.flightontrack.communication.URLs.*;
 
 import java.util.Arrays;

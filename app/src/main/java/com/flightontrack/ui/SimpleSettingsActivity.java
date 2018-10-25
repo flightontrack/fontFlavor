@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,28 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.communication.HttpJsonClient;
-import com.flightontrack.communication.ResponseJsonObj;
 import com.flightontrack.entities.EntityLogMessage;
-import com.flightontrack.entities.EntityProgressBarGetPsw;
-import com.flightontrack.entities.EntityRequestGetPsw;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
-import com.flightontrack.shared.Util;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import shared.AppConfig;
 import ui.SimpleSettingsActivityExt;
 
 import static com.flightontrack.shared.Const.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
 import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
-import static com.flightontrack.shared.Props.mainactivityInstance;
 import static shared.AppConfig.pIsRelease;
 
 //import static com.flightontrack.shared.Props.AppConfig.pIsRelease;

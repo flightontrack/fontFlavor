@@ -21,12 +21,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.flightontrack.R;
-import com.flightontrack.entities.EntityAcft;
+import com.flightontrack.objects.Aircraft;
 import com.flightontrack.entities.EntityAcftAutoCompleteArray;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.shared.Props;
-import com.flightontrack.pilot.Pilot;
+import com.flightontrack.objects.Pilot;
 
 import static com.flightontrack.definitions.SHPREF.*;
 import static shared.AppConfig.pIsNFCcapable;
@@ -48,7 +48,7 @@ public class AircraftActivity extends Activity {
     Button clearButton;
     Switch nfcSwitch;
     EntityAcftAutoCompleteArray entityAcftAutoCompleteArray;
-    EntityAcft entityAcft;
+    Aircraft aircraft;
     //ShowAlertClass showAlertClass;
     protected static NfcAdapter nfcAdapter;
     IntentFilter tagDetected;
@@ -91,9 +91,9 @@ public class AircraftActivity extends Activity {
             nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         }
 
-        entityAcft = new EntityAcft();
-        txtAcftName.setText(entityAcft.AcftName);
-        txtAutoCompleteAcftNum.setText(entityAcft.AcftNum);
+        aircraft = new Aircraft();
+        txtAcftName.setText(aircraft.AcftName);
+        txtAutoCompleteAcftNum.setText(aircraft.AcftNum);
 
         entityAcftAutoCompleteArray = new EntityAcftAutoCompleteArray();
         arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, entityAcftAutoCompleteArray.acftNumArray);
@@ -116,9 +116,9 @@ public class AircraftActivity extends Activity {
     void init_listeners() {
 
         doneButton.setOnClickListener(view -> {
-            entityAcft.AcftNum = txtAutoCompleteAcftNum.getText().toString();
-            entityAcft.AcftName = txtAcftName.getText().toString();
-            entityAcft.save();
+            aircraft.AcftNum = txtAutoCompleteAcftNum.getText().toString();
+            aircraft.AcftName = txtAcftName.getText().toString();
+            aircraft.save();
 
             Pilot.setPilotUserName(txtUserName.getText().toString());
             finish();
@@ -235,13 +235,13 @@ public class AircraftActivity extends Activity {
             try {
                 JSONObject j = new JSONObject(new String(payload));
                 new FontLogAsync().execute(new EntityLogMessage(TAG, j.toString(), 'd'));
-                entityAcft = new EntityAcft(
+                aircraft = new Aircraft(
                     j.getString(ACFTREGNUM),
                     null,
                     j.getString(ACFTTAGID)
                 );
-                txtAutoCompleteAcftNum.setText(entityAcft.AcftNum);
-                txtAcftName.setText(entityAcft.AcftName);
+                txtAutoCompleteAcftNum.setText(aircraft.AcftNum);
+                txtAcftName.setText(aircraft.AcftName);
             } catch (JSONException e) {
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "onNewIntent() Couldn't create json from NFC: " + e.getMessage(), 'e',e));
             }

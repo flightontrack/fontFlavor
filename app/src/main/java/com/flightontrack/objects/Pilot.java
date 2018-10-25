@@ -1,4 +1,4 @@
-package com.flightontrack.pilot;
+package com.flightontrack.objects;
 
 import android.util.Log;
 import android.view.View;
@@ -51,7 +51,7 @@ public class Pilot extends MyPhone {
     }
 
     public static String getPilotUserName() {
-        getBuldProp();
+        getBuildProp();
         getMyPhoneID();
         int deviceBrandLength = deviceBrand.length()>3?3:deviceBrand.length();
         userName = myPhoneId.substring(0,3)+deviceBrand.substring(0,deviceBrandLength).toUpperCase()+ myPhoneId.substring(3+deviceBrandLength);

@@ -37,13 +37,13 @@ public class Util {
 //        //String url = ctxApp.getString(R.string.app_webserver_azure);
 //        return "http://"+url[SessionProp.pSpinnerUrlsPos].trim();
 //    }
-//    public static int getWayPointLimit() {
-//        return sharedPreferences.getInt("wayPointLimit", WAY_POINT_HARD_LIMIT);
-//    }
-//
-//    public static void setWayPointLimit(int wp_limit) {
-//        editor.putInt("wayPointLimit", WAY_POINT_HARD_LIMIT > wp_limit ? WAY_POINT_HARD_LIMIT : wp_limit).commit();
-//    }
+    public static int getWayPointLimit() {
+        return sharedPreferences.getInt("wayPointLimit", WAY_POINT_HARD_LIMIT);
+    }
+
+    public static void setWayPointLimit(int wp_limit) {
+        editor.putInt("wayPointLimit", WAY_POINT_HARD_LIMIT > wp_limit ? WAY_POINT_HARD_LIMIT : wp_limit).commit();
+    }
 //
 //    public static String getAcftNum(int a) {
 //        String acft;
