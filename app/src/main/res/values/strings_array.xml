@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="intervalname_array">
+        <item>3 sec</item>
+        <item>5 sec</item>
+        <item>10 sec</item>
+        <item>15 sec</item>
+        <item>20 sec</item>
+        <item>30 sec</item>
+        <item>1 min</item>
+        <item>2 min</item>
+        <item>5 min</item>
+    </string-array>
+
+    <string-array name="speed_array">
+        <item>40</item>
+        <item>20</item>
+        <item>10</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="textto_array">
+        <item>9784295693</item>
+        <item>5083448930</item>
+        <item>5088687885</item>
+    </string-array>
+
+    <string-array name="posturl_array">
+        <item>postnget.azurewebsites.net</item>
+        <item>postnget-test.azurewebsites.net</item>
+        <item>192.168.1.10/PostngetWebApi</item>
+        <item>96.230.122.177/PostngetWebApi</item>
+        <item>10.0.2.2/PostngetWebApi</item>
+    </string-array>
+
+    <string-array name="webserverurl_array">
+        <item>flightontrack.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+        <item>flightontrack-test.azurewebsites.net</item>
+    </string-array>
+
+    <string-array name="url_array_release">
+        <item>postnget.azurewebsites.net</item>
+    </string-array>
+
+</resources>

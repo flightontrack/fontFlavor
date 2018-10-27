@@ -46,7 +46,6 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
     Button sendCacheButton;
     Button getPswButton;
     Spinner spinnerUrls;
-    //Spinner spinnerTextTo;
     CheckBox chBoxIsDebug;
     CheckBox chBoxIsRoad;
     ProgressDialog progressBar;
@@ -140,7 +139,6 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         });
         new SimpleSettingsActivityExt().init(this);
         updateUI();
-
     }
 
     @Override
