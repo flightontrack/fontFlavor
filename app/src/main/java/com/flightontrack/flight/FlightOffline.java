@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.shared.Props.*;
 

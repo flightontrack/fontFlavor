@@ -23,7 +23,7 @@ import com.flightontrack.shared.GetTime;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.shared.Props;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.shared.Props.ctxApp;
 

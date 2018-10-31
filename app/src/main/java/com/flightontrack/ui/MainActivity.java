@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,7 @@ import ui.MainActivityExt;
 //import SimpleSettingsActivity;
 //import static shared.AppConfig.*;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.flight.Session.*;
@@ -53,20 +52,16 @@ import static com.flightontrack.flight.Session.*;
 public class MainActivity extends AppCompatActivity implements EventBus {
     static final String TAG = "MainActivity";
 
-    public static boolean isToDestroy = true;
-    public TextView txtAcftNum;
-    public Spinner spinnerUpdFreq;
-    public Spinner spinnerMinSpeed;
-    public Button trackingButton;
-    TextView txtUserName;
-    TextView txtCached;
-    CheckBox chBoxIsMultiLeg;
-    Toolbar toolbarTop;
-    Toolbar toolbarBottom;
-    ActionMenuView amvMenu;
-    View cardLayout1;
-//    ReceiverHealthCheckAlarm alarmReceiver;
-//    ReceiverBatteryLevel receiverBatteryLevel;
+    static boolean  isToDestroy = true;
+    TextView        txtAcftNum;
+    Button          trackingButton;
+    TextView        txtUserName;
+    TextView        txtCached;
+    CheckBox        chBoxIsMultiLeg;
+    ActionMenuView  bottomMenu;
+    View            cardLayout1;
+    public Spinner  spinnerUpdFreq;
+    public Spinner  spinnerMinSpeed;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -89,45 +84,42 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         try {
             //Log.d(TAG, "MainActivityThread:" + Thread.currentThread().getId());
             initProp(getApplicationContext(), this);
-
             setContentView(R.layout.activity_main);
+
+            txtAcftNum      = findViewById(R.id.txtAcftNum);
+            txtUserName     = findViewById(R.id.txtUserName);
+            spinnerUpdFreq  = findViewById(R.id.spinnerId);
+            spinnerMinSpeed = findViewById(R.id.spinnerMinSpeedId);
+            trackingButton  = findViewById(R.id.btnTracking);
+            txtCached       = findViewById((R.id.txtCached));
+
+            chBoxIsMultiLeg = findViewById(R.id.patternCheckBox);
+            chBoxIsMultiLeg.setOnCheckedChangeListener((compoundButton, b) -> {
+                EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
+            });
+
+            //toolbarTop = findViewById(R.id.toolbar_top);
+            setSupportActionBar(findViewById(R.id.toolbar_top));
+            getSupportActionBar().setTitle(getString(R.string.app_label));
+
             AppConfig.pMainActivityLayout = findViewById(R.id.TagView).getTag().toString();
             if (AppConfig.pMainActivityLayout.equals("full")) {
-                //AppConfig.pIsOnRebootCheckBoxEnabled = true;
-                toolbarBottom = findViewById(R.id.toolbar_bottom);
-                amvMenu = toolbarBottom.findViewById(R.id.amvMenu);
-                amvMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+                bottomMenu = findViewById(R.id.bottomMenu);
+                bottomMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         return onOptionsItemSelected(menuItem);
                     }
                 });
-                setSupportActionBar(toolbarBottom);
             }
+
             cardLayout1 = findViewById(R.id.cardLayoutId1);
-            //cardLayout1.setOnClickListener(new View.OnClickListener() {
             cardLayout1.setOnClickListener(v-> {
-                //@Override
-                //public void onClick(View view) {
-                //new FontLogAsync().execute(new LogMessage(TAG, "Method1", 'd');
                 Intent intent = new Intent(ctxApp, AircraftActivity.class);
                 startActivity(intent);
-                //}
-
             });
-            toolbarTop = findViewById(R.id.toolbar_top);
-            setSupportActionBar(toolbarTop);
-            //getSupportActionBar().setTitle(getString(R.string.app_label) + " " + AppConfig.pAppRelease + AppConfig.pAppReleaseSuffix);
-            getSupportActionBar().setTitle(getString(R.string.app_label));
-            txtAcftNum = findViewById(R.id.txtAcftNum);
-            txtUserName = findViewById(R.id.txtUserName);
-            chBoxIsMultiLeg = findViewById(R.id.patternCheckBox);
-            spinnerUpdFreq = findViewById(R.id.spinnerId);
-            spinnerMinSpeed = findViewById(R.id.spinnerMinSpeedId);
-            trackingButton = findViewById(R.id.btnTracking);
-            txtCached = findViewById((R.id.txtCached));
 
-            AppConfig.get();
+            //AppConfig.get();
             AppConfig.pIsNFCcapable = AppConfig.pIsNFCEnabled && isNFCcapable();
             SessionProp.get();
             if (!SessionProp.pIsActivityFinished) {
@@ -136,30 +128,15 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                 SessionProp.get();
             }
 
-
-//            if (!getApplicationContext().toString().equals(Util.getCurrAppContext())) {
-//                new FontLogAsync().execute(new LogMessage(TAG, "New App Context", 'd');
-//                Util.setCurrAppContext(ctxApp.toString());
-//                RouteBase.activeRoute = null;
-//            }
             new AppConfig(this);
-//            if (!AppConfig.pIsAppTypePublic) {
-//                //IntentFilter filter = new IntentFilter(HEALTHCHECK_BROADCAST_RECEIVER_FILTER);
-//                alarmReceiver = new ReceiverHealthCheckAlarm();
-//                registerReceiver(alarmReceiver, new IntentFilter(HEALTHCHECK_BROADCAST_RECEIVER_FILTER));
-//                AlarmManagerCtrl.initAlarm();
-//                AlarmManagerCtrl.setAlarm();
-//                receiverBatteryLevel = new ReceiverBatteryLevel();
-//                registerReceiver(receiverBatteryLevel, new IntentFilter("android.intent.action.BATTERY_LOW"));
-//                SessionProp.pIsStartedOnReboot=true;
-//            }
             updFreqSpinnerSetup();
             minSpeedSpinnerSetup();
             SessionProp.set_isMultileg(true);
             SessionProp.save();
-            //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+
         } catch (Exception e) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "EXCEPTION!!!!: " + e.toString(), 'e'));
+            finishActivity();
         }
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -172,13 +149,12 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         super.onResume();
 
         SessionProp.get();
-        //Util.setAcftNum(Util.getAcftNum(4));
-        //txtAcftNum.setText(Util.getAcftNum(4));
         txtAcftNum.setText(new Aircraft().AcftNum);
         BigButton.setTrackingButton(trackingButtonState);
         txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
 
-        init_listeners();
+        //init_listeners();
+
         int permissionCheckPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int permissionCheckLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheckLocation == PackageManager.PERMISSION_DENIED) {
@@ -191,16 +167,9 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             startActivityForResult(intent, START_ACTIVITY_RESULT);
         } else txtUserName.setText(Pilot.getPilotUserName());
 
-        //if (AppConfig.pAutostart) {
-//        if (SessionProp.pIsOnReboot && !SessionProp.pIsStartedOnReboot) {
-//            trackingButton.performClick();
-//            SessionProp.pIsStartedOnReboot=true;
-//            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
-//            //AppConfig.pAutostart = false;
-//        }
+
         if (SessionProp.pIsOnReboot && trackingButtonState==BUTTONREQUEST.BUTTON_STATE_RED) {
             trackingButton.performClick();
-//            SessionProp.pIsStartedOnReboot=true;
 //            new FontLogAsync().execute(new EntityLogMessage(TAG, " : performClick", 'd'));
         }
         //new MainActivityExt().startOnReboot(this);
@@ -210,10 +179,11 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getMenuInflater().inflate(R.menu.menu_top, menu);
         if (AppConfig.pMainActivityLayout.equals("full")) {
-            getMenuInflater().inflate(R.menu.menu_bottom, amvMenu.getMenu());
+            getMenuInflater().inflate(R.menu.menu_bottom, bottomMenu.getMenu());
         }
-        toolbarTop.inflateMenu(R.menu.menu_top);
+        //toolbarTop.inflateMenu(R.menu.menu_top);
         return true;
     }
 
@@ -236,14 +206,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             case R.id.action_aircraft:
                 acftActivity();
                 return true;
-//            case R.id.privpolicy:
-//                privacyPolicy();
-//                return true;
-//            case R.id.action_facebook:
-//                if (!(RouteBase.activeFlight == null)) facebActivity();
-//                else
-//                    Toast.makeText(MainActivity.this, getString(R.string.start_flight_first), Toast.LENGTH_LONG).show();
-//                return true;
             default:
                 return (new MainActivityExt().onOptionsItemSelected(item));
                 //return super.onOptionsItemSelected(item);
@@ -324,29 +286,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
     void init_listeners() {
 
-//        trackingButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Util.appendLog(TAG + "trackingButton: onClick",'d');
-//                //if (RouteBase._routeStatus == RSTATUS.PASSIVE) {
-//                switch (trackingButtonState) {
-//                    case BUTTON_STATE_RED:
-//                        //Util.setAcftNum(txtAcftNum.getText().toString());
-//                        //TODO pAutostart  need to be replaced with pIsStartedOnReboot
-//                        //TODO ???? что это
-//                        //if (!AppConfig.pAutostart && !is_services_available()) return;
-//                        if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
-//
-//                            new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
-//                            if (!SessionProp.pIsEmptyAcftOk) return;
-//                        }
-//                        EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
-//                        break;
-//                    default:
-//                        EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
-//                        break;
-//                }
-//            }
 //            //Crashlytics.getInstance().crash(); // Force a crash
 //            //throw new NullPointerException();
 //        });
@@ -550,83 +489,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 //                .build();
 //    }
 
-//    void setTrackingButton(BUTTONREQUEST request) {
-//        //Util.appendLog(TAG+"trackingButtonState request:" +request,'d');
-//        trackingButton.setText(getButtonText(request));
-//        switch (request) {
-//            case BUTTON_STATE_RED:
-//                trackingButton.setBackgroundResource(R.drawable.bttn_status_red);
-//                //trackingButton.setText(setTextRedFlightStopped());
-//                break;
-//            case BUTTON_STATE_YELLOW:
-//                trackingButton.setBackgroundResource(R.drawable.bttn_status_yellow);
-//                break;
-//            case BUTTON_STATE_GREEN:
-//                trackingButton.setBackgroundResource(R.drawable.bttn_status_green);
-//                //trackingButton.setText(setTextGreen());
-//                break;
-//            case BUTTON_STATE_GETFLIGHTID:
-//                trackingButton.setBackgroundResource(R.drawable.bttn_status_red);
-//                //trackingButton.setText(ctxApp.getString(R.string.tracking_gettingflight));
-//                break;
-////            case BUTTON_STATE_STOPPING:
-////                //appendLog(LOGTAG+"BUTTON_STATE_STOPPING");
-////                trackingButton.setBackgroundResource(R.drawable.bttn_status_yellow);
-////                //MainActivity.trackingButton.setText("Flight " + (Flight.get_ActiveFlightID()) + ctx.getString(R.string.tracking_stopping));
-////                break;
-//            default:
-//                trackingButton.setBackgroundResource(R.drawable.bttn_status_red);
-//                // MainActivity.trackingButton.setText("Flight " + (Flight.get_ActiveFlightID()) + ctx.getString(R.string.tracking_is_off));
-//        }
-//        if (request!=BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID)trackingButtonState = request;
-//    }
-
-//    static String setTextGreen() {
-//        return "Flight: " + (RouteBase.activeFlight.flightNumber) + '\n' +
-//                "Point: " + RouteBase.activeFlight._wayPointsCount +
-//                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.flightTimeString + '\n'
-//                + "Alt: " + RouteBase.activeFlight.lastAltitudeFt + " ft";
-//        //return SessionProp.pTextGreen;
-//    }
-
-//    static String setTextRedFlightStopped() {
-//        //String fText = SessionProp.pTextRed;
-//        String fText;
-//        String fTime = "";
-//        String flightN = FLIGHT_NUMBER_DEFAULT;
-//
-//        if (RouteBase.activeRoute == null) {
-//            new FontLogAsync().execute(new EntityLogMessage(TAG, "setTextRedFlightStopped: activeRoute == null", 'd'));
-//            fText = SessionProp.pTrackingButtonText;
-//        } else {
-//            if (RouteBase.activeFlight != null) {
-//                flightN = RouteBase.activeFlight.flightNumber;
-//                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.flightTimeString;
-//            }
-//            fText = "Flight " + flightN + '\n' + "Stopped"; // + '\n';
-//        }
-//        //SessionProp.pTextRed = fText + fTime;
-//        return fText + fTime;
-//    }
-
-//    static String getButtonText(BUTTONREQUEST request) {
-//        switch (request) {
-//            case BUTTON_STATE_RED:
-//                SessionProp.pTrackingButtonText=setTextRedFlightStopped();
-//                break;
-//            case BUTTON_STATE_YELLOW:
-//                SessionProp.pTrackingButtonText="Flight " + (RouteBase.activeFlight.flightNumber) + ctxApp.getString(R.string.tracking_ready_to_takeoff);
-//                break;
-//            case BUTTON_STATE_GREEN:
-//                SessionProp.pTrackingButtonText=setTextGreen();
-//                break;
-//            case BUTTON_STATE_GETFLIGHTID:
-//                SessionProp.pTrackingButtonText=ctxApp.getString(R.string.tracking_gettingflight);
-//                break;
-//        }
-//        return SessionProp.pTrackingButtonText;
-//    }
-
     @Override
     public void eventReceiver(EventMessage eventMessage) {
         EVENT ev = eventMessage.event;
@@ -636,40 +498,17 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             case PROP_CHANGED_MULTILEG:
                 chBoxIsMultiLeg.setChecked(eventMessage.eventMessageValueBool);
                 break;
-//            case FLIGHT_GETNEWFLIGHT_STARTED:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID);
-//                break;
             case SESSION_ONSUCCESS_EXCEPTION:
                 Toast.makeText(mainactivityInstance, R.string.toast_server_error, Toast.LENGTH_LONG).show();
-                //setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
                 break;
-//            case FLIGHT_FLIGHTTIME_STARTED:
-//                //swithch to green
-//                break;
-//            case FLIGHT_STATECHANGEDTO_READYTOSAVE:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_YELLOW);
-//                break;
-//            case CLOCK_MODECLOCK_ONLY:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
-//                break;
-//            case CLOCK_SERVICESTARTED_MODELOCATION:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_YELLOW);
-//                break;
-//            case CLOCK_SERVICESELFSTOPPED:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
-//                break;
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
                 txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
-                //setTrackingButton(BUTTONREQUEST.BUTTON_STATE_GREEN);
                 break;
-//            case FLIGHT_CLOSEFLIGHT_COMPLETED:
-//                /// swithch to red
-//                break;
-//            case ROUTE_NOACTIVEROUTE:
-//                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
-//                break;
             case SESSION_ONSENDCACHECOMPLETED:
                 txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+                break;
+            case HEALTHCHECK_ONRESTART:
+                trackingButton.performClick();
                 break;
         }
     }

@@ -1,7 +1,6 @@
 package com.flightontrack.entities;
 
-import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.shared.Const;
+import com.flightontrack.definitions.Finals;
 import com.flightontrack.shared.Props;
 import com.loopj.android.http.RequestParams;
 
@@ -9,7 +8,7 @@ public class EntityRequestPostLocation   extends RequestParams implements AutoCl
     final String TAG = "EntityRequestPostLocation";
 
     public EntityRequestPostLocation(EntityLocation l) {
-        put("rcode", Const.REQUEST_LOCATION_UPDATE);
+        put("rcode", Finals.REQUEST_LOCATION_UPDATE);
         put("isdebug", Props.SessionProp.pIsDebug);
         put("speedlowflag", l.sl == 1);
         put("rcode", l.rc);
@@ -31,7 +30,7 @@ public class EntityRequestPostLocation   extends RequestParams implements AutoCl
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
         //System.out.println(" From Close -  AutoCloseable  ");
     }

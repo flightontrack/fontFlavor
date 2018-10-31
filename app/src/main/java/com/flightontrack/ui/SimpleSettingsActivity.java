@@ -27,7 +27,7 @@ import com.flightontrack.shared.EventMessage;
 import shared.AppConfig;
 import ui.SimpleSettingsActivityExt;
 
-import static com.flightontrack.shared.Const.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
+import static com.flightontrack.definitions.Finals.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
 import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
 import static shared.AppConfig.pIsRelease;

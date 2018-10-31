@@ -10,7 +10,7 @@ import com.flightontrack.shared.Props;
 import com.loopj.android.http.RequestParams;
 
 import static receiver.ReceiverHealthCheckAlarm.isRestart;
-import static com.flightontrack.shared.Const.REQUEST_IS_CLOCK_ON;
+import static com.flightontrack.definitions.Finals.REQUEST_IS_CLOCK_ON;
 
 /**
  * Created by hotvk on 4/29/2018.
@@ -22,8 +22,8 @@ public class EntityRequestHealthCheck   extends RequestParams implements AutoClo
 
     public EntityRequestHealthCheck() {
         put("rcode", REQUEST_IS_CLOCK_ON);
-        put("phonenumber", MyPhone._myPhoneId);
-        put("deviceid", MyPhone._myDeviceId);
+        put("phonenumber", MyPhone.myPhoneId);
+        put("deviceid", MyPhone.myDeviceId);
         put("isdebug", Props.SessionProp.pIsDebug);
         put("isClockOn", SvcLocationClock.isInstanceCreated());
         put("isrestart", isRestart);
@@ -32,7 +32,7 @@ public class EntityRequestHealthCheck   extends RequestParams implements AutoClo
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 }

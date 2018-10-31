@@ -1,7 +1,7 @@
 package com.flightontrack.entities;
 
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.shared.Const;
+import com.flightontrack.definitions.Finals;
 import com.loopj.android.http.RequestParams;
 
 
@@ -9,7 +9,7 @@ public class EntityRequestNewFlightOffline  extends RequestParams  implements Au
     static final String TAG = "EntityRequestNewFlightOffline";
 
     public EntityRequestNewFlightOffline() {
-        put("rcode", Const.REQUEST_FLIGHT_NUMBER);
+        put("rcode", Finals.REQUEST_FLIGHT_NUMBER);
     }
 
     public EntityRequestNewFlightOffline set(String k, String v){

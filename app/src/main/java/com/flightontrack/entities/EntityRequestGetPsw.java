@@ -4,7 +4,7 @@ import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
 import com.loopj.android.http.RequestParams;
-import static com.flightontrack.shared.Const.REQUEST_PSW;
+import static com.flightontrack.definitions.Finals.REQUEST_PSW;
 
 
 public class EntityRequestGetPsw extends RequestParams implements AutoCloseable{

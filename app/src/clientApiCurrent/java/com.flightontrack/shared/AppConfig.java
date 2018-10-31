@@ -18,12 +18,12 @@ public final class AppConfig {
     }
     public AppConfig(Context ctx){
     }
-    public static void get(){
-        //pIsAppTypePublic = false;
-        //pAutostart = false;
-        //pIsNFCEnabled = false;
-        pIsNFCcapable = false;
-    }
+//    public static void get(){
+//        //pIsAppTypePublic = false;
+//        //pAutostart = false;
+//        //pIsNFCEnabled = false;
+//        pIsNFCcapable = false;
+//    }
     public void unregisterReceivers(Context ctx){
     }
 }

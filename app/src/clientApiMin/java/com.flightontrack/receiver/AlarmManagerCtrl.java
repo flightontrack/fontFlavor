@@ -11,7 +11,7 @@ import com.flightontrack.shared.Props;
 
 import java.util.Date;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 
 public class AlarmManagerCtrl {
     public AlarmManagerCtrl() {

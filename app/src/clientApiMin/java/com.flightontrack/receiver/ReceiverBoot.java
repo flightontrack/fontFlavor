@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.flightontrack.ui.MainActivity;
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 
 public class ReceiverBoot extends BroadcastReceiver {
     private static final String TAG = "ReceiverBoot";

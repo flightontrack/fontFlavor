@@ -8,7 +8,6 @@ package shared;
         import java.io.File;
         import java.io.IOException;
 
-        import static com.flightontrack.shared.Const.*;
         import static shared.AppConfig.pIsRelease;
 
 //import org.acra.*;

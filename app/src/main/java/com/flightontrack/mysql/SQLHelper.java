@@ -15,7 +15,7 @@ import com.flightontrack.shared.EventMessage;
 
 import static com.flightontrack.flight.RouteBase.get_FlightInstanceByNumber;
 import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
-import static com.flightontrack.shared.Const.COMMAND_TERMINATEFLIGHT;
+import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import com.flightontrack.shared.EventBus;

@@ -9,7 +9,7 @@ import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.mysql.SQLHelper;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 //import static shared.AppConfig.*;
 import static shared.AppConfig.pIsAppTypePublic;
 import static shared.AppConfig.pIsRelease;
@@ -117,6 +117,7 @@ public final class Props implements EventBus{
             //new FontLogAsync().execute(new LogMessage(TAG, "StackTrace: "+s,'d');
             pIsMultileg=isMultileg;
             EventBus.distribute(new EventMessage(EVENT.PROP_CHANGED_MULTILEG).setEventMessageValueBool(isMultileg));
+            return;
             //MainActivity.chBoxIsMultiLeg.setChecked(isMultileg);
         }
 

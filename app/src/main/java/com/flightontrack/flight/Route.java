@@ -1,12 +1,13 @@
 package com.flightontrack.flight;
 
+import com.flightontrack.definitions.Limits;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Props;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 
 public class Route extends RouteBase implements EventBus{
     private final String TAG = "Route";
@@ -27,7 +28,7 @@ public class Route extends RouteBase implements EventBus{
 //            case SWITCH_TO_PENDING:
 //                break;
             case RESTART_NEW_FLIGHT:
-                if (Props.SessionProp.pIsMultileg && (_legCount < LEG_COUNT_HARD_LIMIT)) {
+                if (Props.SessionProp.pIsMultileg && (_legCount < Limits.LEG_COUNT_HARD_LIMIT)) {
                     /// ignore request to close route
                     flightList.add(new FlightOnline(this));
                 } else {

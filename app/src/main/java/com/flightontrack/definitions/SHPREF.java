@@ -16,4 +16,6 @@ public final class SHPREF {
     public static final String GSMSIGNALSTRENGTH        = "gsmsignalstrength";
     public static final String CDMASIGNALSTRENGTH       = "cdmasignalstrength";
 
+    public static final String WAYPOINTLIMIT       = "wayPointLimit";
+
 }

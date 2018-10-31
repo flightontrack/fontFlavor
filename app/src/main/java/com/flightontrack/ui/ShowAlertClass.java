@@ -12,7 +12,7 @@ import com.flightontrack.R;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -210,6 +210,6 @@ public class ShowAlertClass implements AutoCloseable{
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
     }
 }

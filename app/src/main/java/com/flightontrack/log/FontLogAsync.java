@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static com.flightontrack.objects.MyPhone.myPhoneId;
-import static com.flightontrack.shared.Const.GLOBALTAG;
+import static com.flightontrack.definitions.Finals.GLOBALTAG;
 
 
 public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> implements AutoCloseable{

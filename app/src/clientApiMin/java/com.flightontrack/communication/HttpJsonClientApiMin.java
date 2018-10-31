@@ -8,14 +8,14 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import static com.flightontrack.communication.URLs.getTrackingURL;
 import static com.flightontrack.shared.Props.ctxApp;
-import static com.flightontrack.shared.Util.getTrackingURL;
+
 
 public class HttpJsonClientApiMin extends AsyncHttpClient implements AutoCloseable{
     static final String TAG = "HttpJsonClientApiMin";
     String url = getTrackingURL() + ctxApp.getString(R.string.webapi_controller);
-    //final String url = "http://10.0.2.2/PostngetWebApi/api/router/";
-    //final String url = "http://192.168.1.2/PostngetWebApi/api/router/";
+
     String controllerMethod;
     public String urlLink;
     RequestParams requestParams;
@@ -34,7 +34,7 @@ public class HttpJsonClientApiMin extends AsyncHttpClient implements AutoCloseab
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
         //System.out.println(" From Close -  AutoCloseable  ");
     }

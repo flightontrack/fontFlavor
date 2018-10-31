@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.definitions.Limits;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.entities.EntityFlightTimeMessage;
 import com.flightontrack.entities.EntityRequestNewFlight;
@@ -21,7 +22,6 @@ import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.GetTime;
 import com.flightontrack.shared.Props;
-import com.flightontrack.shared.Util;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
@@ -38,7 +38,7 @@ import other.Talk;
 
 import static com.flightontrack.flight.FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
 import static com.flightontrack.flight.Session.isNetworkAvailable;
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -84,7 +84,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
 
     void set_wayPointsCount(int pointsCount) {
         _wayPointsCount = pointsCount;
-        if (pointsCount >= Util.getWayPointLimit()) {
+        if (pointsCount >= Limits.getWayPointLimit()) {
             EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONPOINTSLIMITREACHED));
         }
     }

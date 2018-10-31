@@ -1,7 +1,7 @@
 package com.flightontrack.entities;
 
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.shared.Const;
+import com.flightontrack.definitions.Finals;
 import com.loopj.android.http.RequestParams;
 
 
@@ -9,7 +9,7 @@ public class EntityRequestNewFlight  extends RequestParams implements AutoClosea
     static final String TAG = "EntityRequestNewFlight";
 
     public EntityRequestNewFlight() {
-        put("rcode", Const.REQUEST_FLIGHT_NUMBER);
+        put("rcode", Finals.REQUEST_FLIGHT_NUMBER);
     }
 
     public EntityRequestNewFlight set(String k, String v){

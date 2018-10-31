@@ -1,12 +1,12 @@
 package com.flightontrack.entities;
 
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.shared.Const;
+import com.flightontrack.definitions.Finals;
 import com.loopj.android.http.RequestParams;
 
 public class EntityRequestCloseFlight   extends RequestParams implements AutoCloseable{
     final String TAG = "EntityRequestCloseFlight";
-    final int rcode = Const.REQUEST_STOP_FLIGHT;
+    final int rcode = Finals.REQUEST_STOP_FLIGHT;
 
 
     public EntityRequestCloseFlight() {
@@ -22,7 +22,7 @@ public class EntityRequestCloseFlight   extends RequestParams implements AutoClo
         return this;
     }
     @Override
-    public void close() throws Exception {
+    public void close() {
         new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 }

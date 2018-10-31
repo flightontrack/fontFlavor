@@ -6,9 +6,8 @@ import android.content.IntentFilter;
 import receiver.AlarmManagerCtrl;
 import receiver.ReceiverHealthCheckAlarm;
 import receiver.ReceiverBatteryLevel;
-import com.flightontrack.shared.Props;
 
-import static com.flightontrack.shared.Const.HEALTHCHECK_BROADCAST_RECEIVER_FILTER;
+import static com.flightontrack.definitions.Finals.HEALTHCHECK_BROADCAST_RECEIVER_FILTER;
 
 public final class AppConfig {
     public static String pAppRelease = "1.81";
@@ -39,12 +38,12 @@ public final class AppConfig {
         ctx.registerReceiver(receiverBatteryLevel, new IntentFilter("android.intent.action.BATTERY_LOW"));
         //Props.SessionProp.pIsStartedOnReboot=true;
     }
-    public static void get(){
-        //pIsAppTypePublic = false;
-        //pAutostart = false;
-        //pIsNFCEnabled = false;
-        pIsNFCcapable = false;
-    }
+//    public static void get(){
+////        //pIsAppTypePublic = false;
+////        //pAutostart = false;
+////        //pIsNFCEnabled = false;
+////        pIsNFCcapable = false;
+////    }
 
     public void unregisterReceivers(Context ctx){
         if (alarmReceiver != null) {

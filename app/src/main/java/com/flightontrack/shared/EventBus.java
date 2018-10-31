@@ -11,7 +11,7 @@ import com.flightontrack.entities.EntityLogMessage;
 
 import java.util.ArrayList;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -25,6 +25,9 @@ public interface EventBus extends Events{
         EVENT ev = eventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG, ev+":eventString:"+eventMessage.eventMessageValueString+":eventObject:"+eventMessage.eventMessageValueObject, 'd'));
         switch(ev){
+            case HEALTHCHECK_ONRESTART:
+                interfaceList.add(mainactivityInstance);
+                break;
             case MACT_BIGBUTTON_ONCLICK_START:
                 interfaceList.add(new Route());
                 break;

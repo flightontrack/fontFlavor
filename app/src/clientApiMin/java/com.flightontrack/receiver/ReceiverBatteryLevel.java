@@ -9,10 +9,10 @@ import android.telephony.SmsManager;
 import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.objects.Aircraft;
 import com.flightontrack.objects.Pilot;
-import com.flightontrack.shared.Util;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.definitions.SHPREF.*;
 
@@ -34,7 +34,7 @@ public class ReceiverBatteryLevel extends BroadcastReceiver {
             String message =    "Help !!!"+"\n"+
                     SMS_LOWBATTERY_TEXT+"\n"+
                     "Pilot : "+ Pilot.getPilotUserName()+"\n"+
-                    "Aircraft : "+Util.getAcftNum(4)+"\n";
+                    "Aircraft : "+(new Aircraft().AcftNum)+"\n";
             new FontLogAsync().execute(new EntityLogMessage(TAG, "BatteryPct low: Level :"+level+" out of "+scale, 'd'));
 
             SmsManager smsManager = SmsManager.getDefault();

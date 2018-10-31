@@ -11,6 +11,8 @@ import com.flightontrack.communication.ResponseJsonObj;
 import entities.EntityRequestHealthCheck;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.shared.EventBus;
+import com.flightontrack.shared.EventMessage;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,7 +48,8 @@ public class ReceiverHealthCheckAlarm extends BroadcastReceiver {
             if (!SvcLocationClock.isInstanceCreated()) {
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "Restarting : performClick()",'d'));
                 SessionProp.set_isMultileg(true);
-                mainactivityInstance.trackingButton.performClick();
+                EventBus.distribute(new EventMessage(EVENT.HEALTHCHECK_ONRESTART));
+                //mainactivityInstance.trackingButton.performClick();
                 isRestart = true;
                 healthCheckComm();
             }

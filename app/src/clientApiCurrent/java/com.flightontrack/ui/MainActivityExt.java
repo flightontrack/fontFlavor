@@ -3,6 +3,7 @@ package ui;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MainActivityExt {
     void privacyPolicy() {
         try {
             Intent intent = new Intent(ctxApp, PrivacyPolicyActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ctxApp.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
@@ -46,6 +48,7 @@ public class MainActivityExt {
 
     public void facebActivity() {
         Intent intent = new Intent(ctxApp, FaceBookActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ctxApp.startActivity(intent);
     }
 

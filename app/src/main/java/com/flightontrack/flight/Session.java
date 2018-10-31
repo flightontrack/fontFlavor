@@ -10,7 +10,7 @@ import com.flightontrack.ui.MainActivity;
 
 //import static com.flightontrack.communication.SvcComm.commBatchSize;
 import static com.flightontrack.flight.FlightOffline.*;
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -24,7 +24,6 @@ import com.flightontrack.entities.EntityLocation;
 import com.flightontrack.mysql.SQLHelper;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
-import com.flightontrack.shared.Util;
 import com.flightontrack.ui.ShowAlertClass;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;

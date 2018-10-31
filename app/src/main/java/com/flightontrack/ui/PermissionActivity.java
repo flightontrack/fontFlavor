@@ -15,7 +15,7 @@ import com.flightontrack.flight.Route;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
 
-import static com.flightontrack.shared.Const.*;
+import static com.flightontrack.definitions.Finals.*;
 
 public class PermissionActivity extends Activity {
     private static final String TAG = "PermissionActivity";
