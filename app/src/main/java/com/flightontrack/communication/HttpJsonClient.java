@@ -91,7 +91,7 @@ public class HttpJsonClient  extends AsyncHttpClient implements AutoCloseable{
 
     @Override
     public void close() {
-        new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'e'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG,"From close -  AutoCloseable ", 'd'));
         //System.out.println(" From Close -  AutoCloseable  ");
     }
 }

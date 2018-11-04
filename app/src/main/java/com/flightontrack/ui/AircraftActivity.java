@@ -2,6 +2,7 @@ package com.flightontrack.ui;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -9,6 +10,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.VibrationEffect;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.os.Vibrator;
 
 import com.flightontrack.R;
 import com.flightontrack.objects.Aircraft;
@@ -29,6 +32,7 @@ import com.flightontrack.shared.Props;
 import com.flightontrack.objects.Pilot;
 
 import static com.flightontrack.definitions.SHPREF.*;
+import static com.flightontrack.shared.Props.ctxApp;
 import static shared.AppConfig.pIsNFCcapable;
 
 import org.json.JSONException;
@@ -227,8 +231,11 @@ public class AircraftActivity extends Activity {
     public void onNewIntent(Intent intent) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "AircraftActivity onNewIntent", 'd'));
         //Util.appendLog(TAG+ intent.getAction());
-        if ((intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)
-                || intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) && getTagNFCState()) {
+        if ((   intent.getAction()
+                .equals(NfcAdapter.ACTION_TAG_DISCOVERED)|| intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) && getTagNFCState())
+        {
+            ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(500);
+
             NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
             NdefRecord record = msgs[0].getRecords()[0];
             byte[] payload = record.getPayload();

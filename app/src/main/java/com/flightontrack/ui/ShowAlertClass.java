@@ -12,7 +12,7 @@ import com.flightontrack.R;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 
-import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 

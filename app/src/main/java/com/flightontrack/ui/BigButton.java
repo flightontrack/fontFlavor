@@ -1,6 +1,7 @@
 package com.flightontrack.ui;
 
 import com.flightontrack.R;
+import com.flightontrack.definitions.Enums;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
@@ -10,6 +11,7 @@ import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Props;
 
 import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.SessionProp.trackingButtonState;
 import static com.flightontrack.shared.Props.ctxApp;
 import static com.flightontrack.shared.Props.mainactivityInstance;
@@ -25,7 +27,7 @@ public class BigButton implements EventBus {
         return bigButtonInstance;
     }
 
-    static void setTrackingButton(Finals.BUTTONREQUEST request) {
+    static void setTrackingButton(BUTTONREQUEST request) {
         //int backgroundResource;
         if (request!= BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID)trackingButtonState = request;
         int backgroundResource =
@@ -80,7 +82,7 @@ public class BigButton implements EventBus {
         return fText + fTime;
     }
 
-    static String getButtonText(Finals.BUTTONREQUEST request) {
+    static String getButtonText(BUTTONREQUEST request) {
         switch (request) {
             case BUTTON_STATE_RED:
                 Props.SessionProp.pTrackingButtonText=setTextRedFlightStopped();
@@ -105,16 +107,16 @@ public class BigButton implements EventBus {
         //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
         switch (ev) {
             case FLIGHT_GETNEWFLIGHT_STARTED:
-                setTrackingButton(Finals.BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID);
+                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID);
                 break;
 //            case SESSION_ONSUCCESS_EXCEPTION:;
 //                setTrackingButton(Const.BUTTONREQUEST.BUTTON_STATE_RED);
 //                break;
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
-                setTrackingButton(Finals.BUTTONREQUEST.BUTTON_STATE_YELLOW);
+                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_YELLOW);
                 break;
             case CLOCK_MODECLOCK_ONLY:
-                setTrackingButton(Finals.BUTTONREQUEST.BUTTON_STATE_RED);
+                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
                 break;
 //            case CLOCK_SERVICESTARTED_MODELOCATION:
 //                setTrackingButton(Const.BUTTONREQUEST.BUTTON_STATE_YELLOW);
@@ -123,13 +125,13 @@ public class BigButton implements EventBus {
 //                setTrackingButton(Const.BUTTONREQUEST.BUTTON_STATE_RED);
 //                break;
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
-                setTrackingButton(Finals.BUTTONREQUEST.BUTTON_STATE_GREEN);
+                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_GREEN);
                 break;
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
                 /// swithch to red
                 break;
             case ROUTE_NOACTIVEROUTE:
-                setTrackingButton(Finals.BUTTONREQUEST.BUTTON_STATE_RED);
+                setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
                 break;
         }
     }

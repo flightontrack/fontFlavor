@@ -52,7 +52,7 @@ public class LogBookActivity extends Activity {
         });
         List<String> spinnerUrls = Arrays.asList(this.getResources().getStringArray(R.array.posturl_array));
         String url ="/Member/PilotLogBookMobile?pilotUserName=" + Pilot.getUserID();
-        url= "http://"+getWebserverURL()+url;
+        url= getWebserverURL()+url;
 //        switch (spinnerUrls.indexOf(getTrackingURL())){
 //            case 0:
 //                url= "http://flightontrack.azurewebsites.net"+url;

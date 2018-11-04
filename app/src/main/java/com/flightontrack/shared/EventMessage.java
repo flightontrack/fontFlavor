@@ -1,7 +1,7 @@
 package com.flightontrack.shared;
 import android.location.Location;
 
-import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.flight.Session.*;
 import static com.flightontrack.flight.Route.*;
 

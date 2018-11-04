@@ -1,14 +1,12 @@
 package other;
 
+import java.util.HashMap;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 
 import com.flightontrack.entities.EntityFlightTimeMessage;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
-
-import java.util.HashMap;
-
 import static com.flightontrack.shared.Props.ctxApp;
 
 

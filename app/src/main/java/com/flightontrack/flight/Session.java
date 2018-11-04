@@ -11,6 +11,7 @@ import com.flightontrack.ui.MainActivity;
 //import static com.flightontrack.communication.SvcComm.commBatchSize;
 import static com.flightontrack.flight.FlightOffline.*;
 import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 

@@ -45,21 +45,20 @@ import static com.flightontrack.shared.Props.SessionProp.*;
 public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     static final String TAG = "FlightOnline";
 
-    public String flightTimeString;
-    public int lastAltitudeFt;
-    public int wayPointsCount;
-    Route route;
-    float speedCurrent = 0;
-    float speedPrev = 0;
-    int _flightTimeSec;
-    int talkCount;
-    private long _flightStartTimeGMT;
-    double cutoffSpeed;
-    boolean isElevationCheckDone;
-    boolean isGettingFlight = false;
-    boolean isGetFlightCallSuccess = false;
-    boolean isSpoken = false;
-    List<Integer> dbIdList = new ArrayList<>();
+    public String   flightTimeString;
+    public int      lastAltitudeFt;
+    public int      wayPointsCount;
+    private Route           route;
+    private float           speedCurrent = 0;
+    private float           speedPrev = 0;
+    private int             flightTimeSec;
+    private int             talkCount;
+    private long            flightStartTimeGMT;
+    private boolean         isElevationCheckDone;
+    private boolean         isGettingFlight = false;
+    private boolean         isGetFlightCallSuccess = false;
+    private boolean         isSpoken = false;
+    private List<Integer>   dbIdList = new ArrayList<>();
 
     public FlightOnline(Route r) {
         route = r;
@@ -100,7 +99,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
 
 
     boolean is_DoubleSpeedAboveMin() {
-        cutoffSpeed = get_cutoffSpeed();
+        double cutoffSpeed = get_cutoffSpeed();
         boolean isCurrSpeedAboveMin = (speedCurrent >= cutoffSpeed);
         boolean isPrevSpeedAboveMin = (speedPrev >= cutoffSpeed);
         //new FontLogAsync().execute(new LogMessage(TAG, "is_DoubleSpeedAboveMin: cutoffSpeed: " + cutoffSpeed, 'd');
@@ -225,7 +224,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
 
             case INFLIGHT_SPEEDABOVEMIN:
                 if (!isElevationCheckDone) {
-                    if (_flightTimeSec >= ELEVATIONCHECK_FLIGHT_TIME_SEC)
+                    if (flightTimeSec >= ELEVATIONCHECK_FLIGHT_TIME_SEC)
                         isElevationCheckDone = true;
                     saveLocation(location, isElevationCheckDone);
                 } else saveLocation(location, false);
@@ -270,27 +269,28 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     }
 
     public void set_flightTimeSec() {
-        long elapsedTime = getTimeGMT() - _flightStartTimeGMT;
-        _flightTimeSec = (int) elapsedTime / 1000;
+        long elapsedTime = getTimeGMT() - flightStartTimeGMT;
+        flightTimeSec = (int) elapsedTime / 1000;
+        new FontLogAsync().execute(new EntityLogMessage(TAG,"flightTimeSec =  "+flightTimeSec, 'd'));
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
         flightTimeString = dateFormat.format(elapsedTime);
         EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
-        int c = _flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
-        new FontLogAsync().execute(new EntityLogMessage(TAG," c =  "+c, 'd'));
-        new FontLogAsync().execute(new EntityLogMessage(TAG," talkCount =  "+talkCount, 'd'));
-        if (c>talkCount){
-            talkCount=c;
-            new Talk(new EntityFlightTimeMessage(_flightTimeSec));
+        int tc = flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
+        //new FontLogAsync().execute(new EntityLogMessage(TAG,"c =  "+c, 'd'));
+        //new FontLogAsync().execute(new EntityLogMessage(TAG,"talkCount =  "+talkCount, 'd'));
+        if (tc>talkCount){
+            talkCount=tc;
+            new Talk(new EntityFlightTimeMessage(flightTimeSec));
         }
-            //Double remainderSec = (double)_flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
+            //Double remainderSec = (double)flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
         //if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
 //            Talk.tts = new TextToSpeech(ctxApp, new TextToSpeech.OnInitListener(){
 //                @Override
 //                public void onInit(int status) {
 //                    new FontLogAsync().execute(new EntityLogMessage(TAG, "!!!!!!!!onInit Status "+status, 'd'));
 //                    if (status == TextToSpeech.SUCCESS){
-//                        new TalkAsync().execute(new EntityFlightTimeMessage(_flightTimeSec));
+//                        new TalkAsync().execute(new EntityFlightTimeMessage(flightTimeSec));
 //
 //                    }
 //                }
@@ -315,7 +315,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_STATECHANGEDTO_READYTOSAVE).setEventMessageValueString(flightNumber));
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
-                _flightStartTimeGMT = getTimeGMT();
+                flightStartTimeGMT = getTimeGMT();
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
                 break;
             case STOPPED:
@@ -338,7 +338,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     @Override
     public void onClock(EventMessage eventMessage) {
 
-        new FontLogAsync().execute(new EntityLogMessage(TAG, flightNumber + "onClock", 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber, 'd'));
         if (RouteBase.activeFlight == this
                 && (flightState == FLIGHT_STATE.READY_TOSAVELOCATIONS || flightState == FLIGHT_STATE.INFLIGHT_SPEEDABOVEMIN)
                 && eventMessage.eventMessageValueLocation != null) {

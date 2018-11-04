@@ -5,6 +5,7 @@ import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.shared.Props;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,12 +22,14 @@ public class Aircraft implements AutoCloseable{
         String acftSet = Props.sharedPreferences.getString(DEFAULTACFTSET,null);
         if (null != acftSet) try {
             JSONObject jsonDefaultAcftSet = new JSONObject(acftSet);
+            String names = jsonDefaultAcftSet.names().toString();
+
             AcftNum=jsonDefaultAcftSet.getString(ACFTREGNUM);
             AcftName=jsonDefaultAcftSet.getString(ACFTNAME);
-            AcftTagId=jsonDefaultAcftSet.getString(ACFTTAGID);
+            if (names.contains(ACFTTAGID)) AcftTagId=jsonDefaultAcftSet.getString(ACFTTAGID);
         }
         catch(JSONException e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "Aircraft() ", 'e',e));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "Aircraft() " +e.getMessage(), 'e',e));
         }
     }
 

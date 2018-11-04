@@ -45,6 +45,7 @@ import ui.MainActivityExt;
 //import static shared.AppConfig.*;
 
 import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.flight.Session.*;

@@ -10,7 +10,7 @@ import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.mysql.SQLHelper;
 
 import static com.flightontrack.definitions.Finals.*;
-//import static shared.AppConfig.*;
+import static com.flightontrack.definitions.Enums.*;
 import static shared.AppConfig.pIsAppTypePublic;
 import static shared.AppConfig.pIsRelease;
 
