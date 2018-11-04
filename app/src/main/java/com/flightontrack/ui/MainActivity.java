@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                 EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
             });
 
-            //toolbarTop = findViewById(R.id.toolbar_top);
             setSupportActionBar(findViewById(R.id.toolbar_top));
+            //setSupportActionBar(findViewById(R.id.toolbar_bottom));
             getSupportActionBar().setTitle(getString(R.string.app_label));
 
             AppConfig.pMainActivityLayout = findViewById(R.id.TagView).getTag().toString();
@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                     }
                 });
             }
-
             cardLayout1 = findViewById(R.id.cardLayoutId1);
             cardLayout1.setOnClickListener(v-> {
                 Intent intent = new Intent(ctxApp, AircraftActivity.class);
@@ -206,6 +205,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                 return true;
             case R.id.action_aircraft:
                 acftActivity();
+                return true;
+            case R.id.action_browser:
+                Intent intent = new Intent(this, FlightOnTrackActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return (new MainActivityExt().onOptionsItemSelected(item));

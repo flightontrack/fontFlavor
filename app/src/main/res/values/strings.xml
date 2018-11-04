@@ -13,6 +13,7 @@
     <string name="action_logbook">LogBook</string>
     <string name="action_facebook">Share on FB</string>
     <string name="action_privpolicy">Privacy Policy</string>
+    <string name="action_browser">Flightontrack.com</string>
 
     <!--activityTitle-->
     <string name="activity_aircraft_title">Aircraft</string>
@@ -112,6 +113,7 @@
     <string name="toast_noconnectivity">Network connectivity unavailable</string>
     <string name="toast_cachesending"> Sending location points left in cache</string>
     <string name="progressbar_load_logbook">Loading Pilot LogBook from Cloud ...</string>
+    <string name="progressbar_open_browser">Opening Web Browser ...</string>
     <string name="progressbar_cachesending"> Sending cache to Cloud ...</string>
 
     <!--dialog-->
