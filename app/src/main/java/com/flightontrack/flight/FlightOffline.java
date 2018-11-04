@@ -56,32 +56,31 @@ public class FlightOffline implements EventBus{
         flightNumber = fn;
     }
 
-    public FlightOffline set_flightState(FLIGHT_STATE fs){
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState : " + fs, 'd'));
+    public FlightOffline change_flightState(FLIGHT_STATE fs){
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState super: " + fs, 'd'));
         if (flightState == fs) return this;
         flightState = fs;
         switch(fs){
             case GETTINGFLIGHT:
-                //EventBus.distribute(new EventMessage(EVENT.FLIGHT_GETNEWFLIGHT_STARTED));
-                getNewFlightID();
-                break;
-            case STOPPED:
+                get_NewFlightID();
                 break;
             case READY_TOBECLOSED:
-                getCloseFlight();
+                get_CloseFlight();
                 break;
             case CLOSING:
                 break;
             case CLOSED:
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(flightNumber));
                 break;
+            case STOPPED:
+                break;
         }
         return this;
     }
     public void set_flightNumber(String fn){
         new FontLogAsync().execute(new EntityLogMessage(TAG, "set_flightNumber super fn " + fn, 'd'));
-        replaceFlightNumber(fn);
-        set_flightState(FLIGHT_STATE.STOPPED);
+        replace_FlightNumber(fn);
+        change_flightState(FLIGHT_STATE.STOPPED);
         set_flightNumStatus(FLIGHTNUMBER_SRC.REMOTE_DEFAULT);
     }
     public void set_flightNumStatus(FLIGHTNUMBER_SRC fns) {
@@ -98,11 +97,11 @@ public class FlightOffline implements EventBus{
         }
     }
 
-    void getNewFlightID() {
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-getNewFlightID: " +flightNumber, 'd'));
+    void get_NewFlightID() {
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-get_NewFlightID: " +flightNumber, 'd'));
         try (
-                Aircraft aircraft = new Aircraft();
-                EntityRequestNewFlightOffline entityRequestNewFlightOffline = new EntityRequestNewFlightOffline()
+            Aircraft aircraft = new Aircraft();
+            EntityRequestNewFlightOffline entityRequestNewFlightOffline = new EntityRequestNewFlightOffline()
             .set("phonenumber", MyPhone.myPhoneId)
             .set("username", Pilot.getPilotUserName())
             .set("userid", Pilot.getUserID())
@@ -127,7 +126,7 @@ public class FlightOffline implements EventBus{
 
             @Override
             public void onSuccess(int code, Header[] headers, JSONObject jsonObject) {
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-getNewFlightID OnSuccess", 'd'));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOffline-get_NewFlightID OnSuccess", 'd'));
 
                 ResponseJsonObj response = new ResponseJsonObj(jsonObject);
                 if (response.responseException != null) {
@@ -159,7 +158,7 @@ public class FlightOffline implements EventBus{
 
             @Override
             public void onRetry(int retryNo) {
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "getNewFlightID onRetry:" + retryNo, 'd'));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "get_NewFlightID onRetry:" + retryNo, 'd'));
             }
             });
         }
@@ -168,10 +167,10 @@ public class FlightOffline implements EventBus{
         }
     }
 
-    void getCloseFlight() {
+    void get_CloseFlight() {
         String TAG = "getCloseFlightNew";
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight: " + flightNumber, 'd'));
-        set_flightState(FLIGHT_STATE.CLOSING);
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight: " + flightNumber, 'd'));
+        change_flightState(FLIGHT_STATE.CLOSING);
         EntityRequestCloseFlight entityRequestCloseFlight = new EntityRequestCloseFlight()
                 .set("flightid", flightNumber)
                 .set("isdebug", SessionProp.pIsDebug)
@@ -185,7 +184,7 @@ public class FlightOffline implements EventBus{
             client.post(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int code, Header[] headers, JSONObject jsonObject) {
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight OnSuccess", 'd'));
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight OnSuccess", 'd'));
                     ResponseJsonObj response = new ResponseJsonObj(jsonObject);
 
                     if (response.responseAckn != null) {
@@ -197,39 +196,35 @@ public class FlightOffline implements EventBus{
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlight onFailure: " + flightNumber, 'd'));
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight onFailure: " + flightNumber, 'd'));
                 }
 
                 @Override
                 public void onFinish() {
-                    set_flightState(FLIGHT_STATE.CLOSED);
+                    change_flightState(FLIGHT_STATE.CLOSED);
                 }
             }
             );
         }
         catch (Exception e) {
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "getCloseFlightNew " + e.getMessage(), 'e'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight" + e.getMessage(), 'e'));
         }
     }
 
-
-    void replaceFlightNumber(String fnew) {
+    void replace_FlightNumber(String fnew) {
         if (sqlHelper.updateTempFlightNum(flightNumber, fnew) > 0) {
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "replaceFlightNumber: " + flightNumber+"->" +fnew, 'd'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "replace_FlightNumber: " + flightNumber+"->" +fnew, 'd'));
         }
-        else new FontLogAsync().execute(new EntityLogMessage(TAG, "replaceFlightNumber: nothing to replace: " + flightNumber+"->" +fnew, 'd'));
+        else new FontLogAsync().execute(new EntityLogMessage(TAG, "replace_FlightNumber: nothing to replace: " + flightNumber+"->" +fnew, 'd'));
         flightNumber = fnew;
     }
 
-    int getLocationFlightCount() {
-         return sqlHelper.getLocationFlightCount(flightNumber);
-    }
     public void eventReceiver(EventMessage eventMessage) {
         EVENT ev = eventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG, flightNumber + ":eventReceiver:" + ev, 'd'));
         switch (ev) {
             case SQL_FLIGHTRECORDCOUNT_ZERO:
-                if (flightState == FLIGHT_STATE.STOPPED) set_flightState(FLIGHT_STATE.READY_TOBECLOSED);
+                if (flightState == FLIGHT_STATE.STOPPED) change_flightState(FLIGHT_STATE.READY_TOBECLOSED);
                 break;
         }
     }

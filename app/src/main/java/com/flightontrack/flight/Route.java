@@ -23,6 +23,7 @@ public class Route extends RouteBase implements EventBus{
         //new FontLogAsync().execute(new LogMessage(TAG, "reaction:" + request, 'd');
         switch (request) {
             case OPEN_NEW_FLIGHT:
+                /// starting new flight
                 flightList.add(new FlightOnline(this));
                 break;
 //            case SWITCH_TO_PENDING:

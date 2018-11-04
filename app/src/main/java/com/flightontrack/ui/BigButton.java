@@ -57,7 +57,7 @@ public class BigButton implements EventBus {
 
     static String setTextGreen() {
         return "Flight: " + (RouteBase.activeFlight.flightNumber) + '\n' +
-                "Point: " + RouteBase.activeFlight._wayPointsCount +
+                "Point: " + RouteBase.activeFlight.wayPointsCount +
                 ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.flightTimeString + '\n'
                 + "Alt: " + RouteBase.activeFlight.lastAltitudeFt + " ft";
     }

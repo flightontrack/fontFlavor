@@ -307,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                     new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
                     if (!SessionProp.pIsEmptyAcftOk) return;
                 }
+                /// signal to start a new route and load a new flight in route flight list
                 EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
                 break;
             default:

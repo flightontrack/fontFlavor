@@ -9,7 +9,7 @@ import com.facebook.FacebookSdk;
 import java.io.File;
 import java.io.IOException;
 
-import static com.flightontrack.shared.Const.*;
+//import static com.flightontrack.shared.Const.*;
 import static shared.AppConfig.pIsRelease;
 //import com.facebook.appevents.AppEventsLogger;
 

@@ -11,7 +11,7 @@ import com.flightontrack.R;
 import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.shared.Const;
+//import com.flightontrack.shared.Const;
 import com.flightontrack.shared.Props;
 import com.flightontrack.ui.MainActivity;
 

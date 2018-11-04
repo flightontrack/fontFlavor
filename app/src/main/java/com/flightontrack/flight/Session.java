@@ -157,7 +157,7 @@ public class Session implements EventBus{
             Thread.currentThread().interrupt();
         }
     }
-    void set_Action(SACTION request) {
+    void  set_Action(SACTION request) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request, 'd'));
         switch (request) {
             case CHECK_CACHE_FIRST:
@@ -185,7 +185,7 @@ public class Session implements EventBus{
 
                 for (String flightNumTemp:sqlHelper.getTempFlightList()){
                     new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
-                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).set_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
                     else {
                         new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
                         EventBus.distribute(new EventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
@@ -199,9 +199,9 @@ public class Session implements EventBus{
                 for (String fn : sqlHelper.getReadyToSendFlightList()){
                     if (RouteBase.isFlightNumberInList(fn)) continue;
                     new FontLogAsync().execute(new EntityLogMessage(TAG,"Add flight "+fn+" to flightlisr",'d'));
-                    //new FlightOffline(fn).set_flightState(FlightOffline.FLIGHT_STATE.READY_TOSENDLOCATIONS);
+                    //new FlightOffline(fn).change_flightState(FlightOffline.FLIGHT_STATE.READY_TOSENDLOCATIONS);
                     new FlightOffline(fn)
-                            .set_flightState(FLIGHT_STATE.STOPPED)
+                            .change_flightState(FLIGHT_STATE.STOPPED)
                             .set_flightNumStatus(FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT);
                 }
                 break;
