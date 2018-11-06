@@ -134,6 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bttn_status_red"
+                android:elevation="20dp"
                 android:text="@string/tracking_holdon"
                 android:onClick="trackingButtonOnClick"
                 />

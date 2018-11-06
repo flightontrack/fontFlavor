@@ -1,5 +1,7 @@
 package com.flightontrack.ui;
 
+import android.graphics.drawable.GradientDrawable;
+
 import com.flightontrack.R;
 import com.flightontrack.definitions.Enums;
 import com.flightontrack.entities.EntityLogMessage;
@@ -30,13 +32,16 @@ public class BigButton implements EventBus {
     static void setTrackingButton(BUTTONREQUEST request) {
         //int backgroundResource;
         if (request!= BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID)trackingButtonState = request;
+//        else {
+//            GradientDrawable myDrawable = (GradientDrawable) mainactivityInstance.trackingButton.getBackground();
+//            myDrawable.setStroke(20, ctxApp.getResources().getColor(R.color.colorPrimary));
+//        }
         int backgroundResource =
                 request == BUTTONREQUEST.BUTTON_STATE_RED?R.drawable.bttn_status_red:
                 request == BUTTONREQUEST.BUTTON_STATE_YELLOW?R.drawable.bttn_status_yellow:
                 request == BUTTONREQUEST.BUTTON_STATE_GREEN?R.drawable.bttn_status_green:R.drawable.bttn_status_red;
         mainactivityInstance.trackingButton.setText(getButtonText(request));
         mainactivityInstance.trackingButton.setBackgroundResource(backgroundResource);
-
         //(request == BUTTONREQUEST.BUTTON_STATE_GETFLIGHTID)?R.drawable.bttn_status_red:
 //        switch (request) {
 //            case BUTTON_STATE_RED:
