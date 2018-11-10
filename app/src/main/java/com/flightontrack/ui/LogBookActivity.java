@@ -53,20 +53,7 @@ public class LogBookActivity extends Activity {
         List<String> spinnerUrls = Arrays.asList(this.getResources().getStringArray(R.array.posturl_array));
         String url ="/Member/PilotLogBookMobile?pilotUserName=" + Pilot.getUserID();
         url= getWebserverURL()+url;
-//        switch (spinnerUrls.indexOf(getTrackingURL())){
-//            case 0:
-//                url= "http://flightontrack.azurewebsites.net"+url;
-//                break;
-//            case 1:
-//                url= "http://flightontrack-test.azurewebsites.net"+url;
-//                break;
-//            case 2:
-//                url= "http://192.168.1.3/FlightOnTrack/Member/PilotLogBookMobile?pilotUserName=9784295693.0993";
-//                //url= Util.getTrackingURL().substring(0,18)+"/FlightOnTrack"+url;
-//                break;
-//            default:
-//                url= "http://flightontrack.azurewebsites.net"+url;
-//        }
+
         progressBar = new ProgressDialog(this);
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressBar.setMessage(getString(R.string.progressbar_load_logbook));
