@@ -24,8 +24,8 @@
             android:theme="@style/ToolbarTheme"
             app:navigationIcon="@drawable/ic_launcher_96"
             app:popupTheme="@style/ToolbarPopupTheme">
-
         </android.support.v7.widget.Toolbar>
+
     </LinearLayout>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bttn_status_red"
-                android:elevation="20dp"
+                android:elevation="10dp"
                 android:text="@string/tracking_holdon"
                 android:onClick="trackingButtonOnClick"
                 />
@@ -172,6 +172,7 @@
                         android:scaleX="2"
                         android:scaleY="2"
                         android:theme="@style/MyCheckbox"
+                        android:onClick="chBoxIsMultiLegOnClick"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -287,7 +288,7 @@
             </LinearLayout>
 
     </LinearLayout>
-    <include layout="@layout/toolbar_bottom"/>
+    <include layout="@layout/actionmenubar_bottom"/>
     <View
         android:id="@+id/TagView"
         android:tag= "full"

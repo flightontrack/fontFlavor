@@ -22,6 +22,8 @@
         <item name="android:spinnerItemStyle">@style/simple_spinner_item</item>
         <item name="android:textAppearanceListItemSmall">@style/simple_list_item_single_choice</item>
 
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+
     </style>
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat">
         <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
@@ -38,6 +40,7 @@
         <!-- background for bar label  -->
         <item name="android:background">@color/colorPrimary</item>
         <!--<item name="android:spinnerDropDownItemStyle">@style/AppSpinnerItem</item>-->
+
     </style>
 
     <!-- This configures the styles for text within overflow menu  -->

@@ -75,13 +75,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.FlightOnTrackActivity"
-            android:parentActivityName=".ui.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.flightontrack.ui.MainActivity" />
-        </activity>
 
         <service
             android:name=".locationclock.SvcLocationClock"

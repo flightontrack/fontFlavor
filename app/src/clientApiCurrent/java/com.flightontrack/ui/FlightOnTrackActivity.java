@@ -1,4 +1,4 @@
-package com.flightontrack.ui;
+package ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

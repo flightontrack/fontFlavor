@@ -25,30 +25,24 @@ import android.widget.Toast;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
-//import receiver.AlarmManagerCtrl;
 import com.flightontrack.R;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
-//import com.flightontrack.receiver.ReceiverHealthCheckAlarm;
-//import com.flightontrack.receiver.ReceiverBatteryLevel;
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.appindexing.Thing;
-//import com.google.android.gms.common.api.GoogleApiClient;
-
 import shared.AppConfig;
 import ui.MainActivityExt;
-//import SimpleSettingsActivity;
-//import static shared.AppConfig.*;
 
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.flight.Session.*;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.appindexing.Thing;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity implements EventBus {
     static final String TAG = "MainActivity";
@@ -100,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             });
 
             setSupportActionBar(findViewById(R.id.toolbar_top));
-            //setSupportActionBar(findViewById(R.id.toolbar_bottom));
             getSupportActionBar().setTitle(getString(R.string.app_label));
 
             AppConfig.pMainActivityLayout = findViewById(R.id.TagView).getTag().toString();
@@ -119,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                 startActivity(intent);
             });
 
-            //AppConfig.get();
             AppConfig.pIsNFCcapable = AppConfig.pIsNFCEnabled && isNFCcapable();
             SessionProp.get();
             if (!SessionProp.pIsActivityFinished) {
@@ -153,8 +145,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         BigButton.setTrackingButton(trackingButtonState);
         txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
 
-        //init_listeners();
-
         int permissionCheckPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int permissionCheckLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheckLocation == PackageManager.PERMISSION_DENIED) {
@@ -183,37 +173,40 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         if (AppConfig.pMainActivityLayout.equals("full")) {
             getMenuInflater().inflate(R.menu.menu_bottom, bottomMenu.getMenu());
         }
-        //toolbarTop.inflateMenu(R.menu.menu_top);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //Util.setUserName(txtUserName.getText().toString());
-        switch (item.getItemId()) {
-            case R.id.action_help:
-                helpPage();
-                return true;
-            case R.id.action_email:
-                sendEmail();
-                return true;
-            case R.id.action_logbook:
-                logBookPage();
-                return true;
-            case R.id.action_settings:
-                settingsActivity();
-                return true;
-            case R.id.action_aircraft:
-                acftActivity();
-                return true;
-            case R.id.action_browser:
-                Intent intent = new Intent(this, FlightOnTrackActivity.class);
+        Intent intent = new Intent();
+        if (item.getItemId() == R.id.action_email) sendEmail(intent);
+        else {
+            switch (item.getItemId()) {
+                case R.id.action_help:
+                    intent = new Intent(ctxApp, HelpPageActivity.class);
+                    break;
+                case R.id.action_logbook:
+                    intent = new Intent(ctxApp, LogBookActivity.class);
+                    break;
+                case R.id.action_settings:
+                    intent = new Intent(ctxApp, SimpleSettingsActivity.class);
+                    break;
+                case R.id.action_aircraft:
+                    intent = new Intent(this, AircraftActivity.class);
+                    break;
+                default:
+                    intent = (new MainActivityExt().onOptionsItemSelected(item));
+            }
+            try{
                 startActivity(intent);
-                return true;
-            default:
-                return (new MainActivityExt().onOptionsItemSelected(item));
-                //return super.onOptionsItemSelected(item);
+            }
+            catch (ActivityNotFoundException ex) {
+            Toast.makeText(this,
+                    "Can't start ctivity", Toast.LENGTH_SHORT).show();
+            }
         }
+        return true;
     }
 
     @Override
@@ -263,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client.connect();
@@ -288,15 +280,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         //client.disconnect();
     }
 
-    void init_listeners() {
-
+    public void chBoxIsMultiLegOnClick(View v) {
 //            //Crashlytics.getInstance().crash(); // Force a crash
 //            //throw new NullPointerException();
-//        });
-
-        chBoxIsMultiLeg.setOnCheckedChangeListener((compoundButton, b) -> {
             EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
-        });
     }
 
     public void  trackingButtonOnClick(View v){
@@ -333,49 +320,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         return (nfcAdapter != null);
     }
 
-    public void acftActivity() {
-        Intent intent = new Intent(this, AircraftActivity.class);
-        startActivity(intent);
-    }
-
-//    public void facebActivity() {
-//        Intent intent = new Intent(this, FaceBookActivity.class);
-//        startActivity(intent);
-//    }
-
-    void helpPage() {
-        try {
-            Intent intent = new Intent(ctxApp, HelpPageActivity.class);
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
-        }
-    }
-//    void privacyPolicy() {
-//        try {
-//            Intent intent = new Intent(ctxApp, PrivacyPolicyActivity.class);
-//            startActivity(intent);
-//        } catch (ActivityNotFoundException ex) {
-//            Toast.makeText(ctxApp, "Can't reach help webpage.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-    void logBookPage() {
-        try {
-            Intent intent = new Intent(ctxApp, LogBookActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(MainActivity.this,
-                    "Can't start LogBook Activity", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    void sendEmail() {
+    void sendEmail(Intent emailIntent) {
 
         MyPhone myPhone = new MyPhone();
         String[] TO = {getString(R.string.email_crash)};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");
 
@@ -399,16 +347,6 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         }
     }
 
-    public void settingsActivity() {
-        try {
-            Intent intent = new Intent(ctxApp, SimpleSettingsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(ctxApp,
-                    "Can't start Settings.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     void updFreqSpinnerSetup() {
         String[] interval_name = getResources().getStringArray(R.array.intervalname_array);

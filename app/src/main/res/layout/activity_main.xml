@@ -29,7 +29,6 @@
             android:theme="@style/ToolbarTheme"
             app:navigationIcon="@drawable/ic_launcher_36"
             app:popupTheme="@style/ToolbarPopupTheme">
-
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
     <LinearLayout
@@ -78,7 +77,9 @@
             android:ellipsize="middle"
             android:scaleX="2"
             android:scaleY="2"
-            android:gravity="fill" />
+            android:gravity="fill"
+            android:onClick="chBoxIsMultiLegOnClick"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -146,72 +147,7 @@
             android:gravity="start"
             android:layout_weight="1" />
 
-
     </LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:weightSum="10"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:layout_weight="6.24">-->
-        <!--<TextView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="2dip"-->
-            <!--android:background="@android:color/holo_blue_bright" />-->
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="10"-->
-        <!--android:layout_weight="14.29">-->
-
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="5"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/label_pilotphone"-->
-            <!--style="@style/label_text_small"-->
-            <!--android:typeface="normal"-->
-            <!--android:clickable="false"-->
-            <!--/>-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/txtUserName"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="5"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:singleLine="true"-->
-            <!--android:inputType="text"-->
-            <!--android:gravity="end"-->
-            <!--android:focusableInTouchMode="true"/>-->
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="10"-->
-        <!--android:layout_weight="14.29">-->
-
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="3"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/label_aircrafttag"-->
-            <!--style="@style/label_text_small"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/txtAcftNum"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="7"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:inputType="text"-->
-            <!--android:gravity="right"-->
-            <!--/>-->
-
-    <!--</LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -291,13 +227,7 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="10">-->
 
-    <!--</LinearLayout>-->
     <View
         android:id="@+id/TagView"
         android:tag= "simple"
