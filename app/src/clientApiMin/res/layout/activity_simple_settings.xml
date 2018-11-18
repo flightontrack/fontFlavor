@@ -18,27 +18,27 @@ android:weightSum="100"
         android:layout_weight="1"
         android:weightSum="10">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="3.5"
-            android:layout_height="wrap_content"
-            android:text="@string/label_website"
-            style="@style/label_text" />
-        <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="7.5"-->
-        <!--android:layout_height="fill_parent" >-->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="3.5"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/label_website"-->
+            <!--style="@style/label_text" />-->
+        <!--&lt;!&ndash;<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="7.5"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="fill_parent" >&ndash;&gt;-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="6.5"
-            android:layout_height="wrap_content"
-            style="@style/label_text"
-            android:text="@string/app_webserver"
-            android:autoLink="web"
-            android:singleLine="true"
-            android:gravity="left"/>
-        <!--</ScrollView>-->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="6.5"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--style="@style/label_text"-->
+            <!--android:text="@string/app_webserver"-->
+            <!--android:autoLink="web"-->
+            <!--android:singleLine="true"-->
+            <!--android:gravity="left"/>-->
+        <!--&lt;!&ndash;</ScrollView>&ndash;&gt;-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"

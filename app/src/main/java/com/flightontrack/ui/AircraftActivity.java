@@ -2,7 +2,6 @@ package com.flightontrack.ui;
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -10,7 +9,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,26 +20,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.os.Vibrator;
 
 import com.flightontrack.R;
-import com.flightontrack.objects.Aircraft;
 import com.flightontrack.entities.EntityAcftAutoCompleteArray;
-import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.entities.EntityLogMessage;
-import com.flightontrack.shared.Props;
+import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.objects.Aircraft;
 import com.flightontrack.objects.Pilot;
-
-import static com.flightontrack.definitions.SHPREF.*;
-import static com.flightontrack.shared.Props.ctxApp;
-import static shared.AppConfig.pIsNFCcapable;
+import com.flightontrack.shared.Props;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.flightontrack.definitions.SHPREF.ACFTREGNUM;
+import static com.flightontrack.definitions.SHPREF.ACFTTAGID;
+import static shared.AppConfig.pIsNFCcapable;
+
+//import android.content.Context;
+//import android.os.VibrationEffect;
+//import static com.flightontrack.shared.Props.ctxApp;
+
 public class AircraftActivity extends Activity {
     private static final String TAG = "AircraftActivity";
-
+    //ShowAlertClass showAlertClass;
+    protected static NfcAdapter nfcAdapter;
     TextView txtBlueText;
     EditText txtAcftName;
     ArrayAdapter<String> arrayAdapter;
@@ -53,13 +56,28 @@ public class AircraftActivity extends Activity {
     Switch nfcSwitch;
     EntityAcftAutoCompleteArray entityAcftAutoCompleteArray;
     Aircraft aircraft;
-    //ShowAlertClass showAlertClass;
-    protected static NfcAdapter nfcAdapter;
     IntentFilter tagDetected;
     IntentFilter ndefDetected;
     IntentFilter[] nfcFilters;
     PendingIntent pendingIntent;
 
+    public static Boolean getTagNFCState() {
+        return Props.sharedPreferences.getBoolean("nfctagstate", false);
+    }
+
+    public void setTagNFCState(Boolean tagstate) {
+        if (tagstate && !nfcAdapter.isEnabled()) {
+            try (ShowAlertClass showAlertClass = new ShowAlertClass(this)) {
+                showAlertClass.showNFCDisabledAlertToUser();
+                tagstate = false;
+                nfcSwitch.setChecked(tagstate);
+            } catch (Exception e) {
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "setTagNFCState -> " + e.getMessage(), 'e', e));
+            }
+        }
+        Props.editor.putBoolean("nfctagstate", tagstate).commit();
+        txtBlueText.setText(getTagNFCState() ? R.string.instructions1 : R.string.instructions2);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +103,9 @@ public class AircraftActivity extends Activity {
         txtAutoCompleteAcftNum = findViewById(R.id.txtAcftRegNum);
         txtAutoCompleteAcftNum.setThreshold(1);
 
-        doneButton      = findViewById(R.id.btn_acft_done);
-        cancelButton    = findViewById(R.id.btn_acft_cancel);
-        clearButton     = findViewById(R.id.btn_acft_clear);
+        doneButton = findViewById(R.id.btn_acft_done);
+        cancelButton = findViewById(R.id.btn_acft_cancel);
+        clearButton = findViewById(R.id.btn_acft_clear);
 
         if (pIsNFCcapable) {
             nfcSwitch = findViewById(R.id.switch_nfc);
@@ -100,7 +118,7 @@ public class AircraftActivity extends Activity {
         txtAutoCompleteAcftNum.setText(aircraft.AcftNum);
 
         entityAcftAutoCompleteArray = new EntityAcftAutoCompleteArray();
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, entityAcftAutoCompleteArray.acftNumArray);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, entityAcftAutoCompleteArray.acftNumArray);
         txtAutoCompleteAcftNum.setAdapter(arrayAdapter);
 
         init_listeners();
@@ -147,13 +165,13 @@ public class AircraftActivity extends Activity {
             }
         });
 
-        txtAutoCompleteAcftNum.setOnItemClickListener (new AdapterView.OnItemClickListener(){
+        txtAutoCompleteAcftNum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) parent.getItemAtPosition(position);
                 int i = entityAcftAutoCompleteArray.acftNumArrayList.indexOf(item);
                 entityAcftAutoCompleteArray.acftNameArrayList.get(i);
-                txtAcftName.setText((String)   entityAcftAutoCompleteArray.acftNameArrayList.get(i));
+                txtAcftName.setText((String) entityAcftAutoCompleteArray.acftNameArrayList.get(i));
             }
         });
 
@@ -166,25 +184,6 @@ public class AircraftActivity extends Activity {
         }
     }
 
-    public void setTagNFCState(Boolean tagstate){
-        if (tagstate && !nfcAdapter.isEnabled()) {
-            try (ShowAlertClass showAlertClass=new ShowAlertClass(this)) {
-                showAlertClass.showNFCDisabledAlertToUser();
-                tagstate = false;
-                nfcSwitch.setChecked(tagstate);
-            }
-            catch(Exception e){
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "setTagNFCState -> " + e.getMessage(), 'e',e));
-            }
-        }
-        Props.editor.putBoolean("nfctagstate", tagstate).commit();
-        txtBlueText.setText(getTagNFCState() ? R.string.instructions1 : R.string.instructions2);
-    }
-
-    public static Boolean getTagNFCState() {
-        return Props.sharedPreferences.getBoolean("nfctagstate", false);
-    }
-
     public void enableNfcForegroundMode() {
         //Util.appendLog(TAG+ "AircraftActivity enableForegroundMode");
         // foreground mode gives the current active application priority for reading scanned tags
@@ -193,7 +192,7 @@ public class AircraftActivity extends Activity {
         try {
             ndefDetected.addDataType("application/com.flightontrack");
         } catch (IntentFilter.MalformedMimeTypeException e) {
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "enableNfcForegroundMode -> " + e.getMessage(), 'e',e));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "enableNfcForegroundMode -> " + e.getMessage(), 'e', e));
         }
         nfcFilters = new IntentFilter[]{tagDetected, ndefDetected};
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -231,9 +230,8 @@ public class AircraftActivity extends Activity {
     public void onNewIntent(Intent intent) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "AircraftActivity onNewIntent", 'd'));
         //Util.appendLog(TAG+ intent.getAction());
-        if ((   intent.getAction()
-                .equals(NfcAdapter.ACTION_TAG_DISCOVERED)|| intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) && getTagNFCState())
-        {
+        if ((intent.getAction()
+                .equals(NfcAdapter.ACTION_TAG_DISCOVERED) || intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) && getTagNFCState()) {
             ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(500);
 
             NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
@@ -243,14 +241,14 @@ public class AircraftActivity extends Activity {
                 JSONObject j = new JSONObject(new String(payload));
                 new FontLogAsync().execute(new EntityLogMessage(TAG, j.toString(), 'd'));
                 aircraft = new Aircraft(
-                    j.getString(ACFTREGNUM),
-                    null,
-                    j.getString(ACFTTAGID)
+                        j.getString(ACFTREGNUM),
+                        null,
+                        j.getString(ACFTTAGID)
                 );
                 txtAutoCompleteAcftNum.setText(aircraft.AcftNum);
                 txtAcftName.setText(aircraft.AcftName);
             } catch (JSONException e) {
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "onNewIntent() Couldn't create json from NFC: " + e.getMessage(), 'e',e));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "onNewIntent() Couldn't create json from NFC: " + e.getMessage(), 'e', e));
             }
         }
     }

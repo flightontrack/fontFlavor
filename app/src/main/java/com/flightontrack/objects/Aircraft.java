@@ -5,7 +5,7 @@ import com.flightontrack.entities.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.shared.Props;
 
-import org.json.JSONArray;
+//import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

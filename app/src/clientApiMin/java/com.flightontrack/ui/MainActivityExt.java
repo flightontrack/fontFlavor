@@ -1,5 +1,6 @@
 package ui;
 
+import android.content.Intent;
 import android.view.MenuItem;
 
 import com.flightontrack.entities.EntityLogMessage;
@@ -10,8 +11,9 @@ import static com.flightontrack.shared.Props.*;
 public class MainActivityExt {
     static final String TAG = "MainActivityExt";
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
+    public Intent onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent();
+        return intent;
     }
 //    public void startOnReboot(MainActivity ctx){
 //        if (SessionProp.pIsOnReboot && !SessionProp.pIsStartedOnReboot) {

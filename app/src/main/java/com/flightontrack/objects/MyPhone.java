@@ -1,5 +1,6 @@
 package com.flightontrack.objects;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -59,6 +60,7 @@ public class MyPhone extends PhoneStateListener {
         return versionCode;
     }
 
+    @SuppressLint("MissingPermission")
     static String getMyPhoneID() {
         phoneNumber = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
         myDeviceId = ((TelephonyManager) Props.ctxApp.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();

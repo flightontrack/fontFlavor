@@ -12,7 +12,7 @@ public final class AppConfig {
     public static String pAppReleaseSuffix = "p";
     /// these properties updated dynamically in run time
     public static String pMainActivityLayout = "full";
-    public static boolean pIsRelease =false;
+    public static boolean pIsRelease =true;
 
     public AppConfig() {
     }

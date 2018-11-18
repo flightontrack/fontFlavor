@@ -68,6 +68,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
         change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
     }
 
+    @Override
     public void set_flightNumber(String fn) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, " set_flightNumber " + fn + " flightNumStatus " + flightNumStatus, 'd'));
         //replace_FlightNumber(fn);
@@ -116,6 +117,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
         return false;
     }
 
+    @Override
     void get_NewFlightID() {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOnline-get_NewFlightID: " +flightNumber, 'd'));
         isGettingFlight = true;
@@ -283,27 +285,15 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             talkCount=tc;
             new Talk(new EntityFlightTimeMessage(flightTimeSec));
         }
-            //Double remainderSec = (double)flightTimeSec/60%TIME_TALK_INTERVAL_MIN*60;
-        //if(0<=remainderSec && remainderSec<=SvcLocationClock.get_intervalClockSecCurrent()){
-//            Talk.tts = new TextToSpeech(ctxApp, new TextToSpeech.OnInitListener(){
-//                @Override
-//                public void onInit(int status) {
-//                    new FontLogAsync().execute(new EntityLogMessage(TAG, "!!!!!!!!onInit Status "+status, 'd'));
-//                    if (status == TextToSpeech.SUCCESS){
-//                        new TalkAsync().execute(new EntityFlightTimeMessage(flightTimeSec));
-//
-//                    }
-//                }
-//            });
-
     }
 
     double get_cutoffSpeed() {
         return SessionProp.pSpinnerMinSpeed * (RouteBase.activeFlight.flightState == FLIGHT_STATE.INFLIGHT_SPEEDABOVEMIN ? 0.75 : 1.0);
     }
 
+    @Override
     public FlightOnline change_flightState(FLIGHT_STATE fs) {
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState: " + fs, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "change_flightState: current: " +flightState+" change to: "+ fs, 'd'));
         if (flightState == fs) return this;
         flightState = fs;
         switch (fs) {
@@ -320,8 +310,16 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 break;
             case STOPPED:
                 if (sqlHelper.getLocationFlightCount(flightNumber) == 0) {
-                    change_flightState(FLIGHT_STATE.READY_TOBECLOSED);
+                    super.change_flightState(FLIGHT_STATE.READY_TOBECLOSED);
                 }
+                break;
+            case READY_TOBECLOSED:
+                get_CloseFlight();
+                break;
+            case CLOSING:
+                break;
+            case CLOSED:
+                EventBus.distribute(new EventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(flightNumber));
                 break;
             default:
                 super.change_flightState(fs);
@@ -338,7 +336,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     @Override
     public void onClock(EventMessage eventMessage) {
 
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber+" afs:"+flightState+" loccount:"+sqlHelper.getLocationFlightCount(flightNumber), 'd'));
         if (RouteBase.activeFlight == this
                 && (flightState == FLIGHT_STATE.READY_TOSAVELOCATIONS || flightState == FLIGHT_STATE.INFLIGHT_SPEEDABOVEMIN)
                 && eventMessage.eventMessageValueLocation != null) {

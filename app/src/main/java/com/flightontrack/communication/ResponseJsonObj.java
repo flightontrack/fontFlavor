@@ -75,7 +75,7 @@ public class ResponseJsonObj implements AutoCloseable{
         }
     }
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
         //System.out.println(" From Close -  AutoCloseable  ");
     }

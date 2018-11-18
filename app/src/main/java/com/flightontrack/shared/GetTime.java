@@ -18,10 +18,10 @@ public interface GetTime {
     }
 
     default long getTimeGMT() {
-        long currTime = new Date().getTime();
+        //long currTime = new Date().getTime();
         //DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        return currTime;
+        return new Date().getTime();
     }
 
     default String getDateTimeNow() {

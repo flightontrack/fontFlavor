@@ -15,7 +15,7 @@ public class EntityProgressBarGetPsw  extends ProgressDialog implements AutoClos
         setProgress(100);
     }
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 }

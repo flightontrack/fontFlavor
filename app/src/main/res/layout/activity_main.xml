@@ -78,7 +78,6 @@
             android:scaleX="2"
             android:scaleY="2"
             android:gravity="fill"
-            android:onClick="chBoxIsMultiLegOnClick"
             />
     </LinearLayout>
     <LinearLayout

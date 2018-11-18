@@ -280,11 +280,11 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         //client.disconnect();
     }
 
-    public void chBoxIsMultiLegOnClick(View v) {
-//            //Crashlytics.getInstance().crash(); // Force a crash
-//            //throw new NullPointerException();
-            EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
-    }
+//    public void chBoxIsMultiLegOnClick(View v) {
+////            //Crashlytics.getInstance().crash(); // Force a crash
+////            //throw new NullPointerException();
+//            EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
+//    }
 
     public void  trackingButtonOnClick(View v){
         switch (trackingButtonState) {

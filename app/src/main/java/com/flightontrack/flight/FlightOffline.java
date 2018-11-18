@@ -57,7 +57,7 @@ public class FlightOffline implements EventBus{
     }
 
     public FlightOffline change_flightState(FLIGHT_STATE fs){
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState super: " + fs, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "change_flightState super: current: " +flightState+" change to: "+ fs, 'd'));
         if (flightState == fs) return this;
         flightState = fs;
         switch(fs){

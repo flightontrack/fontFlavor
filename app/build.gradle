@@ -8,21 +8,24 @@ android {
         applicationId "com.flightontrack"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 100
-        versionName "100.1"
+        versionCode 102
+        versionName "100.2"
     }
     buildTypes {
         release {
             //runProguard true
-            minifyEnabled true
             shrinkResources true
-            ext.enableCrashlytics = false
+            minifyEnabled true
+            ext.enableCrashlytics = true
             ext.alwaysUpdateBuildId = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             //runProguard false
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
+            ext.enableCrashlytics = true
+            ext.alwaysUpdateBuildId = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
