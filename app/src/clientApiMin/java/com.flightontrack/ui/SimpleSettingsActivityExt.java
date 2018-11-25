@@ -1,6 +1,7 @@
 package ui;
 
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +28,7 @@ public class SimpleSettingsActivityExt{
                 });
             }
             spinnerTextTo = ctx.findViewById(R.id.spinnerTextTo);
-            ArrayAdapter<CharSequence> adapterTextTo = ArrayAdapter.createFromResource(ctxApp,R.array.textto_array, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> adapterTextTo = ArrayAdapter.createFromResource(ctx,R.array.textto_array, android.R.layout.simple_spinner_item);
             adapterTextTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerTextTo.setAdapter(adapterTextTo);
             spinnerTextTo.setOnItemSelectedListener(ctx);

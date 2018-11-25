@@ -22,7 +22,7 @@ android {
         }
         debug {
             //runProguard false
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             ext.enableCrashlytics = true
             ext.alwaysUpdateBuildId = false

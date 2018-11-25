@@ -6,11 +6,12 @@ import android.content.IntentFilter;
 import receiver.AlarmManagerCtrl;
 import receiver.ReceiverHealthCheckAlarm;
 import receiver.ReceiverBatteryLevel;
+import com.flightontrack.BuildConfig;
 
 import static com.flightontrack.definitions.Finals.HEALTHCHECK_BROADCAST_RECEIVER_FILTER;
 
 public final class AppConfig {
-    public static String pAppRelease = "1.81";
+    public static String pAppRelease = BuildConfig.VERSION_NAME;
     public static boolean pIsNFCcapable=false;
     public static boolean pIsNFCEnabled =false;
     public static boolean pIsAppTypePublic=false;

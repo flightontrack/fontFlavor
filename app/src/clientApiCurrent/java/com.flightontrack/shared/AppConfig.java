@@ -2,9 +2,10 @@ package shared;
 
 
 import android.content.Context;
+import com.flightontrack.BuildConfig;
 
 public final class AppConfig {
-    public static String pAppRelease = "1.9";
+    public static String pAppRelease = BuildConfig.VERSION_NAME;
     public static boolean pIsNFCcapable=true;
     public static boolean pIsNFCEnabled =true;
     public static boolean pIsAppTypePublic=true;
@@ -12,7 +13,8 @@ public final class AppConfig {
     public static String pAppReleaseSuffix = "p";
     /// these properties updated dynamically in run time
     public static String pMainActivityLayout = "full";
-    public static boolean pIsRelease =true;
+    //public static boolean pIsRelease =true;
+    public static boolean pIsRelease =false;
 
     public AppConfig() {
     }
