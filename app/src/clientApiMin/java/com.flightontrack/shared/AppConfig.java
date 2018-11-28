@@ -11,19 +11,17 @@ import com.flightontrack.BuildConfig;
 import static com.flightontrack.definitions.Finals.HEALTHCHECK_BROADCAST_RECEIVER_FILTER;
 
 public final class AppConfig {
-    public static String pAppRelease = BuildConfig.VERSION_NAME;
-    public static boolean pIsNFCcapable=false;
-    public static boolean pIsNFCEnabled =false;
-    public static boolean pIsAppTypePublic=false;
     ///             1. start healthcheckalarmreceiver
     ///             2. aicraft activity layout has no nfc
     ///             3. autostart (request flight) is true
     ///             4. app starts on reboot
-    //public static boolean pAutostart= Props.SessionProp.pIsStartedOnReboot;
-    public static String pMainActivityLayout = "min";
-
+    public static String pAppRelease = BuildConfig.VERSION_NAME;
+    public static boolean pIsRelease = BuildConfig.BUILD_TYPE == "release";
+    public static boolean pIsAppTypePublic=false;
     public static String pAppReleaseSuffix = "c";
-    public static boolean pIsRelease =false;
+    public static String pMainActivityLayout = "min";
+    public static boolean pIsNFCcapable=false;
+    public static boolean pIsNFCEnabled =false;
 
     ReceiverHealthCheckAlarm alarmReceiver;
     ReceiverBatteryLevel receiverBatteryLevel;
@@ -37,14 +35,7 @@ public final class AppConfig {
         AlarmManagerCtrl.setAlarm();
         receiverBatteryLevel = new ReceiverBatteryLevel();
         ctx.registerReceiver(receiverBatteryLevel, new IntentFilter("android.intent.action.BATTERY_LOW"));
-        //Props.SessionProp.pIsStartedOnReboot=true;
     }
-//    public static void get(){
-////        //pIsAppTypePublic = false;
-////        //pAutostart = false;
-////        //pIsNFCEnabled = false;
-////        pIsNFCcapable = false;
-////    }
 
     public void unregisterReceivers(Context ctx){
         if (alarmReceiver != null) {

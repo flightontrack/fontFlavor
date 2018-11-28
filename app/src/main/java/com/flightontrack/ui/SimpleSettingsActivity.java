@@ -33,7 +33,6 @@ import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
 import static shared.AppConfig.pIsRelease;
 
-//import static com.flightontrack.shared.Props.AppConfig.pIsRelease;
 
 public class SimpleSettingsActivity extends Activity implements AdapterView.OnItemSelectedListener,EventBus {
 

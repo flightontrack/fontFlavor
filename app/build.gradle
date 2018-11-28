@@ -8,14 +8,14 @@ android {
         applicationId "com.flightontrack"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 102
-        versionName "100.2"
+        versionCode 103
+        versionName "10.3"
     }
     buildTypes {
         release {
             //runProguard true
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
             ext.enableCrashlytics = true
             ext.alwaysUpdateBuildId = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
