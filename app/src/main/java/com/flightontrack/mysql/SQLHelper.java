@@ -193,7 +193,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
         dbTempFlightRecCount=0;
         return i;
     }
-    void insertFlightHistRecord(EntityFlight flight){
+    public void insertFlightHistRecord(EntityFlight flight){
         dbw = getWritableDatabase();
 
         ContentValues values = new ContentValues();

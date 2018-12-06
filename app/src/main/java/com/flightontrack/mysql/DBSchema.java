@@ -24,7 +24,7 @@ static final String SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS =
          _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
          FLIGHTHIST_FlightNumber + INT_TYPE +COMMA_SEP +
          FLIGHTHIST_RouteNumber + TEXT_TYPE +COMMA_SEP +
-         FLIGHTHIST_FlightTimeStart + TEXT_TYPE +
+         FLIGHTHIST_FlightTimeStart + TEXT_TYPE +COMMA_SEP +
          FLIGHTHIST_FlightDuration + TEXT_TYPE +
      " )";
 
@@ -32,13 +32,14 @@ static final String SQL_DROP_TABLE_FLIGHTHIST =    "DROP TABLE IF EXISTS " + TAB
 
 static final String SQL_SELECT_FLIGHTHIST =
     "select " +
-        FLIGHTHIST_FlightNumber  + SPACE +
-        FLIGHTHIST_RouteNumber + SPACE +
-        FLIGHTHIST_FlightTimeStart + SPACE +
+        FLIGHTHIST_FlightNumber  + COMMA_SEP +
+        FLIGHTHIST_RouteNumber + COMMA_SEP +
+        FLIGHTHIST_FlightTimeStart + COMMA_SEP +
         FLIGHTHIST_FlightDuration + SPACE +
-        "from " + TABLE_FLIGHTHIST +
-        "limit 5";
-
+        "from " + TABLE_FLIGHTHIST
+        //+ SPACE+
+        //"limit 5";
+        ;
 /// Table FlightNumberAllocation store temp flights allocated locally
 static final String TABLE_FLIGHTNUMBER_ALLOCATION = "FlightNumberAllocation";
 

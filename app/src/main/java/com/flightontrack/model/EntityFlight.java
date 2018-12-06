@@ -2,11 +2,14 @@ package com.flightontrack.model;
 
 
 public class EntityFlight {
-    int i;
-    String flightNumber;
-    String routeNumber;
-    String flightTimeStart;
-    String flightDuration;
+    public int i;
+    public String flightNumber;
+    public String routeNumber;
+    public String flightTimeStart;
+    public String flightDuration;
+
+    public EntityFlight(){
+    }
 
     public EntityFlight(String f,String r,String t){
         flightNumber    =f;

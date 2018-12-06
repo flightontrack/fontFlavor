@@ -307,7 +307,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
                 flightStartTimeGMT = getTimeGMT();
-                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getTimeLocal());
+                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getDateTimeNow());
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
                 break;
             case STOPPED:
@@ -316,6 +316,9 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 }
                 break;
             case READY_TOBECLOSED:
+                //sqlHelper.insertFlightHistRecord(entityFlight);
+                //new FontLogAsync().execute(new EntityLogMessage(TAG, "history : " + sqlHelper.getFlightHistList(), 'd'));
+                //List<EntityFlight> l = sqlHelper.getFlightHistList();
                 get_CloseFlight();
                 break;
             case CLOSING:
@@ -392,6 +395,9 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 //isGetFlightCallSuccess = true;
                 //route._legCount++;
                 //change_flightState(FLIGHT_STATE.READY_TOSAVELOCATIONS);
+                break;
+            case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
+                entityFlight.flightDuration = flightTimeString;
                 break;
         }
     }

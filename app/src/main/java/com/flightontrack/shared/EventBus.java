@@ -57,6 +57,7 @@ public interface EventBus extends Events{
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
                 interfaceList.add(mainactivityInstance);
                 interfaceList.add(BigButton.getInstance());
+                interfaceList.add(RouteBase.activeFlight);
                 break;
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
                 interfaceList.add(RouteBase.getInstance()); /// remove flight
