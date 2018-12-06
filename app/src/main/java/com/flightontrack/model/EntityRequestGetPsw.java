@@ -1,4 +1,4 @@
-package com.flightontrack.entities;
+package com.flightontrack.model;
 
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.MyPhone;

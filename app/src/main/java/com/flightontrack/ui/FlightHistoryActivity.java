@@ -22,9 +22,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.flightontrack.R;
+import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityAcftAutoCompleteArray;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.Props;
@@ -40,8 +40,8 @@ import static shared.AppConfig.pIsNFCcapable;
 //import android.os.VibrationEffect;
 //import static com.flightontrack.shared.Props.ctxApp;
 
-public class AircraftActivity extends Activity {
-    private static final String TAG = "AircraftActivity";
+public class FlightHistoryActivity extends Activity {
+    private static final String TAG = "FlightHistoryActivity";
     //ShowAlertClass showAlertClass;
     protected static NfcAdapter nfcAdapter;
     TextView txtBlueText;

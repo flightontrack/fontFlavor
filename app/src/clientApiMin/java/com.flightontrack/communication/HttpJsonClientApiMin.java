@@ -1,8 +1,8 @@
 package communication;
 
 import com.flightontrack.R;
-import com.flightontrack.entities.EntityLogMessage;
-import entities.EntityRequestHealthCheck;
+import com.flightontrack.model.EntityLogMessage;
+import model.EntityRequestHealthCheck;
 import com.flightontrack.log.FontLogAsync;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;

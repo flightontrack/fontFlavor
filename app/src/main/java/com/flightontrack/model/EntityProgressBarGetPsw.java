@@ -1,4 +1,4 @@
-package com.flightontrack.entities;
+package com.flightontrack.model;
 
 import android.app.ProgressDialog;
 import android.content.Context;

@@ -1,12 +1,12 @@
 package com.flightontrack.communication;
 
 import com.flightontrack.R;
-import com.flightontrack.entities.EntityLogMessage;
-import com.flightontrack.entities.EntityRequestCloseFlight;
-import com.flightontrack.entities.EntityRequestGetPsw;
-import com.flightontrack.entities.EntityRequestNewFlight;
-import com.flightontrack.entities.EntityRequestNewFlightOffline;
-import com.flightontrack.entities.EntityRequestPostLocation;
+import com.flightontrack.model.EntityLogMessage;
+import com.flightontrack.model.EntityRequestCloseFlight;
+import com.flightontrack.model.EntityRequestGetPsw;
+import com.flightontrack.model.EntityRequestNewFlight;
+import com.flightontrack.model.EntityRequestNewFlightOffline;
+import com.flightontrack.model.EntityRequestPostLocation;
 import com.flightontrack.log.FontLogAsync;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;

@@ -3,7 +3,6 @@ package com.flightontrack.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.EventBus;

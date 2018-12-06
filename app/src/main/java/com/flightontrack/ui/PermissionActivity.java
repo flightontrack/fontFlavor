@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.flight.Route;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 
 import static com.flightontrack.definitions.Finals.*;
 

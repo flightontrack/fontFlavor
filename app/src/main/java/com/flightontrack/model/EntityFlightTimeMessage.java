@@ -1,4 +1,4 @@
-package com.flightontrack.entities;
+package com.flightontrack.model;
 
 public class EntityFlightTimeMessage {
     public int hour;

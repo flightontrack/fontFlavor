@@ -17,6 +17,13 @@
         android:orderInCategory="2"
         app:showAsAction="never"
         />
+    <item android:id="@+id/action_flighthist"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/action_flighthistory"
+        android:layout_weight="1"
+        android:orderInCategory="4"
+        app:showAsAction="never"
+        />
     <item android:id="@+id/action_help"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/action_help"

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;

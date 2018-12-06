@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.R;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
@@ -194,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                     break;
                 case R.id.action_aircraft:
                     intent = new Intent(this, AircraftActivity.class);
+                    break;
+                case R.id.action_flighthist:
+                    intent = new Intent(this, FlightHistoryActivity.class);
                     break;
                 default:
                     intent = (new MainActivityExt().onOptionsItemSelected(item));

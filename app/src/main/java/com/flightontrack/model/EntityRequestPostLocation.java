@@ -1,4 +1,4 @@
-package com.flightontrack.entities;
+package com.flightontrack.model;
 
 import com.flightontrack.definitions.Finals;
 import com.flightontrack.shared.Props;

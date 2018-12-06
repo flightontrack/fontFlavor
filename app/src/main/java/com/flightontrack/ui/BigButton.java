@@ -1,13 +1,9 @@
 package com.flightontrack.ui;
 
-import android.graphics.drawable.GradientDrawable;
-
 import com.flightontrack.R;
-import com.flightontrack.definitions.Enums;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.definitions.Finals;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Props;

@@ -8,7 +8,7 @@ import android.telephony.SmsManager;
 
 import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.objects.Pilot;
 

@@ -8,9 +8,9 @@ import android.content.Intent;
 
 import communication.HttpJsonClientApiMin;
 import com.flightontrack.communication.ResponseJsonObj;
-import entities.EntityRequestHealthCheck;
+import model.EntityRequestHealthCheck;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.ui.MainActivity;

@@ -2,7 +2,7 @@ package com.flightontrack.communication;
 
 import android.util.Log;
 
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 
 import org.json.JSONException;

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import com.flightontrack.R;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.mysql.SQLHelper;
 
 import static com.flightontrack.definitions.Finals.*;

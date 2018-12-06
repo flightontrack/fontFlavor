@@ -12,12 +12,14 @@
     <string name="action_aircraft">Aircraft</string>
     <string name="action_logbook">LogBook</string>
     <string name="action_facebook">Share on FB</string>
+    <string name="action_flighthistory">My Latest Flights</string>
     <string name="action_privpolicy">Privacy Policy</string>
     <string name="action_browser">Flightontrack.com</string>
 
     <!--activityTitle-->
     <string name="activity_aircraft_title">Aircraft</string>
     <string name="activity_logbook_title">My Pilot LogBook</string>
+    <string name="activity_flighthistory_title">My Flight History</string>
 
     <!--url-->
     <string name="app_webserver">flightontrack.com</string>

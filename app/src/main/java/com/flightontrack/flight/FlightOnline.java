@@ -9,12 +9,13 @@ import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
 import com.flightontrack.definitions.Limits;
+import com.flightontrack.model.EntityFlight;
 import com.flightontrack.objects.Aircraft;
-import com.flightontrack.entities.EntityFlightTimeMessage;
-import com.flightontrack.entities.EntityRequestNewFlight;
+import com.flightontrack.model.EntityFlightTimeMessage;
+import com.flightontrack.model.EntityRequestNewFlight;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.mysql.DBSchema;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
@@ -57,7 +58,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     private boolean         isElevationCheckDone;
     private boolean         isGettingFlight = false;
     private boolean         isGetFlightCallSuccess = false;
-    private boolean         isSpoken = false;
+    private EntityFlight    entityFlight;
     private List<Integer>   dbIdList = new ArrayList<>();
 
     public FlightOnline(Route r) {
@@ -258,7 +259,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             values.put(DBSchema.COLUMN_NAME_COL11, Integer.toString(Pilot.getSignalStregth())); //gsmsignal
             values.put(DBSchema.LOC_date, URLEncoder.encode(getDateTimeNow(), "UTF-8")); //date
             values.put(DBSchema.LOC_is_elevetion_check, iselevecheck);
-            long r = sqlHelper.rowLocationInsert(values);
+            long r = sqlHelper.insertRowLocation(values);
             if (r > 0) {
                 dbIdList.add((int) r);
                 lastAltitudeFt = (int) (Math.round(location.getAltitude() * 3.281));
@@ -306,6 +307,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
                 flightStartTimeGMT = getTimeGMT();
+                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getTimeLocal());
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
                 break;
             case STOPPED:

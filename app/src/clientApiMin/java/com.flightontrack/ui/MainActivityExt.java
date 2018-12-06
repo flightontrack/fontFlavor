@@ -3,7 +3,7 @@ package ui;
 import android.content.Intent;
 import android.view.MenuItem;
 
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.ui.MainActivity;
 import static com.flightontrack.shared.Props.*;

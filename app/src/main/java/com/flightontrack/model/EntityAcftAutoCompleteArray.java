@@ -1,4 +1,4 @@
-package com.flightontrack.entities;
+package com.flightontrack.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;

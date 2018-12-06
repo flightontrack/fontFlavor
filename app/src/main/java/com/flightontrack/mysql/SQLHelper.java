@@ -8,12 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import com.flightontrack.entities.EntityLocation;
+import com.flightontrack.model.EntityFlight;
+import com.flightontrack.model.EntityLocation;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventMessage;
 
 import static com.flightontrack.flight.RouteBase.get_FlightInstanceByNumber;
+import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTHIST;
 import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
 import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;
 import static com.flightontrack.shared.Props.*;
@@ -45,6 +47,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
+            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
             dbw.close();
             dbLocationRecCountNormal = getLocationRecCountNormal();
             //if (dbLocationRecCountNormal == 0 && getLocationTableCountTemp() == 0) {
@@ -89,8 +92,10 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             int lcount = (int) DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
+            dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
+            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
             dbLocationRecCountNormal = 0;
             dbTempFlightRecCount = 0;
             //Toast.makeText(ctxApp, "Deleted " + lcount + " location points", Toast.LENGTH_LONG).show();
@@ -188,7 +193,28 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
         dbTempFlightRecCount=0;
         return i;
     }
-    public long  rowLocationInsert(ContentValues values) {
+    void insertFlightHistRecord(EntityFlight flight){
+        dbw = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBSchema.FLIGHTHIST_FlightNumber, flight.flightNumber);
+        values.put(DBSchema.FLIGHTHIST_RouteNumber, flight.routeNumber);
+        values.put(DBSchema.FLIGHTHIST_FlightTimeStart, flight.flightTimeStart);
+        values.put(DBSchema.FLIGHTHIST_FlightDuration, flight.flightDuration);
+
+        long r = 0;
+        try {
+            r = dbw.insert(TABLE_FLIGHTHIST,
+                    null,
+                    values);
+        } catch (Exception e) {
+            new FontLogAsync().execute(new EntityLogMessage(TAG, e.getMessage(), 'e'));
+        }
+        finally {
+            dbw.close();
+        }
+    }
+    public long insertRowLocation(ContentValues values) {
         long r = 0;
         try {
             dbw = getWritableDatabase();
@@ -261,6 +287,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
         }
         return locations;
     }
+
     public ArrayList<EntityLocation> getFlightLocationList(String flightNum) {
 
         String[] projection = {
@@ -329,6 +356,26 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             dbw.close();
         }
         return flightIdList;
+    }
+    public List<EntityFlight> getFlightHistList() {
+
+        dbw = getReadableDatabase();
+        ArrayList<EntityFlight> flightList = new ArrayList<>();
+
+        try (Cursor cu = dbw.rawQuery(DBSchema.SQL_SELECT_FLIGHTHIST  , new String[]{})) {
+            while (cu.moveToNext()) {
+                EntityFlight f = new EntityFlight();
+                f.i = cu.getPosition();
+                f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightNumber));
+                f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_RouteNumber));
+                f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightTimeStart));
+                f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDuration));
+            }
+        } finally {
+            dbw.close();
+        }
+
+        return flightList;
     }
     public List<String> getReadyToSendFlightList() {
         dbw = getReadableDatabase();

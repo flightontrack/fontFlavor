@@ -3,8 +3,8 @@ package other;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 
-import com.flightontrack.entities.EntityFlightTimeMessage;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityFlightTimeMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 
 
@@ -13,7 +13,7 @@ public class TalkAsync extends AsyncTask<EntityFlightTimeMessage, Void, Void> im
     public static TextToSpeech TalkTime;
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
 

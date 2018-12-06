@@ -1,7 +1,7 @@
 package com.flightontrack.objects;
 
-import com.flightontrack.entities.EntityAcftAutoCompleteArray;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityAcftAutoCompleteArray;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.shared.Props;
 

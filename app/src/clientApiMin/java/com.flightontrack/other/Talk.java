@@ -4,8 +4,8 @@ import java.util.HashMap;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 
-import com.flightontrack.entities.EntityFlightTimeMessage;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityFlightTimeMessage;
+import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import static com.flightontrack.shared.Props.ctxApp;
 
@@ -24,7 +24,7 @@ public class Talk implements TextToSpeech.OnInitListener,AutoCloseable{
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         //new FontLogAsync().execute(new EntityLogMessage(TAG," From Close -  AutoCloseable  ", 'd'));
     }
     @Override

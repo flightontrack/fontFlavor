@@ -7,7 +7,7 @@ import com.flightontrack.flight.RouteBase;
 import com.flightontrack.flight.Session;
 import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.entities.EntityLogMessage;
+import com.flightontrack.model.EntityLogMessage;
 
 import java.util.ArrayList;
 
