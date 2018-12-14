@@ -66,6 +66,9 @@ public interface EventBus extends Events{
                 if(!SessionProp.pIsMultileg) interfaceList.add(SvcLocationClock.getInstance());//TODO doing nothing
                 interfaceList.add(RouteBase.activeRoute); /// restart new flight in the route
                 break;
+            case FLIGHT_ONSPEEDCHANGE:
+                interfaceList.add(SvcLocationClock.getInstance());
+                break;
             case FLIGHT_ONSPEEDABOVEMIN:
                 interfaceList.add(SvcLocationClock.getInstance()); ///
                 break;

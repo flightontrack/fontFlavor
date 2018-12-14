@@ -21,10 +21,10 @@ public abstract class Finals {
     public static final long ZERO_DISTANCE_CHANGE_FOR_UPDATES = 0;
     public static final long MIN_TIME_BW_GPS_UPDATES = 3000;
     public static final int  MIN_TIME_BW_GPS_UPDATES_SEC = (int)MIN_TIME_BW_GPS_UPDATES/1000;
+    public static final int DEFAULT_TIME_BW_GPS_UPDATES_SEC = 5; //... sec
     public static final int  SPEEDLOW_TIME_BW_GPS_UPDATES_SEC = 5;
     public static final int  ALARM_TIME_SEC = 600;
 
-    public static final long DEFAULT_TIME_BW_GPS_UPDATES = 10000; //... sec
     public static final long DEFAULT_DISTANCE_CHANGE_FOR_UPDATES = 10; //  meters
 
     public static final int TIME_RESERVE =150;

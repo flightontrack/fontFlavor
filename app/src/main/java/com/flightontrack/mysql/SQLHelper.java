@@ -370,6 +370,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_RouteNumber));
                 f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightTimeStart));
                 f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDuration));
+                flightList.add(f);
             }
         } finally {
             dbw.close();

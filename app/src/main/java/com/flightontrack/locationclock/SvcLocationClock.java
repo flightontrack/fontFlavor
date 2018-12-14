@@ -262,6 +262,9 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
             case FLIGHT_ONSPEEDABOVEMIN:
                 requestLocationUpdate(Props.SessionProp.pIntervalLocationUpdateSec, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
                 break;
+            case FLIGHT_ONSPEEDCHANGE:
+                requestLocationUpdate(eventMessage.eventMessageValueInt, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+                break;
         }
     }
 }

@@ -45,6 +45,7 @@ android {
             minSdkVersion 21
             dimension "client"
             targetSdkVersion 26
+
 //            applicationIdSuffix '.client_pu'
         }
     }
@@ -81,6 +82,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
     clientApiCurrentImplementation 'com.facebook.android:facebook-share:4.32.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

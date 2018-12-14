@@ -109,10 +109,13 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             //else if (RouteBase.activeFlight.lastAction == FACTION.CHANGE_IN_FLIGHT && (isCurrSpeedAboveMin ^ isPrevSpeedAboveMin)) {
         else if (isCurrSpeedAboveMin ^ isPrevSpeedAboveMin) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "isCurrSpeedAboveMin:" + isCurrSpeedAboveMin + " isPrevSpeedAboveMin:" + isPrevSpeedAboveMin, 'd'));
-            if (isPrevSpeedAboveMin)
-                SvcLocationClock.instanceSvcLocationClock.requestLocationUpdate(SPEEDLOW_TIME_BW_GPS_UPDATES_SEC, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
-            else if (isCurrSpeedAboveMin)
-                SvcLocationClock.instanceSvcLocationClock.requestLocationUpdate(SvcLocationClock.intervalClockSecPrev, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+            int intervalClockSec = DEFAULT_TIME_BW_GPS_UPDATES_SEC;
+            if (isPrevSpeedAboveMin) intervalClockSec = SPEEDLOW_TIME_BW_GPS_UPDATES_SEC;
+                        //EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDCHANGE).setEventMessageValueInt(SPEEDLOW_TIME_BW_GPS_UPDATES_SEC));
+                //SvcLocationClock.instanceSvcLocationClock.requestLocationUpdate(SPEEDLOW_TIME_BW_GPS_UPDATES_SEC, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+            else if (isCurrSpeedAboveMin) intervalClockSec = SvcLocationClock.intervalClockSecPrev;
+                //SvcLocationClock.instanceSvcLocationClock.requestLocationUpdate(SvcLocationClock.intervalClockSecPrev, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+            EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDCHANGE).setEventMessageValueInt(intervalClockSec));
             return true;
         }
         return false;
@@ -165,6 +168,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                             /// in case of request resubmitting for flight number on this flight
                             flightNumStatus = FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
                             replace_FlightNumber(response.responseNewFlightNum);
+                            route.routeNumber = response.responseNewFlightNum;
                         }
                         else {
                             /// normal flow
@@ -316,9 +320,9 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 }
                 break;
             case READY_TOBECLOSED:
-                //sqlHelper.insertFlightHistRecord(entityFlight);
-                //new FontLogAsync().execute(new EntityLogMessage(TAG, "history : " + sqlHelper.getFlightHistList(), 'd'));
-                //List<EntityFlight> l = sqlHelper.getFlightHistList();
+                sqlHelper.insertFlightHistRecord(entityFlight);
+                List<EntityFlight> l = sqlHelper.getFlightHistList();
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "history list size: "+l.size(), 'd'));
                 get_CloseFlight();
                 break;
             case CLOSING:
