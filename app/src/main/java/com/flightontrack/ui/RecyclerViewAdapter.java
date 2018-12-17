@@ -7,10 +7,11 @@ import android.widget.TextView;
 
 import com.flightontrack.R;
 import com.flightontrack.model.EntityFlight;
+import com.flightontrack.shared.GetTime;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements GetTime {
     private List<EntityFlight> mDataset;
 
     // Provide a reference to the views for each data item
@@ -57,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // - replace the contents of the view with that element
         holder.textViewFlightNum.setText(holder.textViewFlightNum.getText()+"\n"+ mDataset.get(position).flightNumber);
         holder.textViewAcft.setText(holder.textViewAcft.getText()+ mDataset.get(position).flightAcft);
-        holder.textViewStartTime.setText(holder.textViewStartTime.getText()+ mDataset.get(position).flightTimeStart);
+        holder.textViewStartTime.setText(holder.textViewStartTime.getText()+ getDateLocal(mDataset.get(position).flightTimeStart));
         holder.textViewDuration.setText(holder.textViewDuration.getText()+ mDataset.get(position).flightDuration);
 
     }

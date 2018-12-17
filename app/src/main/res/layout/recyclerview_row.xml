@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="10dp"
-    android:paddingLeft="10dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="5dp">
 
     <TextView
         android:id="@+id/id_oval"
@@ -12,7 +13,7 @@
         android:layout_height="60dp"
         android:background="@drawable/oval_fn"
         android:gravity="center"
-        android:text="Flight:"
+        android:text="Flight: "
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         />
@@ -23,7 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/id_oval"
         android:layout_marginLeft="10dp"
-        android:text="Aircraft:"
+        android:text="Aircraft: "
         android:textSize="20sp" />
     <TextView
         android:id="@+id/item_starttime"
@@ -32,7 +33,7 @@
         android:layout_toRightOf="@+id/id_oval"
         android:layout_below="@+id/item_acft"
         android:layout_marginLeft="10dp"
-        android:text="Started:"/>
+        android:text="Started: "/>
     <TextView
         android:id="@+id/item_dur"
         android:layout_width="match_parent"
@@ -41,7 +42,7 @@
         android:layout_below="@+id/item_starttime"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Duration:"/>
+        android:text="Duration: "/>
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

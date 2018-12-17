@@ -92,7 +92,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             int lcount = (int) DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-            dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
+            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
@@ -374,7 +374,11 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
                 f.flightAcft = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightAcft));
                 flightList.add(f);
             }
-        } finally {
+        }
+        catch (Exception e){
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+        }
+        finally {
             dbw.close();
         }
 

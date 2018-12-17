@@ -12,7 +12,7 @@
         android:background="?attr/colorPrimary"
         android:gravity="fill_vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:text="My Recent Fligfts"
+        android:text="@string/activity_myrecentflights"
         android:textColor="@color/colorPrimaryLight" />
 
 

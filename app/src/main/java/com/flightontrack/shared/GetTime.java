@@ -16,7 +16,12 @@ public interface GetTime {
         dateFormat.setTimeZone(TimeZone.getDefault());
         return dateFormat.format(currTime);
     }
-
+    default String getDateLocal(String dt) {
+        long currTime = new Date().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
+        dateFormat.setTimeZone(TimeZone.getDefault());
+        return dateFormat.format(dt);
+    }
     default long getTimeGMT() {
         //long currTime = new Date().getTime();
         //DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
