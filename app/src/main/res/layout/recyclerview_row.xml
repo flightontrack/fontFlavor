@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp">
 
     <TextView
-        android:id="@+id/textview_row"
-        android:layout_width="wrap_content"
+        android:id="@+id/id_oval"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:background="@drawable/oval_fn"
+        android:gravity="center"
+        android:text="Flight:"
+        android:textColor="@android:color/white"
+        android:layout_centerVertical="true"
+        />
+    <TextView
+        android:id="@+id/item_acft"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/id_oval"
+        android:layout_marginLeft="10dp"
+        android:text="Aircraft:"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/item_starttime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/id_oval"
+        android:layout_below="@+id/item_acft"
+        android:layout_marginLeft="10dp"
+        android:text="Started:"/>
+    <TextView
+        android:id="@+id/item_dur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/id_oval"
+        android:layout_below="@+id/item_starttime"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Duration:"/>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/item_dur"/>
+</RelativeLayout>

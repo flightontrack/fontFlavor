@@ -18,25 +18,29 @@ static final String TABLE_FLIGHTHIST = "FlightHistory";
      static final String FLIGHTHIST_RouteNumber = "RouteNumber";
      static final String FLIGHTHIST_FlightTimeStart = "FlightTimeStart";
      static final String FLIGHTHIST_FlightDuration = "FlightDuration";
+     static final String FLIGHTHIST_FlightAcft = "FlightAcft";
 
 static final String SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS =
     "CREATE TABLE IF NOT EXISTS " + TABLE_FLIGHTHIST + " (" +
-         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-         FLIGHTHIST_FlightNumber + INT_TYPE +COMMA_SEP +
-         FLIGHTHIST_RouteNumber + TEXT_TYPE +COMMA_SEP +
-         FLIGHTHIST_FlightTimeStart + TEXT_TYPE +COMMA_SEP +
-         FLIGHTHIST_FlightDuration + TEXT_TYPE +
+        _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        FLIGHTHIST_FlightNumber + INT_TYPE +COMMA_SEP +
+        FLIGHTHIST_RouteNumber + TEXT_TYPE +COMMA_SEP +
+        FLIGHTHIST_FlightTimeStart + TEXT_TYPE +COMMA_SEP +
+        FLIGHTHIST_FlightAcft + TEXT_TYPE +COMMA_SEP +
+        FLIGHTHIST_FlightDuration + TEXT_TYPE +
      " )";
 
 static final String SQL_DROP_TABLE_FLIGHTHIST =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTHIST;
 
 static final String SQL_SELECT_FLIGHTHIST =
-    "select " +
-        FLIGHTHIST_FlightNumber  + COMMA_SEP +
-        FLIGHTHIST_RouteNumber + COMMA_SEP +
-        FLIGHTHIST_FlightTimeStart + COMMA_SEP +
-        FLIGHTHIST_FlightDuration + SPACE +
-        "from " + TABLE_FLIGHTHIST
+"select " +
+    FLIGHTHIST_FlightNumber  + COMMA_SEP +
+    FLIGHTHIST_RouteNumber + COMMA_SEP +
+    FLIGHTHIST_FlightTimeStart + COMMA_SEP +
+    FLIGHTHIST_FlightAcft + COMMA_SEP +
+    FLIGHTHIST_FlightDuration + SPACE +
+"from " +
+    TABLE_FLIGHTHIST
         //+ SPACE+
         //"limit 5";
         ;

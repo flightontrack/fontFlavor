@@ -201,6 +201,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
         values.put(DBSchema.FLIGHTHIST_RouteNumber, flight.routeNumber);
         values.put(DBSchema.FLIGHTHIST_FlightTimeStart, flight.flightTimeStart);
         values.put(DBSchema.FLIGHTHIST_FlightDuration, flight.flightDuration);
+        values.put(DBSchema.FLIGHTHIST_FlightAcft, flight.flightAcft);
 
         long r = 0;
         try {
@@ -370,12 +371,16 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_RouteNumber));
                 f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightTimeStart));
                 f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDuration));
+                f.flightAcft = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightAcft));
                 flightList.add(f);
             }
         } finally {
             dbw.close();
         }
 
+//        flightList.add(new EntityFlight("700000","7000","12:00pm","35 min"));
+//        flightList.add(new EntityFlight("700100","7000","12:00pm","11 min"));
+//        flightList.add(new EntityFlight("700200","7000","12:00pm","1 h 35 min"));
         return flightList;
     }
     public List<String> getReadyToSendFlightList() {

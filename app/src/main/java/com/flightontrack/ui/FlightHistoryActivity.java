@@ -10,7 +10,12 @@ import android.view.MenuItem;
 
 import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.model.EntityFlight;
 import com.flightontrack.model.EntityLogMessage;
+
+import java.util.List;
+
+import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
 
 public class FlightHistoryActivity extends Activity {
 
@@ -26,6 +31,7 @@ public class FlightHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightHistorytActivity onCreate", 'd'));
         setContentView(R.layout.activity_h);
+        List<EntityFlight> flightList = sqlHelper.getFlightHistList();
         mRecyclerView = findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -37,7 +43,7 @@ public class FlightHistoryActivity extends Activity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new RecyclerViewAdapter(myDataset);
+        mAdapter = new RecyclerViewAdapter(flightList);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -311,7 +311,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
                 flightStartTimeGMT = getTimeGMT();
-                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getDateTimeNow());
+                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getDateTimeNow(),flightNumber);
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
                 break;
             case STOPPED:
