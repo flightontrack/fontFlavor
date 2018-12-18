@@ -7,11 +7,10 @@ import android.widget.TextView;
 
 import com.flightontrack.R;
 import com.flightontrack.model.EntityFlight;
-import com.flightontrack.shared.GetTime;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements GetTime {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>  {
     private List<EntityFlight> mDataset;
 
     // Provide a reference to the views for each data item
@@ -22,6 +21,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView textViewAcft;
         public TextView textViewFlightNum;
         public TextView textViewRouteNum;
+        public TextView textViewDate;
         public TextView textViewStartTime;
         public TextView textViewDuration;
         public MyViewHolder(View v) {
@@ -29,6 +29,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //textViewFlightNum = v;
             textViewFlightNum = v.findViewById(R.id.id_oval);
             textViewAcft = v.findViewById(R.id.item_acft);
+            textViewDate = v.findViewById(R.id.item_date);
             textViewStartTime = v.findViewById(R.id.item_starttime);
             textViewDuration = v.findViewById(R.id.item_dur);
         }
@@ -58,9 +59,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // - replace the contents of the view with that element
         holder.textViewFlightNum.setText(holder.textViewFlightNum.getText()+"\n"+ mDataset.get(position).flightNumber);
         holder.textViewAcft.setText(holder.textViewAcft.getText()+ mDataset.get(position).flightAcft);
-        holder.textViewStartTime.setText(holder.textViewStartTime.getText()+ getDateLocal(mDataset.get(position).flightTimeStart));
+        holder.textViewStartTime.setText(holder.textViewStartTime.getText()+ mDataset.get(position).flightTimeStart);
+        holder.textViewDate.setText(holder.textViewDate.getText()+ mDataset.get(position).flightDate);
         holder.textViewDuration.setText(holder.textViewDuration.getText()+ mDataset.get(position).flightDuration);
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)

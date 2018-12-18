@@ -28,7 +28,7 @@ import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.shared.Props.ctxApp;
 
-public class SvcLocationClock extends Service implements EventBus, LocationListener,GetTime {
+public class SvcLocationClock extends Service implements EventBus, LocationListener{
     static final String TAG = "SvcLocationClock";
     //private static Context ctx;
     static LocationManager locationManager;
@@ -41,6 +41,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     public static int intervalClockSecPrev = _intervalClockSecCurrent;
     public static long  alarmNextTimeUTCmsec;
     MyPhone phStateListener;
+    GetTime getTime;
 
     public SvcLocationClock() {
     }
@@ -71,7 +72,8 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         new FontLogAsync().execute(new EntityLogMessage(TAG, "requestLocationUpdate: interval: " + timeSec + " dist: " + distance, 'd'));
         SvcLocationClock.stopLocationUpdates();
         set_intervalClockSecCurrent(timeSec);
-        setClockNextTimeLocalMsec(0);
+        //setClockNextTimeLocalMsec(0);
+        alarmNextTimeUTCmsec = getTime.getTimeGMT();
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, _intervalClockSecCurrent * 1000, distance, this);
         }
@@ -113,11 +115,11 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         }
         else {
             tryCounter =0;
-            long currTime = getTimeGMT();
+            long currTime = getTime.getTimeGMT();
             if (currTime + TIME_RESERVE >= alarmNextTimeUTCmsec) {
-                //Util.appendLog(TAG + "isClockTimeReached: ", 'd');
                 /// it is a protection
-                setClockNextTimeLocalMsec(_intervalClockSecCurrent);
+                //setClockNextTimeLocalMsec(_intervalClockSecCurrent);
+                alarmNextTimeUTCmsec = currTime+ _intervalClockSecCurrent*1000;
                 EventBus.distribute(new EventMessage(EVENT.CLOCK_ONTICK).setEventMessageValueClockMode(_mode).setEventMessageValueLocation(location));
             }
         }
@@ -159,16 +161,15 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
             stopSelf();
             return;
         }
-        //FontLog.appendLog(TAG + "onCreate",'d');
+
         new FontLogAsync().execute(new EntityLogMessage(TAG,"onCreate",'d'));
         instanceSvcLocationClock =this;
         _mode = MODE.CLOCK_LOCATION;
         EventBus.distribute(new EventMessage(EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
         //ctx = getApplicationContext();
-        alarmNextTimeUTCmsec = getTimeGMT();
+        getTime = new GetTime();
+        alarmNextTimeUTCmsec = getTime.initDateTimeGMT;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //ReceiverHealthCheckAlarm.isRestart = true;
-
     }
 
     public  void setSignalStrengthListener(boolean start){
@@ -225,20 +226,17 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     }
     void setToNull(){
         instanceSvcLocationClock =null;
-        //ctx=null;
-        //phStateListener=null;
     }
 
-    void setClockNextTimeLocalMsec(int intervalSec) {
-        alarmNextTimeUTCmsec = getTimeGMT()+ intervalSec*1000;
-    }
+//    void setClockNextTimeLocalMsec(int intervalSec) {
+//        alarmNextTimeUTCmsec = getTimeGMT()+ intervalSec*1000;
+//    }
 
     @Override
     public void eventReceiver(EventMessage eventMessage){
         EVENT ev = eventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG,"eventReceiver:"+ev,'d'));
         switch(ev){
-            //case FLIGHT_GETNEWFLIGHT_COMPLETED:
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
                 //if (!SvcLocationClock.isInstanceCreated()) ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
                 ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));

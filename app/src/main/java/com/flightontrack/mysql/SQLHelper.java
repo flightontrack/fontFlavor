@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
+public class SQLHelper extends SQLiteOpenHelper implements EventBus {
     private static final String TAG = "SQLHelper";
     
     private static final int DATABASE_VERSION = 1;
@@ -53,7 +53,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             //if (dbLocationRecCountNormal == 0 && getLocationTableCountTemp() == 0) {
             if (getLocationTableCountTotal() == 0) {
                 /// TODO - to come up with something... - reset ids to 1
-                dropCreateDb();
+                ///dropCreateDb();
 //                dbw = getWritableDatabase();
 //                dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
 //                dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
@@ -92,7 +92,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             int lcount = (int) DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
+            dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
@@ -199,6 +199,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
         ContentValues values = new ContentValues();
         values.put(DBSchema.FLIGHTHIST_FlightNumber, flight.flightNumber);
         values.put(DBSchema.FLIGHTHIST_RouteNumber, flight.routeNumber);
+        values.put(DBSchema.FLIGHTHIST_FlightDate, flight.flightDate);
         values.put(DBSchema.FLIGHTHIST_FlightTimeStart, flight.flightTimeStart);
         values.put(DBSchema.FLIGHTHIST_FlightDuration, flight.flightDuration);
         values.put(DBSchema.FLIGHTHIST_FlightAcft, flight.flightAcft);
@@ -369,6 +370,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
                 f.i = cu.getPosition();
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightNumber));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_RouteNumber));
+                f.flightDate = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDate));
                 f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightTimeStart));
                 f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDuration));
                 f.flightAcft = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightAcft));
@@ -501,9 +503,8 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus,GetTime {
             case FLIGHT_GETNEWFLIGHT_COMPLETED:
                 if(!eventMessage.eventMessageValueBool)
                     try {
-                        String dt = URLEncoder.encode(getDateTimeNow(), "UTF-8");
+                        String dt = URLEncoder.encode(new GetTime().dateTimeLocal, "UTF-8");
                         EventBus.distribute(new EventMessage(EVENT.SQL_LOCALFLIGHTNUM_ALLOCATED).setEventMessageValueString(getNewTempFlightNum(dt)));
-
                     } catch (UnsupportedEncodingException e1) {
                         e1.printStackTrace();
                     }

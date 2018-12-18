@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -17,32 +18,81 @@
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         />
+
     <TextView
-        android:id="@+id/item_acft"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/id_oval"
         android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/item_acft"
+        android:layout_toRightOf="@+id/id_oval"
+        android:gravity="right"
         android:text="Aircraft: "
         android:textSize="20sp" />
     <TextView
-        android:id="@+id/item_starttime"
-        android:layout_width="match_parent"
+        android:id="@+id/item_acft"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/id_oval"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/item_durlabel"
+        android:layout_marginLeft="10dp"
+        android:text=""
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/item_acft"
         android:layout_marginLeft="10dp"
-        android:text="Started: "/>
+        android:layout_toLeftOf="@+id/item_date"
+        android:layout_toRightOf="@+id/id_oval"
+        android:gravity="right"
+        android:text="Date: " />
     <TextView
-        android:id="@+id/item_dur"
-        android:layout_width="match_parent"
+        android:id="@+id/item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_durlabel"
+        android:layout_below="@+id/item_acft"
+        android:layout_marginLeft="10dp"
+        android:text=""/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_date"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/item_starttime"
+        android:gravity="right"
+        android:text="Started: " />
+
+    <TextView
+        android:id="@+id/item_starttime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_date"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/item_durlabel"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_durlabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/id_oval"
         android:layout_below="@+id/item_starttime"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
         android:text="Duration: "/>
+    <TextView
+        android:id="@+id/item_dur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_durlabel"
+        android:layout_below="@+id/item_starttime"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:text=""/>
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

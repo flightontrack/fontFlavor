@@ -5,35 +5,51 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * Created by hotvk on 8/17/2017.
- */
 
-public interface GetTime {
-    default String getTimeLocal() {
+public class GetTime {
+    public String timeLocal;
+    public String dateLocal;
+    public String dateTimeLocal;
+    public String timeDiff;
+    public long   initDateTimeGMT;
+    public long   dateTimeGMT;
+
+    public GetTime() {
         long currTime = new Date().getTime();
+        DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateTimeFormat.setTimeZone(TimeZone.getDefault());
+        dateTimeLocal = dateTimeFormat.format(currTime);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(TimeZone.getDefault());
+        dateLocal = dateFormat.format(currTime);
+
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        timeFormat.setTimeZone(TimeZone.getDefault());
+        timeLocal = timeFormat.format(currTime);
+
+        initDateTimeGMT =new Date().getTime();
+        //return dateTimeFormat.format(currTime);
+    }
+    public GetTime updateDateTimeLocal() {
+        long currTime = new Date().getTime();
+        DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateTimeFormat.setTimeZone(TimeZone.getDefault());
+        dateTimeLocal = dateTimeFormat.format(currTime);
+        return this;
+    }
+
+    public long getTimeGMT() {
+        dateTimeGMT = new Date().getTime();
+        return dateTimeGMT;
+    }
+
+    public long getElapsedTime() {
+        long timeDiffLong = getTimeGMT() - initDateTimeGMT;
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-        return dateFormat.format(currTime);
-    }
-    default String getDateLocal(String dt) {
-        long currTime = new Date().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-        return dateFormat.format(dt);
-    }
-    default long getTimeGMT() {
-        //long currTime = new Date().getTime();
-        //DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        //dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        return new Date().getTime();
-    }
-
-    default String getDateTimeNow() {
-        long currTime = new Date().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-        return dateFormat.format(currTime);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        timeDiff = dateFormat.format(timeDiffLong);
+        return timeDiffLong;
     }
 
 //    void speakTime(){

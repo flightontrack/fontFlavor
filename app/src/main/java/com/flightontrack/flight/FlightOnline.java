@@ -21,21 +21,18 @@ import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
-import com.flightontrack.shared.GetTime;
 import com.flightontrack.shared.Props;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 import other.Talk;
+import com.flightontrack.shared.GetTime;
 
 import static com.flightontrack.flight.FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
 import static com.flightontrack.flight.Session.isNetworkAvailable;
@@ -43,7 +40,7 @@ import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
-public class FlightOnline extends FlightOffline implements GetTime, EventBus {
+public class FlightOnline extends FlightOffline implements EventBus {
     static final String TAG = "FlightOnline";
 
     public String   flightTimeString;
@@ -60,6 +57,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     private boolean         isGetFlightCallSuccess = false;
     private EntityFlight    entityFlight;
     private List<Integer>   dbIdList = new ArrayList<>();
+    private GetTime         getTime;
 
     public FlightOnline(Route r) {
         route = r;
@@ -261,7 +259,7 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
             values.put(DBSchema.COLUMN_NAME_COL9, Math.round(location.getAltitude())); //extrainfo
             values.put(DBSchema.LOC_wpntnum, p); //wpntnum
             values.put(DBSchema.COLUMN_NAME_COL11, Integer.toString(Pilot.getSignalStregth())); //gsmsignal
-            values.put(DBSchema.LOC_date, URLEncoder.encode(getDateTimeNow(), "UTF-8")); //date
+            values.put(DBSchema.LOC_date, URLEncoder.encode(getTime.updateDateTimeLocal().dateTimeLocal, "UTF-8")); //date
             values.put(DBSchema.LOC_is_elevetion_check, iselevecheck);
             long r = sqlHelper.insertRowLocation(values);
             if (r > 0) {
@@ -276,12 +274,13 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
     }
 
     public void set_flightTimeSec() {
-        long elapsedTime = getTimeGMT() - flightStartTimeGMT;
+        long elapsedTime = getTime.getElapsedTime();
+        flightTimeString = getTime.timeDiff;
         flightTimeSec = (int) elapsedTime / 1000;
         new FontLogAsync().execute(new EntityLogMessage(TAG,"flightTimeSec =  "+flightTimeSec, 'd'));
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        flightTimeString = dateFormat.format(elapsedTime);
+//        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+//        flightTimeString = dateFormat.format(timeDiff);
         EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
         int tc = flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
         //new FontLogAsync().execute(new EntityLogMessage(TAG,"c =  "+c, 'd'));
@@ -310,8 +309,9 @@ public class FlightOnline extends FlightOffline implements GetTime, EventBus {
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_STATECHANGEDTO_READYTOSAVE).setEventMessageValueString(flightNumber));
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
-                flightStartTimeGMT = getTimeGMT();
-                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getDateTimeNow(),new Aircraft().AcftNum);
+                getTime = new GetTime();
+                flightStartTimeGMT = getTime.initDateTimeGMT;
+                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getTime.dateLocal,getTime.timeLocal,new Aircraft().AcftNum);
                 EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
                 break;
             case STOPPED:
