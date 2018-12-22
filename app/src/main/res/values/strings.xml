@@ -71,6 +71,7 @@
     <string name="label_btnpsw_show">Show Psw</string>
     <string name="label_btnpsw_get">Get Psw</string>
     <string name="label_btnpsw_hide">Hide Psw</string>
+    <string name="label_btn_clear_history">Clear History</string>
     <string name="label_chbox_logfile">Debug Log File</string>
     <string name="label_chbox_boot">Start on Reboot</string>
     <string name="label_chbox_road">Is Road</string>

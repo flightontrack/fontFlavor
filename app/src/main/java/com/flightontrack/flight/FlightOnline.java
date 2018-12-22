@@ -43,27 +43,29 @@ import static com.flightontrack.shared.Props.SessionProp.*;
 public class FlightOnline extends FlightOffline implements EventBus {
     static final String TAG = "FlightOnline";
 
-    public String   flightTimeString;
-    public int      lastAltitudeFt;
-    public int      wayPointsCount;
+    //public String   flightTimeString;
     private Route           route;
+    public int              lastAltitudeFt;
+    //public int      wayPointsCount;
     private float           speedCurrent = 0;
     private float           speedPrev = 0;
-    private int             flightTimeSec;
+    //private int             flightTimeSec;
     private int             talkCount;
-    private long            flightStartTimeGMT;
+    //private long            flightStartTimeGMT;
     private boolean         isElevationCheckDone;
     private boolean         isGettingFlight = false;
     private boolean         isGetFlightCallSuccess = false;
-    private EntityFlight    entityFlight;
+
     private List<Integer>   dbIdList = new ArrayList<>();
     private GetTime         getTime;
 
     public FlightOnline(Route r) {
         route = r;
-        flightTimeString = FLIGHT_TIME_ZERO;
+        //flightTimeString = FLIGHT_TIME_ZERO;
         isElevationCheckDone = false;
         RouteBase.activeFlight = this;
+        getTime=new GetTime();
+        entityFlight = new EntityFlight(FLIGHT_NUMBER_DEFAULT,route.routeNumber,getTime.dateLocal,"00:00",new Aircraft().AcftNum);
         change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
     }
 
@@ -71,15 +73,18 @@ public class FlightOnline extends FlightOffline implements EventBus {
     public void set_flightNumber(String fn) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, " set_flightNumber " + fn + " flightNumStatus " + flightNumStatus, 'd'));
         //replace_FlightNumber(fn);
-        flightNumber = fn;
+        //flightNumber = fn;
+        //getTime=new GetTime();
+        //entityFlight = new EntityFlight(fn,route.routeNumber,getTime.dateLocal,"00:00",new Aircraft().AcftNum);
+        entityFlight.setFlightNumber(fn);
         isGetFlightCallSuccess = true;
         route._legCount++;
         change_flightState(FLIGHT_STATE.READY_TOSAVELOCATIONS);
     }
 
-    void set_wayPointsCount(int pointsCount) {
-        wayPointsCount = pointsCount;
-        if (pointsCount >= Limits.getWayPointLimit()) {
+    void checkWayPointsCount() {
+        //entityFlight.wayPointsCount = pointsCount;
+        if (entityFlight.wayPointsCount >= Limits.getWayPointLimit()) {
             EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONPOINTSLIMITREACHED));
         }
     }
@@ -121,7 +126,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
 
     @Override
     void get_NewFlightID() {
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOnline-get_NewFlightID: " +flightNumber, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightOnline-get_NewFlightID", 'd'));
         isGettingFlight = true;
         try(
             Aircraft aircraft = new Aircraft();
@@ -183,7 +188,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
                         Toast.makeText(mainactivityInstance, R.string.temp_flight_alloc, Toast.LENGTH_LONG).show();
                         EventBus.distribute(new EventMessage(EVENT.FLIGHT_GETNEWFLIGHT_COMPLETED)
                                 .setEventMessageValueBool(isGetFlightCallSuccess)
-                                .setEventMessageValueString(flightNumber));
+                                .setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
                     }
                 }
 
@@ -195,7 +200,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
                         Toast.makeText(mainactivityInstance, R.string.temp_flight_alloc, Toast.LENGTH_LONG).show();
                         EventBus.distribute(new EventMessage(EVENT.FLIGHT_GETNEWFLIGHT_COMPLETED)
                                 .setEventMessageValueBool(isGetFlightCallSuccess)
-                                .setEventMessageValueString(flightNumber));
+                                .setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
                     }
                 }
 
@@ -229,7 +234,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
 
             case INFLIGHT_SPEEDABOVEMIN:
                 if (!isElevationCheckDone) {
-                    if (flightTimeSec >= ELEVATIONCHECK_FLIGHT_TIME_SEC)
+                    if (entityFlight.flightTimeSec >= ELEVATIONCHECK_FLIGHT_TIME_SEC)
                         isElevationCheckDone = true;
                     saveLocation(location, isElevationCheckDone);
                 } else saveLocation(location, false);
@@ -237,7 +242,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
                 set_flightTimeSec();
                 if (!isSpeedAboveMin) {
                     change_flightState(FLIGHT_STATE.STOPPED);
-                    EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDLOW).setEventMessageValueString(flightNumber));
+                    EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDLOW).setEventMessageValueString(entityFlight.flightNumber));
                 }
                 break;
         }
@@ -245,10 +250,10 @@ public class FlightOnline extends FlightOffline implements EventBus {
 
     private void saveLocation(Location location, boolean iselevecheck) {
         try {
-            int p = wayPointsCount + 1;
+            int p = entityFlight.wayPointsCount + 1;
             ContentValues values = new ContentValues();
             values.put(DBSchema.COLUMN_NAME_COL1, REQUEST_LOCATION_UPDATE); //rcode
-            values.put(DBSchema.LOC_flightid, flightNumber); //flightid
+            values.put(DBSchema.LOC_flightid, entityFlight.flightNumber); //flightid
             values.put(DBSchema.LOC_isTempFlight, flightNumStatus == FLIGHTNUMBER_SRC.LOCAL); //istempflightnum
             values.put(DBSchema.LOC_speedlowflag, !isSpeedAboveMin); /// speed low
             //values.put(DBSchema.COLUMN_NAME_COL4, Integer.toString(speedCurrentInt)); //speed
@@ -259,13 +264,14 @@ public class FlightOnline extends FlightOffline implements EventBus {
             values.put(DBSchema.COLUMN_NAME_COL9, Math.round(location.getAltitude())); //extrainfo
             values.put(DBSchema.LOC_wpntnum, p); //wpntnum
             values.put(DBSchema.COLUMN_NAME_COL11, Integer.toString(Pilot.getSignalStregth())); //gsmsignal
-            values.put(DBSchema.LOC_date, URLEncoder.encode(getTime.updateDateTimeLocal().dateTimeLocal, "UTF-8")); //date
+            values.put(DBSchema.LOC_date, URLEncoder.encode(getTime.updateDateTime().dateTimeLocalString, "UTF-8")); //date
             values.put(DBSchema.LOC_is_elevetion_check, iselevecheck);
             long r = sqlHelper.insertRowLocation(values);
             if (r > 0) {
                 dbIdList.add((int) r);
                 lastAltitudeFt = (int) (Math.round(location.getAltitude() * 3.281));
-                set_wayPointsCount(p);
+                entityFlight.wayPointsCount = p;
+                checkWayPointsCount();
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "saveLocation: dbLocationRecCountNormal: " + SessionProp.dbLocationRecCountNormal, 'd'));
             }
         } catch (Exception e) {
@@ -274,20 +280,21 @@ public class FlightOnline extends FlightOffline implements EventBus {
     }
 
     public void set_flightTimeSec() {
-        long elapsedTime = getTime.getElapsedTime();
-        flightTimeString = getTime.timeDiff;
-        flightTimeSec = (int) elapsedTime / 1000;
-        new FontLogAsync().execute(new EntityLogMessage(TAG,"flightTimeSec =  "+flightTimeSec, 'd'));
+        //long elapsedTime = getTime.getTimeGMT()- entityFlight.flightTimeStartGMT;
+        entityFlight.setFlightTime(getTime.getTimeGMT()- entityFlight.flightTimeStartGMT);
+        entityFlight.setFlightDuration(getTime.getElapsedTimeString(entityFlight.flightTime));
+        //flightTimeSec = getTime.elapsedTimeSec;
+        new FontLogAsync().execute(new EntityLogMessage(TAG,"flightTimeSec =  "+entityFlight.flightTimeSec, 'd'));
 //        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 //        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+0"));
 //        flightTimeString = dateFormat.format(timeDiff);
-        EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(flightNumber));
-        int tc = flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
+        EventBus.distribute(new EventMessage(EVENT.FLIGHT_FLIGHTTIME_UPDATE_COMPLETED).setEventMessageValueString(entityFlight.flightNumber));
+        //int tc = flightTimeSec/60/TIME_TALK_INTERVAL_MIN;
         //new FontLogAsync().execute(new EntityLogMessage(TAG,"c =  "+c, 'd'));
         //new FontLogAsync().execute(new EntityLogMessage(TAG,"talkCount =  "+talkCount, 'd'));
-        if (tc>talkCount){
-            talkCount=tc;
-            new Talk(new EntityFlightTimeMessage(flightTimeSec));
+        if (entityFlight.talkTime>talkCount){
+            talkCount=entityFlight.talkTime;
+            new Talk(new EntityFlightTimeMessage(entityFlight.flightTimeSec));
         }
     }
 
@@ -306,29 +313,31 @@ public class FlightOnline extends FlightOffline implements EventBus {
                 get_NewFlightID();
                 break;
             case READY_TOSAVELOCATIONS:
-                EventBus.distribute(new EventMessage(EVENT.FLIGHT_STATECHANGEDTO_READYTOSAVE).setEventMessageValueString(flightNumber));
+                EventBus.distribute(new EventMessage(EVENT.FLIGHT_STATECHANGEDTO_READYTOSAVE).setEventMessageValueString(entityFlight.flightNumber));
                 break;
             case INFLIGHT_SPEEDABOVEMIN:
-                getTime = new GetTime();
-                flightStartTimeGMT = getTime.initDateTimeGMT;
-                entityFlight = new EntityFlight(flightNumber,route.routeNumber,getTime.dateLocal,getTime.timeLocal,new Aircraft().AcftNum);
-                EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(flightNumber));
+                entityFlight.setFlightTimeStartGMT(getTime.updateDateTime().dateTimeGMT);
+                entityFlight.setFlightTimeStart(getTime.timeLocal);
+                //getTime = new GetTime();
+                //flightStartTimeGMT = getTime.initDateTimeGMT;
+                //entityFlight = new EntityFlight(flightNumber,route.routeNumber,getTime.dateLocal,getTime.timeLocal,new Aircraft().AcftNum);
+                EventBus.distribute(new EventMessage(EVENT.FLIGHT_ONSPEEDABOVEMIN).setEventMessageValueString(entityFlight.flightNumber));
+                //entityFlight.dbid= sqlHelper.insertFlightEntityRecord(entityFlight);
                 break;
             case STOPPED:
-                if (sqlHelper.getLocationFlightCount(flightNumber) == 0) {
+                if (sqlHelper.getLocationFlightCount(entityFlight.flightNumber) == 0) {
                     super.change_flightState(FLIGHT_STATE.READY_TOBECLOSED);
                 }
                 break;
             case READY_TOBECLOSED:
-                sqlHelper.insertFlightHistRecord(entityFlight);
-                List<EntityFlight> l = sqlHelper.getFlightHistList();
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "history list size: "+l.size(), 'd'));
+                //List<EntityFlight> l = sqlHelper.getFlightHistList();
+                //new FontLogAsync().execute(new EntityLogMessage(TAG, "history list size: "+l.size(), 'd'));
                 get_CloseFlight();
                 break;
             case CLOSING:
                 break;
             case CLOSED:
-                EventBus.distribute(new EventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(flightNumber));
+                EventBus.distribute(new EventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(entityFlight.flightNumber));
                 break;
             default:
                 super.change_flightState(fs);
@@ -342,10 +351,14 @@ public class FlightOnline extends FlightOffline implements EventBus {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState reasoning : " + fs + ' ' + descr, 'd'));
     }
 
+    public String getFlightTime(){
+        return entityFlight.flightDuration;
+    }
+
     @Override
     public void onClock(EventMessage eventMessage) {
 
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber+" afs:"+flightState+" loccount:"+sqlHelper.getLocationFlightCount(flightNumber), 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+entityFlight.flightNumber+" afs:"+flightState+" loccount:"+sqlHelper.getLocationFlightCount(entityFlight.flightNumber), 'd'));
         if (RouteBase.activeFlight == this
                 && (flightState == FLIGHT_STATE.READY_TOSAVELOCATIONS || flightState == FLIGHT_STATE.INFLIGHT_SPEEDABOVEMIN)
                 && eventMessage.eventMessageValueLocation != null) {
@@ -356,7 +369,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
         if (isNetworkAvailable() && !isGettingFlight) {
             if (flightNumStatus == FLIGHTNUMBER_SRC.LOCAL) get_NewFlightID();
         }
-        if (flightState == FLIGHT_STATE.STOPPED && sqlHelper.getLocationFlightCount(flightNumber) == 0) {
+        if (flightState == FLIGHT_STATE.STOPPED && sqlHelper.getLocationFlightCount(entityFlight.flightNumber) == 0) {
             change_flightState(FLIGHT_STATE.READY_TOBECLOSED);
         }
     }
@@ -364,7 +377,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
     @Override
     public void eventReceiver(EventMessage eventMessage) {
         EVENT ev = eventMessage.event;
-        new FontLogAsync().execute(new EntityLogMessage(TAG, flightNumber + ":eventReceiver:" + ev, 'd'));
+        new FontLogAsync().execute(new EntityLogMessage(TAG, entityFlight.flightNumber + ":eventReceiver:" + ev, 'd'));
         super.eventReceiver(eventMessage);
         switch (ev) {
             case SESSION_ONSUCCESS_COMMAND:
@@ -374,6 +387,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
                     case COMMAND_TERMINATEFLIGHT:
                         //isJunkFlight = true;
                         Toast.makeText(mainactivityInstance, R.string.driving, Toast.LENGTH_LONG).show();
+                        entityFlight.setIsJunk(1);
                         set_flightState(FLIGHT_STATE.STOPPED, "Terminate flight server command");
                         //set_fAction(FACTION.TERMINATE_FLIGHT);
                         break;
@@ -401,7 +415,7 @@ public class FlightOnline extends FlightOffline implements EventBus {
                 //change_flightState(FLIGHT_STATE.READY_TOSAVELOCATIONS);
                 break;
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
-                entityFlight.flightDuration = flightTimeString;
+                //entityFlight.flightDuration = flightTimeString;
                 break;
         }
     }

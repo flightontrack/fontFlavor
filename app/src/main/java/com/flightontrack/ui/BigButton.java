@@ -59,9 +59,9 @@ public class BigButton implements EventBus {
     }
 
     static String setTextGreen() {
-        return "Flight: " + (RouteBase.activeFlight.flightNumber) + '\n' +
+        return "Flight: " + (RouteBase.activeFlight.entityFlight.flightNumber) + '\n' +
                 "Point: " + RouteBase.activeFlight.wayPointsCount +
-                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.flightTimeString + '\n'
+                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.getFlightTime() + '\n'
                 + "Alt: " + RouteBase.activeFlight.lastAltitudeFt + " ft";
     }
 
@@ -75,8 +75,8 @@ public class BigButton implements EventBus {
             fText = Props.SessionProp.pTrackingButtonText;
         } else {
             if (RouteBase.activeFlight != null) {
-                flightN = RouteBase.activeFlight.flightNumber;
-                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.flightTimeString;
+                flightN = RouteBase.activeFlight.entityFlight==null?FLIGHT_NUMBER_DEFAULT:RouteBase.activeFlight.entityFlight.flightNumber;
+                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.getFlightTime();
             }
             fText = "Flight " + flightN + '\n' + "Stopped"; // + '\n';
         }
@@ -89,7 +89,7 @@ public class BigButton implements EventBus {
                 Props.SessionProp.pTrackingButtonText=setTextRedFlightStopped();
                 break;
             case BUTTON_STATE_YELLOW:
-                Props.SessionProp.pTrackingButtonText="Flight " + (RouteBase.activeFlight.flightNumber) + ctxApp.getString(R.string.tracking_ready_to_takeoff);
+                Props.SessionProp.pTrackingButtonText="Flight " + (RouteBase.activeFlight.entityFlight.flightNumber) + ctxApp.getString(R.string.tracking_ready_to_takeoff);
                 break;
             case BUTTON_STATE_GREEN:
                 Props.SessionProp.pTrackingButtonText=setTextGreen();

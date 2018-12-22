@@ -14,7 +14,7 @@
         android:layout_height="60dp"
         android:background="@drawable/oval_fn"
         android:gravity="center"
-        android:text="Flight: "
+        android:text="Flight"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         />
@@ -23,27 +23,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_toLeftOf="@+id/item_acft"
         android:layout_toRightOf="@+id/id_oval"
         android:gravity="right"
         android:text="Aircraft: "
-        android:textSize="20sp" />
+/>
     <TextView
         android:id="@+id/item_acft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/item_durlabel"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:text=""
-        android:textSize="20sp" />
+/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_acft"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_toLeftOf="@+id/item_date"
         android:layout_toRightOf="@+id/id_oval"
         android:gravity="right"
@@ -54,14 +54,14 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/item_durlabel"
         android:layout_below="@+id/item_acft"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:text=""/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_date"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_toLeftOf="@+id/item_starttime"
         android:gravity="right"
         android:text="Started: " />
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_date"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_toRightOf="@+id/item_durlabel"
         android:text="" />
 
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/id_oval"
         android:layout_below="@+id/item_starttime"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_marginBottom="10dp"
         android:text="Duration: "/>
     <TextView
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/item_durlabel"
         android:layout_below="@+id/item_starttime"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_marginBottom="10dp"
         android:text=""/>
     <View

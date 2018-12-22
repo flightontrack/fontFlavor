@@ -8,14 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import com.flightontrack.model.EntityFlight;
 import com.flightontrack.model.EntityLocation;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventMessage;
 
+import static com.flightontrack.definitions.Finals.DATABASE_NAME;
+import static com.flightontrack.definitions.Finals.DATABASE_VERSION;
 import static com.flightontrack.flight.RouteBase.get_FlightInstanceByNumber;
-import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTHIST;
+import static com.flightontrack.mysql.DbTableFlightHistory.*;
 import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
 import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;
 import static com.flightontrack.shared.Props.*;
@@ -31,9 +32,7 @@ import java.util.List;
 
 public class SQLHelper extends SQLiteOpenHelper implements EventBus {
     private static final String TAG = "SQLHelper";
-    
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "FONTLOCATION.dbw";
+
     public SQLiteDatabase dbw;
 
     public SQLHelper() {
@@ -47,7 +46,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
             //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
+            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS);
             dbw.close();
             dbLocationRecCountNormal = getLocationRecCountNormal();
             //if (dbLocationRecCountNormal == 0 && getLocationTableCountTemp() == 0) {
@@ -92,10 +91,10 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
             int lcount = (int) DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-            dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTHIST);
+            //dbw.execSQL(SQL_DROP_TABLE_FLIGHTENTITY);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTHIST_IF_NOT_EXISTS);
+            //dbw.execSQL(SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS);
             dbLocationRecCountNormal = 0;
             dbTempFlightRecCount = 0;
             //Toast.makeText(ctxApp, "Deleted " + lcount + " location points", Toast.LENGTH_LONG).show();
@@ -192,29 +191,6 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         dbLocationRecCountNormal = 0;
         dbTempFlightRecCount=0;
         return i;
-    }
-    public void insertFlightHistRecord(EntityFlight flight){
-        dbw = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(DBSchema.FLIGHTHIST_FlightNumber, flight.flightNumber);
-        values.put(DBSchema.FLIGHTHIST_RouteNumber, flight.routeNumber);
-        values.put(DBSchema.FLIGHTHIST_FlightDate, flight.flightDate);
-        values.put(DBSchema.FLIGHTHIST_FlightTimeStart, flight.flightTimeStart);
-        values.put(DBSchema.FLIGHTHIST_FlightDuration, flight.flightDuration);
-        values.put(DBSchema.FLIGHTHIST_FlightAcft, flight.flightAcft);
-
-        long r = 0;
-        try {
-            r = dbw.insert(TABLE_FLIGHTHIST,
-                    null,
-                    values);
-        } catch (Exception e) {
-            new FontLogAsync().execute(new EntityLogMessage(TAG, e.getMessage(), 'e'));
-        }
-        finally {
-            dbw.close();
-        }
     }
     public long insertRowLocation(ContentValues values) {
         long r = 0;
@@ -359,36 +335,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         }
         return flightIdList;
     }
-    public List<EntityFlight> getFlightHistList() {
 
-        dbw = getReadableDatabase();
-        ArrayList<EntityFlight> flightList = new ArrayList<>();
-
-        try (Cursor cu = dbw.rawQuery(DBSchema.SQL_SELECT_FLIGHTHIST  , new String[]{})) {
-            while (cu.moveToNext()) {
-                EntityFlight f = new EntityFlight();
-                f.i = cu.getPosition();
-                f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightNumber));
-                f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_RouteNumber));
-                f.flightDate = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDate));
-                f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightTimeStart));
-                f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightDuration));
-                f.flightAcft = cu.getString(cu.getColumnIndexOrThrow(DBSchema.FLIGHTHIST_FlightAcft));
-                flightList.add(f);
-            }
-        }
-        catch (Exception e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
-        }
-        finally {
-            dbw.close();
-        }
-
-//        flightList.add(new EntityFlight("700000","7000","12:00pm","35 min"));
-//        flightList.add(new EntityFlight("700100","7000","12:00pm","11 min"));
-//        flightList.add(new EntityFlight("700200","7000","12:00pm","1 h 35 min"));
-        return flightList;
-    }
     public List<String> getReadyToSendFlightList() {
         dbw = getReadableDatabase();
         ArrayList<String> flightList = new ArrayList<>();
@@ -455,6 +402,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         }
         return (String.valueOf(f));
     }
+
     public int updateTempFlightNum(String temp_fn,String replace_fn){
         int rn=0;
         try {
@@ -503,7 +451,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
             case FLIGHT_GETNEWFLIGHT_COMPLETED:
                 if(!eventMessage.eventMessageValueBool)
                     try {
-                        String dt = URLEncoder.encode(new GetTime().dateTimeLocal, "UTF-8");
+                        String dt = URLEncoder.encode(new GetTime().dateTimeLocalString, "UTF-8");
                         EventBus.distribute(new EventMessage(EVENT.SQL_LOCALFLIGHTNUM_ALLOCATED).setEventMessageValueString(getNewTempFlightNum(dt)));
                     } catch (UnsupportedEncodingException e1) {
                         e1.printStackTrace();

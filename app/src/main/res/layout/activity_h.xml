@@ -15,11 +15,37 @@
         android:text="@string/activity_myrecentflights"
         android:textColor="@color/colorPrimaryLight" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtCached"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="@string/label_btn_clear_history" />
+
+        <Button
+            android:id="@+id/btnClearHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/txtCached"
+            android:onClick="clearHistory"
+            android:text="@string/label_btnclear" />
+    </RelativeLayout>
 
 </LinearLayout>

@@ -58,7 +58,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
         String timeStr = "[" + getDateTimeNow() + "]";
         String af = " no active flight";
         if (RouteBase.activeFlight !=null) {
-            af = String.format("%1$-10s", " af:" + RouteBase.activeFlight.flightNumber + " afs:" + RouteBase.activeFlight.flightState + ": ");
+            af = String.format("%1$-10s", " af:" + RouteBase.activeFlight.entityFlight.flightNumber + " afs:" + RouteBase.activeFlight.flightState + ": ");
         }
         String LINE_SEPARATOR = System.getProperty("line.separator");
         File sdcard=null;

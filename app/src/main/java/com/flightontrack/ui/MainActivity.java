@@ -292,10 +292,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     public void  trackingButtonOnClick(View v){
         switch (trackingButtonState) {
             case BUTTON_STATE_RED:
-                //Util.setAcftNum(txtAcftNum.getText().toString());
+
                 //TODO pAutostart  need to be replaced with pIsStartedOnReboot
-                //TODO ???? что это
                 //if (!AppConfig.pAutostart && !is_services_available()) return;
+                if (!isGPSEnabled()) return;
                 if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
 
                     new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();

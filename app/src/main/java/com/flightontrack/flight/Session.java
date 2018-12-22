@@ -184,14 +184,14 @@ public class Session implements EventBus{
                 /// firsrt to check all temp flights in not ready to send state.
                 /// Get new flight and request flight number.
 
-                for (String flightNumTemp:sqlHelper.getTempFlightList()){
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
-                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
-                    else {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
-                        EventBus.distribute(new EventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
-                    }
-                }
+//                for (String flightNumTemp:sqlHelper.getTempFlightList()){
+//                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
+//                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+//                    else {
+//                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
+//                        EventBus.distribute(new EventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+//                    }
+//                }
 
                 /// second to check flights is ready to send which are for some reason not in flightList (may left from previous session).
                 /// Get new flight on existing flight number

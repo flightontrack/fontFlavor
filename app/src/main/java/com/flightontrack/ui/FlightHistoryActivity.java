@@ -6,16 +6,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.Button;
+import java.util.List;
 
 import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityFlight;
 import com.flightontrack.model.EntityLogMessage;
+import com.flightontrack.mysql.SQLFlightEntity;
 
-import java.util.List;
-
-import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
 
 public class FlightHistoryActivity extends Activity {
 
@@ -23,16 +23,16 @@ public class FlightHistoryActivity extends Activity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-    private String[] myDataset = {"123","456","789"};
+    private Button clearHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightHistorytActivity onCreate", 'd'));
         setContentView(R.layout.activity_h);
-        List<EntityFlight> flightList = sqlHelper.getFlightHistList();
+        List<EntityFlight> flightList = new SQLFlightEntity().getFlightHistList();
         mRecyclerView = findViewById(R.id.my_recycler_view);
+        clearHistory = findViewById(R.id.btnClearHist);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -57,7 +57,11 @@ public class FlightHistoryActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+    }
 
+    public void  clearHistory(View v){
+        new SQLFlightEntity().clearFlightEntityTable();
+        finish();
     }
 }
 

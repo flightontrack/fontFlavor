@@ -35,7 +35,7 @@ public class RouteBase implements EventBus{
 
      public static FlightOffline get_FlightInstanceByNumber(String flightNumber){
         for (FlightOffline f : flightList) {
-            if (f.flightNumber.equals(flightNumber)) {
+            if (f.entityFlight.flightNumber.equals(flightNumber)) {
                 return f;
             }
         }
@@ -43,7 +43,7 @@ public class RouteBase implements EventBus{
     }
     public static boolean isFlightNumberInList(String flightNumber){
         for (FlightOffline f : flightList) {
-            if (f.flightNumber.equals(flightNumber)) {
+            if (f.entityFlight.flightNumber.equals(flightNumber)) {
                 return true;
             }
         }
@@ -60,7 +60,7 @@ public class RouteBase implements EventBus{
             case REMOVE_FLIGHT_IF_CLOSED:
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "REMOVE_FLIGHT_IF_CLOSED: flightList: size : " + flightList.size(), 'd'));
                     for (FlightOffline f : new ArrayList<>(flightList)) {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.flightNumber + ":" + request, 'd'));
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
                         if (f.flightState.equals(FlightOffline.FLIGHT_STATE.CLOSED)) {
                             //if (activeFlight == f) activeFlight = null;
                             new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request+":f:"+f, 'd'));
@@ -76,7 +76,7 @@ public class RouteBase implements EventBus{
                 break;
             case ADD_OR_UPDATE_FLIGHT:
                 FlightOffline fb = (FlightOffline) eventMessage.eventMessageValueObject;
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "fb.fn"+fb.flightNumber, 'd'));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "fb.fn"+fb.entityFlight.flightNumber, 'd'));
                 //new FontLogAsync().execute(new LogMessage(TAG, "fb.fnt"+fb.flightNumberTemp, 'd');
                 if (flightList.contains(fb)) break;
                 else {

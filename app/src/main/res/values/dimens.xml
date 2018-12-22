@@ -7,4 +7,6 @@
     <dimen name="activity_card_padding_right">4dp</dimen>
     <dimen name="activity_card_padding_top">1dp</dimen>
     <dimen name="activity_card_padding_bottom">1dp</dimen>
+
+    <dimen name="activity_hist_margin_left">5dp</dimen>
 </resources>
