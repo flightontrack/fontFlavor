@@ -168,7 +168,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         EventBus.distribute(new EventMessage(EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
         //ctx = getApplicationContext();
         getTime = new GetTime();
-        alarmNextTimeUTCmsec = getTime.initDateTimeGMT;
+        alarmNextTimeUTCmsec = getTime.dateTimeGMT;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Flight On Track</string>
-    <string name="app_label">flightontrack.com</string>
+    <string name="app_label">FONT</string>
     <string name="build_label">FONT</string>
     <!--<string name="app_ver">1.71u</string>-->
 
@@ -17,6 +16,7 @@
     <string name="action_browser">Flightontrack.com</string>
 
     <!--activityTitle-->
+    <string name="activity_main_titile">Flight On Track</string>
     <string name="activity_aircraft_title">Aircraft</string>
     <string name="activity_logbook_title">My Pilot LogBook</string>
     <string name="activity_flighthistory_title">My Flight History</string>
@@ -78,6 +78,7 @@
     <string name="label_build">Build:</string>
 
     <!--labels MainActivity-->
+    <string name="label_actionbar">flightontrack.com</string>
     <string name="label_pilotphone">Pilot</string>
     <string name="label_aircrafttag">Aircraft</string>
     <string name="label_interval">Update Freq</string>
@@ -134,11 +135,10 @@
     <string name="backpressed_dialog_neg">Keep it running</string>
     <string name="backpressed_dialog_pos">Stop it</string>
 
-    <string name="permiss_ask">FONT requires permission to read your phone number to uniquely identify a pilot. No phone calls will be made from your phone despite the next system message. </string>
-    <string name="permisslocation_ask">FONT needs permission to read your phone gps location. </string>
+    <string name="permiss_ask">The application requires permission to read your phone number to uniquely identify a pilot. No phone calls will be made from your phone despite the next system message. </string>
+    <string name="permisslocation_ask">The application requires permission to read your phone gps location. </string>
     <string name="permiss_grantyes">Grant Permission</string>
     <string name="permiss_grantno">Deny and Close the App</string>
-
 
     <!--multiline-->
     <string name="multilines">Line1Line1\nLine2Line2</string>

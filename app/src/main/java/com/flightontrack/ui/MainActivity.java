@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             });
 
             setSupportActionBar(findViewById(R.id.toolbar_top));
-            getSupportActionBar().setTitle(getString(R.string.app_label));
+            getSupportActionBar().setTitle(getString(R.string.label_actionbar));
 
             AppConfig.pMainActivityLayout = findViewById(R.id.TagView).getTag().toString();
             if (AppConfig.pMainActivityLayout.equals("full")) {
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
                 //TODO pAutostart  need to be replaced with pIsStartedOnReboot
                 //if (!AppConfig.pAutostart && !is_services_available()) return;
-                if (!isGPSEnabled()) return;
+                if (!is_service_available()) return;
                 if (!isAircraftPopulated() && !SessionProp.pIsEmptyAcftOk) {
 
                     new ShowAlertClass(mainactivityInstance).showAircraftIsEmptyAlert();
@@ -406,16 +406,16 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         finish();
     }
 
-    private boolean is_services_available() {
+    private boolean is_service_available() {
 
         if (!isGPSEnabled()) {
             new ShowAlertClass(this).showGPSDisabledAlertToUser();
             return false;
         }
-        if (!isNetworkAvailable()) {
-            new ShowAlertClass(this).showNetworkDisabledAlertToUser();
-            return false;
-        }
+//        if (!isNetworkAvailable()) {
+//            new ShowAlertClass(this).showNetworkDisabledAlertToUser();
+//            return false;
+//        }
         return true;
     }
 

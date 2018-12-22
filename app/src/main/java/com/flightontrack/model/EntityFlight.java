@@ -23,7 +23,7 @@ public class EntityFlight {
     public int    talkTime;
     public String flightAcft;
     public String flightDuration = FLIGHT_TIME_ZERO;
-    public int    isJunk=0;
+    public int    isJunk = 1;
 
     public void setFlightTime(long ft) {
         flightTime = ft;
@@ -42,6 +42,7 @@ public class EntityFlight {
     }
     public void setFlightTimeStartGMT(long flightTimeStart) {
         this.flightTimeStartGMT = flightTimeStart;
+        setIsJunk(0);
     }
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;

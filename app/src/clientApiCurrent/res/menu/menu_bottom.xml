@@ -11,12 +11,13 @@
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/action_logbook"
+        android:id="@+id/action_flighthist"
         android:layout_weight="1"
         android:icon="@drawable/ic_notepen_48"
         android:orderInCategory="3"
-        android:title="@string/action_logbook"
+        android:title="@string/action_flighthistory"
         app:showAsAction="always" />
+
     <item android:id="@+id/action_facebook"
         android:icon="@drawable/ic_facebook_48"
         android:title="@string/action_facebook"

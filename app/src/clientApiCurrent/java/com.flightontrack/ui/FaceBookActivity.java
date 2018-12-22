@@ -124,7 +124,7 @@ public class FaceBookActivity extends FragmentActivity{
         //Profile profile = Profile.getCurrentProfile();
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
                 .setQuote("Watch my flight on the link below")
-                .setContentUrl(Uri.parse(getWebserverURL()+"/Flight/DisplayMyFlightMovingMap/"+ RouteBase.activeFlight.flightNumber+"?FlightOrRoute=Route"))
+                .setContentUrl(Uri.parse(getWebserverURL()+"/Flight/DisplayMyFlightMovingMap/"+ RouteBase.activeFlight.entityFlight.flightNumber+"?FlightOrRoute=Route"))
                 .build();
         if (canPresentShareDialog) {
             shareDialog.show(linkContent);

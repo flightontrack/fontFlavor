@@ -11,31 +11,32 @@
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/action_logbook"
+        android:id="@+id/action_flighthist"
         android:layout_weight="1"
         android:icon="@drawable/ic_notepen_48"
-        android:orderInCategory="3"
-        android:title="@string/action_logbook"
+        android:orderInCategory="2"
+        android:title="@string/action_flighthistory"
         app:showAsAction="always" />
+
     <item android:id="@+id/action_help"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/action_help"
         android:layout_weight="1"
-        android:orderInCategory="5"
+        android:orderInCategory="3"
         app:showAsAction="always"
         />
     <item android:id="@+id/action_email"
         android:icon="@drawable/ic_action_email_48"
         android:title="@string/action_email"
         android:layout_weight="1"
-        android:orderInCategory="6"
+        android:orderInCategory="4"
         app:showAsAction="always"
         />
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"
         android:layout_weight="1"
-        android:orderInCategory="7"
+        android:orderInCategory="5"
         app:showAsAction="always"
         />
 </menu>

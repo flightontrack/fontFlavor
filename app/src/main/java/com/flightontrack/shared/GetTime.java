@@ -14,18 +14,18 @@ public class GetTime {
     //public int elapsedTimeSec;
 
     public GetTime() {
-        long currTime = new Date().getTime();
+        dateTimeGMT = new Date().getTime();
         DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateTimeFormat.setTimeZone(TimeZone.getDefault());
-        dateTimeLocalString = dateTimeFormat.format(currTime);
+        dateTimeLocalString = dateTimeFormat.format(dateTimeGMT);
 
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         dateFormat.setTimeZone(TimeZone.getDefault());
-        dateLocal = dateFormat.format(currTime);
+        dateLocal = dateFormat.format(dateTimeGMT);
 
         DateFormat timeFormat = new SimpleDateFormat("H:mm a");
         timeFormat.setTimeZone(TimeZone.getDefault());
-        timeLocal = timeFormat.format(currTime);
+        timeLocal = timeFormat.format(dateTimeGMT);
 
         //initDateTimeGMT =new Date().getTime();
     }

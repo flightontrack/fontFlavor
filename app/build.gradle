@@ -42,7 +42,7 @@ android {
 //            applicationIdSuffix '.client_pu'
         }
         clientApiCurrent {
-            minSdkVersion 21
+            minSdkVersion 19
             dimension "client"
             targetSdkVersion 26
 
