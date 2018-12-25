@@ -360,6 +360,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
                 break;
             case STOPPED:
                 if (sqlLocation.getLocationFlightCount(flightNumber) == 0) {
+                    if(RouteControl.activeFlightControl == this)  RouteControl.activeFlightControl = null;
                     setFlightState(READY_TOBECLOSED);
                 }
                 break;

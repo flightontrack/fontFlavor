@@ -56,13 +56,13 @@ public class RouteBase implements EventBus{
     void setToNull(){
         RouteBase.activeFlight = null;
         RouteBase.activeRoute = null;
-        EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_NOACTIVEROUTE));
+        EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_FLIGHTLISTCLEAR));
     }
     void set_rAction(RACTION request) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request, 'd'));
         switch (request) {
             case REMOVE_FLIGHT_IF_CLOSED:
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "REMOVE_FLIGHT_IF_CLOSED: flightList: size : " + flightList.size(), 'd'));
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "CHECK_IF_CLOSED_FLIGHT: flightList: size : " + flightList.size(), 'd'));
                     for (FlightOffline f : new ArrayList<>(flightList)) {
                         new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
                         if (f.flightState.equals(FlightOffline.FLIGHT_STATE.CLOSED)) {

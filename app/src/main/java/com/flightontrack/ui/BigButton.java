@@ -132,7 +132,7 @@ public class BigButton implements EventBus {
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
                 /// swithch to red
                 break;
-            case ROUTE_NOACTIVEROUTE:
+            case ROUTE_FLIGHTLISTCLEAR:
                 setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
                 break;
         }

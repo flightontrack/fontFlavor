@@ -13,6 +13,7 @@ import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
+import static com.flightontrack.flight.EntityFlightController.*;
 
 public class RouteControl implements EventBus{
     final String TAG = "RouteControl";
@@ -21,12 +22,12 @@ public class RouteControl implements EventBus{
         OPEN_NEW_FLIGHT,
         //SWITCH_TO_PENDING,
         RESTART_NEW_FLIGHT,
-        REMOVE_FLIGHT_IF_CLOSED,
-        ADD_OR_UPDATE_FLIGHT
+        CHECK_IF_CLOSED_FLIGHT,
+        CHECK_IF_ADD_FLIGHT_TO_FLIGHTLIST
 
     }
 
-    static RouteControl routeControlInstance = null;
+    static RouteControl routeControlInstance;
     public static FlightControl activeFlightControl;
     public static ArrayList<FlightControl> flightControlList = new ArrayList<>();
     EntityEventMessage entityEventMessage;
@@ -39,54 +40,56 @@ public class RouteControl implements EventBus{
         return routeControlInstance;
     }
 
-     public static FlightOffline get_FlightInstanceByNumber(String flightNumber){
-        for (FlightOffline f : flightList) {
-            if (f.entityFlight.flightNumber.equals(flightNumber)) {
-                return f;
-            }
-        }
-        return activeFlight;
-    }
-    public static boolean isFlightNumberInList(String flightNumber){
-        for (FlightOffline f : flightList) {
-            if (f.entityFlight.flightNumber.equals(flightNumber)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//     public static FlightOffline get_FlightInstanceByNumber(String flightNumber){
+//        for (FlightOffline f : flightList) {
+//            if (f.entityFlight.flightNumber.equals(flightNumber)) {
+//                return f;
+//            }
+//        }
+//        return activeFlight;
+//    }
+//    public static boolean isFlightNumberInList(String flightNumber){
+//        for (FlightOffline f : flightList) {
+//            if (f.entityFlight.flightNumber.equals(flightNumber)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     void setToNull(){
+        RouteControl.routeControlInstance = null;
         RouteControl.activeFlightControl = null;
+        RouteControl.flightControlList = null;
         //RouteControl.activeRoute = null;
-        EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_NOACTIVEROUTE));
+        //EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_FLIGHTLISTCLEAR));
     }
     void set_rAction(RACTION request) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request, 'd'));
         switch (request) {
-            case REMOVE_FLIGHT_IF_CLOSED:
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "REMOVE_FLIGHT_IF_CLOSED: flightList: size : " + flightList.size(), 'd'));
-                    for (FlightOffline f : new ArrayList<>(flightList)) {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
-                        if (f.flightState.equals(FlightOffline.FLIGHT_STATE.CLOSED)) {
-                            //if (activeFlight == f) activeFlight = null;
-                            new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request+":f:"+f, 'd'));
-                            if (f==activeFlight) activeFlight =null;
-                            flightList.remove(f);
-                        }
-                        if (flightList.isEmpty()) {
-                            //if (activeRoute == this) activeRoute = null;
-                            new FontLogAsync().execute(new EntityLogMessage(TAG, "flightList isEmpty", 'd'));
-                            setToNull();
-                        }
+            case CHECK_IF_CLOSED_FLIGHT:
+                for (FlightControl f : new ArrayList<>(flightControlList)) {
+                    //new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
+                    if (f.flightState.equals(FLIGHT_STATE.CLOSED)) {
+                        //if (activeFlight == f) activeFlight = null;
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "remove flight if closed: " +f.flightNumber, 'd'));
+                        if (f==activeFlightControl) activeFlightControl =null;
+                        /// remove from the list and database
+                        f.removeMyself();
+                        //flightControlList.remove(f);
                     }
+                    if (flightControlList.isEmpty()) {
+                        //if (activeRoute == this) activeRoute = null;
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightControlList isEmpty", 'd'));
+                        setToNull();
+                    }
+                }
                 break;
-            case ADD_OR_UPDATE_FLIGHT:
-                FlightOffline fb = (FlightOffline) entityEventMessage.eventMessageValueObject;
-                new FontLogAsync().execute(new EntityLogMessage(TAG, "fb.fn"+fb.entityFlight.flightNumber, 'd'));
-                //new FontLogAsync().execute(new LogMessage(TAG, "fb.fnt"+fb.flightNumberTemp, 'd');
-                if (flightList.contains(fb)) break;
+            case CHECK_IF_ADD_FLIGHT_TO_FLIGHTLIST:
+                FlightControl f = (FlightControl) entityEventMessage.eventMessageValueObject;
+                new FontLogAsync().execute(new EntityLogMessage(TAG, "flight added to flightlist "+f.flightNumber, 'd'));
+                if (flightControlList.contains(f)) break;
                 else {
-                    flightList.add((FlightOffline) entityEventMessage.eventMessageValueObject);
+                    flightControlList.add(f);
                     break;
                 }
         }
@@ -104,12 +107,7 @@ public class RouteControl implements EventBus{
 
     @Override
     public void onClock(EntityEventMessage entityEventMessage) {
-        for (FlightOffline f : flightList) {
-            if (f.flightState == FlightOffline.FLIGHT_STATE.CLOSED) {
-                set_rAction(RACTION.REMOVE_FLIGHT_IF_CLOSED);
-                break;
-            }
-        }
+                set_rAction(RACTION.CHECK_IF_CLOSED_FLIGHT);
     }
 @Override
 public void eventReceiver(EntityEventMessage entityEventMessage){
@@ -118,10 +116,10 @@ public void eventReceiver(EntityEventMessage entityEventMessage){
     new FontLogAsync().execute(new EntityLogMessage(TAG,"eventReceiver:"+ev+":eventString:"+ entityEventMessage.eventMessageValueString, 'd'));
     switch(ev){
             case FLIGHT_REMOTENUMBER_RECEIVED:
-                set_rAction(RACTION.ADD_OR_UPDATE_FLIGHT);
+                set_rAction(RACTION.CHECK_IF_ADD_FLIGHT_TO_FLIGHTLIST);
                 break;
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
-                set_rAction(RACTION.REMOVE_FLIGHT_IF_CLOSED);
+                set_rAction(RACTION.CHECK_IF_CLOSED_FLIGHT);
                 break;
             case CLOCK_SERVICESELFSTOPPED:
                 setToNull();

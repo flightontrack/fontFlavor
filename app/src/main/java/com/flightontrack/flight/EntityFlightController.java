@@ -66,6 +66,11 @@ public class EntityFlightController{
         sqlFlightControllerEntity.updateIsJunkFlag(dbid,isJunk);
     }
 
+    public void removeMyself(){
+        sqlFlightControllerEntity.deleteFlightEntity(dbid);
+        RouteControl.flightControlList.remove(this);
+    }
+
     public FLIGHT_STATE flightState = FLIGHT_STATE.DEFAULT;
 
     public void setFlightNumStatus(FLIGHTNUMBER_SRC fns) {
@@ -90,7 +95,7 @@ public class EntityFlightController{
     private int             dbid;
 
     SQLFlightControllerEntity sqlFlightControllerEntity = new SQLFlightControllerEntity();
-    SQLLocation sqlLocation = new SQLLocation();
+    SQLLocation sqlLocation = SQLLocation.getInstance();
     FlightControl flightControl;
 
     EntityFlightController(String rn, int leg) {

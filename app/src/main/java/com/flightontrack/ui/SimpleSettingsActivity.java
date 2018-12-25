@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.flightontrack.R;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.objects.Pilot;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
@@ -29,7 +30,6 @@ import ui.SimpleSettingsActivityExt;
 
 import static com.flightontrack.definitions.Finals.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
 import static com.flightontrack.shared.Props.SessionProp;
-import static com.flightontrack.shared.Props.SessionProp.sqlLocation;
 import static shared.AppConfig.pIsRelease;
 import static com.flightontrack.definitions.EventEnums.*;
 
@@ -122,7 +122,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         spinnerUrls.setAdapter(adapterUrl);
         spinnerUrls.setOnItemSelectedListener(this);
         txtCached= findViewById((R.id.txtCached));
-        txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
+        txtCached.setText(String.valueOf(SQLLocation.getInstance().getLocationTableCountTotal()));
 
         progressBar = new ProgressDialog(this);
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -234,11 +234,11 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
     new FontLogAsync().execute(new EntityLogMessage(TAG, " eventReceiver : "+ev, 'd'));
         switch(ev){
             case SESSION_ONSENDCACHECOMPLETED:
-                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(SQLLocation.getInstance().getLocationTableCountTotal()));
                 if (progressBar!=null)  progressBar.dismiss();
                 break;
             case SQL_ONCLEARCACHE_COMPLETED:
-                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(SQLLocation.getInstance().getLocationTableCountTotal()));
                 break;
             case FLIGHTBASE_GETFLIGHTNUM:
                 if (progressBar!=null)  progressBar.dismiss();

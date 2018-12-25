@@ -163,4 +163,22 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         return rn;
     }
 
+    public void deleteFlightEntity(int id) {
+        String selection = DBTableFlightContol._ID +"=" + id;
+        //int[] selectionArgs = {id};
+
+        try{
+            dbw = getWritableDatabase();
+            dbw.delete(
+                    DBSchema.TABLE_LOCATION,
+                    selection,
+                    null
+                    //selectionArgs
+            );
+            dbw.close();
+        } catch (Exception e) {
+            new FontLogAsync().execute(new EntityLogMessage(TAG, e.getMessage(), 'e'));
+        }
+    }
+
 }

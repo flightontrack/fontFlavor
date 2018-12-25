@@ -1,9 +1,10 @@
 package com.flightontrack.shared;
+import com.flightontrack.flight.FlightControl;
 import com.flightontrack.flight.RouteControl;
 import com.flightontrack.model.EntityEventMessage;
+import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.ui.BigButton;
 import com.flightontrack.ui.SimpleSettingsActivity;
-import com.flightontrack.flight.FlightOffline;
 import com.flightontrack.flight.Session;
 import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.definitions.EventEnums.*;
-import static com.flightontrack.shared.Props.SessionProp.*;
 
 public interface EventBus{
     String TAG = "Bus";
@@ -47,7 +47,7 @@ public interface EventBus{
                 break;
             case FLIGHT_GETNEWFLIGHT_COMPLETED:
                 if(!entityEventMessage.eventMessageValueBool){
-                    interfaceList.add(sqlLocation);
+                    interfaceList.add(SQLLocation.getInstance());
                 }
                 break;
             case FLIGHTBASE_GETFLIGHTNUM:
@@ -79,7 +79,7 @@ public interface EventBus{
             case ROUTE_ONLEGLIMITREACHED:
                 ///TODO
                 break;
-            case ROUTE_NOACTIVEROUTE:
+            case ROUTE_FLIGHTLISTCLEAR:
                 if (SvcLocationClock.getInstance()!=null) interfaceList.add(SvcLocationClock.getInstance());
                 else interfaceList.add(BigButton.getInstance()); //interfaceList.add(mainactivityInstance);
                 break;
@@ -109,7 +109,7 @@ public interface EventBus{
                         break;
                 }
             case SETTINGACT_BUTTONCLEARCACHE_CLICKED:
-                interfaceList.add(sqlLocation);
+                interfaceList.add(SQLLocation.getInstance());
                 break;
             case SETTINGACT_BUTTONSENDCACHE_CLICKED:
                 interfaceList.add(Session.getInstance());
@@ -151,7 +151,7 @@ public interface EventBus{
                 interfaceList.add(SimpleSettingsActivity.simpleSettingsActivityInstance);
                 break;
             case SQL_FLIGHTRECORDCOUNT_ZERO:
-                interfaceList.add((FlightOffline) entityEventMessage.eventMessageValueObject);
+                interfaceList.add((FlightControl) entityEventMessage.eventMessageValueObject);
                 break;
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
                 interfaceList.add(RouteControl.getInstance()); // set route number

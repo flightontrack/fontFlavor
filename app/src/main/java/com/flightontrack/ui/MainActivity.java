@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     View            cardLayout1;
     public Spinner  spinnerUpdFreq;
     public Spinner  spinnerMinSpeed;
+    SQLLocation     sqlLocation;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Fabric.with(this, new Crashlytics());
+        sqlLocation = SQLLocation.getInstance();
         try {
             //Log.d(TAG, "MainActivityThread:" + Thread.currentThread().getId());
             initProp(getApplicationContext(), this);

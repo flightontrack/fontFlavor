@@ -34,6 +34,14 @@ import java.util.List;
 public class SQLLocation extends SQLiteOpenHelper implements EventBus {
     private static final String TAG = "SQLHelper";
 
+    public static SQLLocation SQLLocationInstance;
+    public static SQLLocation getInstance() {
+        if(SQLLocationInstance == null) {
+            SQLLocationInstance = new SQLLocation();
+        }
+        return SQLLocationInstance;
+    }
+
     public SQLiteDatabase dbw;
 
     public SQLLocation() {
@@ -359,7 +367,7 @@ public class SQLLocation extends SQLiteOpenHelper implements EventBus {
                 flightList.add(cu.getString(cu.getColumnIndexOrThrow(DBSchema.LOC_flightid)));
             }
         } finally {
-            sqlLocation.dbw.close();
+            dbw.close();
         }
         return flightList;
     }

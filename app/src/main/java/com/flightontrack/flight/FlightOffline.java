@@ -7,6 +7,7 @@ import com.flightontrack.R;
 import com.flightontrack.communication.HttpJsonClient;
 import com.flightontrack.communication.ResponseJsonObj;
 import com.flightontrack.model.EntityFlight;
+import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.objects.Aircraft;
 import com.flightontrack.model.EntityRequestCloseFlight;
 import com.flightontrack.model.EntityRequestNewFlightOffline;
@@ -225,7 +226,7 @@ public class FlightOffline implements EventBus{
     }
 
     void replace_FlightNumber(String fnew) {
-        if (sqlLocation.updateTempFlightNum(entityFlight.flightNumber, fnew) > 0) {
+        if (SQLLocation.getInstance().updateTempFlightNum(entityFlight.flightNumber, fnew) > 0) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "replace_FlightNumber: " + entityFlight.flightNumber+"->" +fnew, 'd'));
         }
         else new FontLogAsync().execute(new EntityLogMessage(TAG, "replace_FlightNumber: nothing to replace: " + entityFlight.flightNumber+"->" +fnew, 'd'));

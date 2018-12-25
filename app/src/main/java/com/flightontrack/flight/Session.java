@@ -50,6 +50,7 @@ public class Session implements EventBus{
         GET_OFFLINE_FLIGHTS
     }
     static Session sessionInstance = null;
+    static SQLLocation sqlLocation;
     public static Integer commBatchSize = COMM_BATCH_SIZE_MAX;
     //boolean isSendNextStarted = false;
     //static EnumMap<EVENT,SACTION> eventReaction = new EnumMap<>(EVENT.class);
@@ -60,6 +61,7 @@ public class Session implements EventBus{
     public static Session getInstance() {
         if(sessionInstance == null) {
             sessionInstance = new Session();
+            sqlLocation = SQLLocation.getInstance();
         }
         return sessionInstance;
     }
@@ -69,7 +71,6 @@ public class Session implements EventBus{
         sharedPreferences = ctx.getSharedPreferences(PACKAGE_NAME,Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         mainactivityInstance = maInstance;
-        sqlLocation = new SQLLocation();
 //        eventReaction.put(MACT_BACKBUTTON_ONCLICK,SACTION.CHECK_CACHE_FIRST);
 //        eventReaction.put(CLOCK_ONTICK,SACTION.START_COMMUNICATION);
 //        eventReaction.put(ALERT_SENTPOINTS:
