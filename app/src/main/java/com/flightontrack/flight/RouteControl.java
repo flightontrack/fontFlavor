@@ -1,15 +1,21 @@
 package com.flightontrack.flight;
 
+import com.flightontrack.definitions.Limits;
 import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.model.EntityEventMessage;
-import static com.flightontrack.definitions.EventEnums.*;
+import com.flightontrack.shared.Props;
 
 import java.util.ArrayList;
 
-public class RouteBase implements EventBus{
-    final String TAG = "RouteBase";
+import static com.flightontrack.definitions.EventEnums.EVENT;
+import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED;
+import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN;
+import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
+
+public class RouteControl implements EventBus{
+    final String TAG = "RouteControl";
 
     public enum RACTION {
         OPEN_NEW_FLIGHT,
@@ -20,21 +26,17 @@ public class RouteBase implements EventBus{
 
     }
 
-    static RouteBase routeBaseInstance = null;
-    public static Route activeRoute;
-    public static FlightOnline activeFlight;
+    static RouteControl routeControlInstance = null;
     public static FlightControl activeFlightControl;
-    public static EntityFlightController activeEntityFlightController;
-    public static ArrayList<FlightOffline> flightList = new ArrayList<>();
     public static ArrayList<FlightControl> flightControlList = new ArrayList<>();
     EntityEventMessage entityEventMessage;
     EVENT ev;
 
-    public static RouteBase getInstance() {
-        if(routeBaseInstance == null) {
-            routeBaseInstance = new RouteBase();
+    public static RouteControl getInstance() {
+        if(routeControlInstance == null) {
+            routeControlInstance = new RouteControl();
         }
-        return routeBaseInstance;
+        return routeControlInstance;
     }
 
      public static FlightOffline get_FlightInstanceByNumber(String flightNumber){
@@ -54,8 +56,8 @@ public class RouteBase implements EventBus{
         return false;
     }
     void setToNull(){
-        RouteBase.activeFlight = null;
-        RouteBase.activeRoute = null;
+        RouteControl.activeFlightControl = null;
+        //RouteControl.activeRoute = null;
         EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_NOACTIVEROUTE));
     }
     void set_rAction(RACTION request) {
@@ -89,6 +91,17 @@ public class RouteBase implements EventBus{
                 }
         }
     }
+
+    private void restartNewFlight(){
+        int legCount = activeFlightControl.legNumber++;
+        if (Props.SessionProp.pIsMultileg && (legCount <= Limits.LEG_COUNT_HARD_LIMIT)) {
+            flightControlList.add(new FlightControl(activeFlightControl.routeNumber,legCount));
+        } else {
+            /// keep clock ticking
+            EventBus.distribute(new EntityEventMessage(EVENT.ROUTE_ONRESTART).setEventMessageValueBool(false));
+        }
+    }
+
     @Override
     public void onClock(EntityEventMessage entityEventMessage) {
         for (FlightOffline f : flightList) {
@@ -114,7 +127,27 @@ public void eventReceiver(EntityEventMessage entityEventMessage){
                 setToNull();
                 break;
             case CLOCK_MODECLOCK_ONLY:
-                activeFlight = null;
+                activeFlightControl = null;
+                break;
+            case FLIGHT_STATECHANGEDTO_READYTOSAVE:
+                //if (routeNumber.equals(ROUTE_NUMBER_DEFAULT)) routeNumber = entityEventMessage.eventMessageValueString;
+                break;
+            case MACT_BIGBUTTON_ONCLICK_START:
+                flightControlList.add(new FlightControl(ROUTE_NUMBER_DEFAULT,1));
+                //set_rAction(RACTION.OPEN_NEW_FLIGHT);
+                break;
+            case FLIGHT_ONSPEEDLOW:
+                //set_rAction(RACTION.RESTART_NEW_FLIGHT);
+                restartNewFlight();
+                break;
+            case SESSION_ONSUCCESS_COMMAND:
+                switch (entityEventMessage.eventMessageValueString) {
+                    case COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN:
+                        break;
+                    case COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED:
+                        restartNewFlight();
+                        break;
+                }
                 break;
         }
     }

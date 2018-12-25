@@ -1,7 +1,7 @@
-package com.flightontrack.shared;
+package com.flightontrack.definitions;
 
-public interface Events {
-    enum EVENT {
+public abstract class EventEnums {
+    public enum EVENT {
         MACT_BIGBUTTON_ONCLICK_START,
         MACT_BIGBUTTON_ONCLICK_STOP,
         MACT_BACKBUTTON_ONCLICK,

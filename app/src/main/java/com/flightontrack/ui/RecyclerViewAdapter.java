@@ -10,6 +10,8 @@ import com.flightontrack.model.EntityFlight;
 
 import java.util.List;
 
+import static com.flightontrack.shared.Props.ctxApp;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>  {
     private List<EntityFlight> mDataset;
 
@@ -57,11 +59,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textViewFlightNum.setText(holder.textViewFlightNum.getText()+"\n"+ mDataset.get(position).flightNumber);
-        holder.textViewAcft.setText(holder.textViewAcft.getText()+ mDataset.get(position).flightAcft);
-        holder.textViewStartTime.setText(holder.textViewStartTime.getText()+ mDataset.get(position).flightTimeStart);
-        holder.textViewDate.setText(holder.textViewDate.getText()+ mDataset.get(position).flightDate);
-        holder.textViewDuration.setText(holder.textViewDuration.getText()+ mDataset.get(position).flightDuration);
+        String fn = ctxApp.getString(R.string.label_hflight)+"\n"+ mDataset.get(position).flightNumber;
+        String acft = mDataset.get(position).flightAcft;
+        String ts = mDataset.get(position).flightTimeStart;
+        String dt = mDataset.get(position).flightDate;
+        String dur = mDataset.get(position).flightDuration;
+
+        holder.textViewFlightNum.setText(fn);
+        holder.textViewAcft.setText(acft);
+        holder.textViewStartTime.setText(ts);
+        holder.textViewDate.setText(dt);
+        holder.textViewDuration.setText(dur);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

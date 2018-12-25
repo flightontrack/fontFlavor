@@ -9,12 +9,13 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import com.flightontrack.R;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
 
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
+import static com.flightontrack.definitions.EventEnums.*;
 
 public class ShowAlertClass implements AutoCloseable{
 
@@ -150,7 +151,7 @@ public class ShowAlertClass implements AutoCloseable{
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                EventBus.distribute(new EventMessage(EVENT.ALERT_SENTPOINTS).setEventMessageValueAlertResponse(ALERT_RESPONSE.POS));
+                                EventBus.distribute(new EntityEventMessage(EVENT.ALERT_SENTPOINTS).setEventMessageValueAlertResponse(ALERT_RESPONSE.POS));
                                 if(dbLocationRecCountNormal >0) Toast.makeText(ctxActivity, R.string.unsentrecords_failed, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -161,7 +162,7 @@ public class ShowAlertClass implements AutoCloseable{
                         //Util.setPointsUnsent(0);
                         //int j = sqlHelper.allLocationsDelete();
                         //Util.appendLog(TAG + "Deleted from database: " + j + " all locations", 'd');
-                        EventBus.distribute(new EventMessage(EVENT.ALERT_SENTPOINTS).setEventMessageValueAlertResponse(ALERT_RESPONSE.NEG));
+                        EventBus.distribute(new EntityEventMessage(EVENT.ALERT_SENTPOINTS).setEventMessageValueAlertResponse(ALERT_RESPONSE.NEG));
                     }
                 });
         AlertDialog alert = alertDialogBuilder.create();
@@ -178,7 +179,7 @@ public class ShowAlertClass implements AutoCloseable{
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                EventBus.distribute(new EventMessage(EVENT.ALERT_STOPAPP).setEventMessageValueAlertResponse(ALERT_RESPONSE.POS));
+                                EventBus.distribute(new EntityEventMessage(EVENT.ALERT_STOPAPP).setEventMessageValueAlertResponse(ALERT_RESPONSE.POS));
                             }
                         });
         alertDialogBuilder.setNegativeButton(ctxActivity.getString(R.string.backpressed_dialog_neg),

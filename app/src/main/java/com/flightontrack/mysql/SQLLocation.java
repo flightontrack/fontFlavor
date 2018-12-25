@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.flightontrack.model.EntityLocation;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.shared.EventMessage;
+import com.flightontrack.model.EntityEventMessage;
 
 import static com.flightontrack.definitions.Finals.DATABASE_NAME;
 import static com.flightontrack.definitions.Finals.DATABASE_VERSION;
@@ -21,8 +21,9 @@ import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
 import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
+import static com.flightontrack.definitions.EventEnums.*;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.GetTime;
+import com.flightontrack.objects.MyDateTime;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,12 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SQLHelper extends SQLiteOpenHelper implements EventBus {
+public class SQLLocation extends SQLiteOpenHelper implements EventBus {
     private static final String TAG = "SQLHelper";
 
     public SQLiteDatabase dbw;
 
-    public SQLHelper() {
+    public SQLLocation() {
         super(ctxApp, DATABASE_NAME, null, DATABASE_VERSION);
         new FontLogAsync().execute(new EntityLogMessage(TAG, "SQLHelper:SQLHelper", 'd'));
         try {
@@ -124,7 +125,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         long numRows = DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION,selection,selectionArgs1);
         dbw.close();
         if (numRows==0){
-            EventBus.distribute(new EventMessage( EVENT.SQL_FLIGHTRECORDCOUNT_ZERO)
+            EventBus.distribute(new EntityEventMessage( EVENT.SQL_FLIGHTRECORDCOUNT_ZERO)
                     .setEventMessageValueObject(get_FlightInstanceByNumber(flightId))
                     .setEventMessageValueString(flightId)
             );
@@ -150,7 +151,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         long numRows = DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION,selection,selectionArgs1);
         dbw.close();
         if (numRows==0){
-            EventBus.distribute(new EventMessage( EVENT.SQL_FLIGHTRECORDCOUNT_ZERO)
+            EventBus.distribute(new EntityEventMessage( EVENT.SQL_FLIGHTRECORDCOUNT_ZERO)
                     .setEventMessageValueObject(get_FlightInstanceByNumber(flightId))
                     .setEventMessageValueString(flightId)
             );
@@ -321,6 +322,20 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         }
         return locations;
     }
+    public List<String> getAllFlightList() {
+
+        List<String> flightIdList = new ArrayList<>();
+        dbw = getReadableDatabase();
+
+        try (Cursor c = dbw.rawQuery("select distinct flightid from Location", new String[]{})) {
+            while (c.moveToNext()) {
+                flightIdList.add(c.getString(c.getColumnIndexOrThrow(DBSchema.LOC_flightid)));
+            }
+        } finally {
+            dbw.close();
+        }
+        return flightIdList;
+    }
     public List<String> getTempFlightList() {
 
         List<String> flightIdList = new ArrayList<>();
@@ -344,7 +359,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
                 flightList.add(cu.getString(cu.getColumnIndexOrThrow(DBSchema.LOC_flightid)));
             }
         } finally {
-            sqlHelper.dbw.close();
+            sqlLocation.dbw.close();
         }
         return flightList;
     }
@@ -372,7 +387,7 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
 
         return (int) numRows;
     }
-    String getNewTempFlightNum(String dateTime){
+    String getNewTempFlightNum(){
         dbw = getWritableDatabase();
 
         Cursor c = dbw.rawQuery("select max(ifnull(flightNumber,0)) from "+TABLE_FLIGHTNUMBER_ALLOCATION ,new String[]{});
@@ -380,8 +395,8 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         int f= c.getCount()<=0?1:c.getInt(0)+1;
         ContentValues values = new ContentValues();
         values.put(DBSchema.FLIGHTNUM_FlightNumber, f); //flightid
-        values.put(DBSchema.FLIGHTNUM_RouteNumber, 0);
-        values.put(DBSchema.FLIGHTNUM_FlightTimeStart, dateTime); //date
+        //values.put(DBSchema.FLIGHTNUM_RouteNumber, 0);
+        //values.put(DBSchema.FLIGHTNUM_FlightTimeStart, dateTime); //date
 
         long r = 0;
         try {
@@ -437,22 +452,22 @@ public class SQLHelper extends SQLiteOpenHelper implements EventBus {
         return rn;
     }
     @Override
-    public void eventReceiver(EventMessage eventMessage){
-        EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage){
+        EVENT ev = entityEventMessage.event;
         switch(ev){
             case SETTINGACT_BUTTONCLEARCACHE_CLICKED:
                 if(dropCreateDb()){
-                    EventBus.distribute(new EventMessage(EVENT.SQL_ONCLEARCACHE_COMPLETED).setEventMessageValueBool(true));
+                    EventBus.distribute(new EntityEventMessage(EVENT.SQL_ONCLEARCACHE_COMPLETED).setEventMessageValueBool(true));
                 }
                 break;
             case SESSION_ONSUCCESS_COMMAND:
-                if (eventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) flightLocationsDelete(eventMessage.eventMessageValueString);
+                if (entityEventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) flightLocationsDelete(entityEventMessage.eventMessageValueString);
                 break;
             case FLIGHT_GETNEWFLIGHT_COMPLETED:
-                if(!eventMessage.eventMessageValueBool)
+                if(!entityEventMessage.eventMessageValueBool)
                     try {
-                        String dt = URLEncoder.encode(new GetTime().dateTimeLocalString, "UTF-8");
-                        EventBus.distribute(new EventMessage(EVENT.SQL_LOCALFLIGHTNUM_ALLOCATED).setEventMessageValueString(getNewTempFlightNum(dt)));
+                        String dt = URLEncoder.encode(new MyDateTime().dateTimeLocalString, "UTF-8");
+                        EventBus.distribute(new EntityEventMessage(EVENT.SQL_LOCALFLIGHTNUM_ALLOCATED).setEventMessageValueString(getNewTempFlightNum()));
                     } catch (UnsupportedEncodingException e1) {
                         e1.printStackTrace();
                     }

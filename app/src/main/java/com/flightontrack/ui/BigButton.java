@@ -4,8 +4,8 @@ import com.flightontrack.R;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
 import com.flightontrack.shared.Props;
 
 import static com.flightontrack.definitions.Finals.*;
@@ -13,6 +13,7 @@ import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.SessionProp.trackingButtonState;
 import static com.flightontrack.shared.Props.ctxApp;
 import static com.flightontrack.shared.Props.mainactivityInstance;
+import static com.flightontrack.definitions.EventEnums.*;
 
 public class BigButton implements EventBus {
     static final String TAG = "BigButton";
@@ -102,8 +103,8 @@ public class BigButton implements EventBus {
     }
 
     @Override
-    public void eventReceiver(EventMessage eventMessage) {
-        EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage) {
+        EVENT ev = entityEventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG, "eventReceiver : " + ev, 'd'));
         //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
         switch (ev) {

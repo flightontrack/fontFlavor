@@ -26,9 +26,9 @@ import com.flightontrack.objects.Aircraft;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.R;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
-import com.flightontrack.locationclock.SvcLocationClock;
+import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
 import shared.AppConfig;
@@ -39,6 +39,7 @@ import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.flight.Session.*;
+import static com.flightontrack.definitions.EventEnums.*;
 //import com.google.android.gms.appindexing.Action;
 //import com.google.android.gms.appindexing.AppIndex;
 //import com.google.android.gms.appindexing.Thing;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
             chBoxIsMultiLeg = findViewById(R.id.patternCheckBox);
             chBoxIsMultiLeg.setOnCheckedChangeListener((compoundButton, b) -> {
-                EventBus.distribute(new EventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
+                EventBus.distribute(new EntityEventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
             });
 
             setSupportActionBar(findViewById(R.id.toolbar_top));
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         SessionProp.get();
         txtAcftNum.setText(new Aircraft().AcftNum);
         BigButton.setTrackingButton(trackingButtonState);
-        txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+        txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
 
         int permissionCheckPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int permissionCheckLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -302,10 +303,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                     if (!SessionProp.pIsEmptyAcftOk) return;
                 }
                 /// signal to start a new route and load a new flight in route flight list
-                EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
+                EventBus.distribute(new EntityEventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_START));
                 break;
             default:
-                EventBus.distribute(new EventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
+                EventBus.distribute(new EntityEventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
                 break;
         }
     }
@@ -436,22 +437,22 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 //    }
 
     @Override
-    public void eventReceiver(EventMessage eventMessage) {
-        EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage) {
+        EVENT ev = entityEventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG, "eventReceiver : " + ev, 'd'));
         //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
         switch (ev) {
             case PROP_CHANGED_MULTILEG:
-                chBoxIsMultiLeg.setChecked(eventMessage.eventMessageValueBool);
+                chBoxIsMultiLeg.setChecked(entityEventMessage.eventMessageValueBool);
                 break;
             case SESSION_ONSUCCESS_EXCEPTION:
                 Toast.makeText(mainactivityInstance, R.string.toast_server_error, Toast.LENGTH_LONG).show();
                 break;
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
-                txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
                 break;
             case SESSION_ONSENDCACHECOMPLETED:
-                txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
                 break;
             case HEALTHCHECK_ONRESTART:
                 trackingButton.performClick();

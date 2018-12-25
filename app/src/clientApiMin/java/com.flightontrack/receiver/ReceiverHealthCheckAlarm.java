@@ -14,7 +14,7 @@ import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.EventMessage;
 import com.flightontrack.ui.MainActivity;
-import com.flightontrack.locationclock.SvcLocationClock;
+import com.flightontrack.clock.SvcLocationClock;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.flightontrack.shared;
+package com.flightontrack.objects;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-public class GetTime {
+public class MyDateTime {
     public String timeLocal;
     public String dateLocal;
     public String dateTimeLocalString;
     public long   dateTimeGMT;
     //public int elapsedTimeSec;
 
-    public GetTime() {
+    public MyDateTime() {
         dateTimeGMT = new Date().getTime();
         DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateTimeFormat.setTimeZone(TimeZone.getDefault());
@@ -29,7 +29,7 @@ public class GetTime {
 
         //initDateTimeGMT =new Date().getTime();
     }
-    public GetTime updateDateTime() {
+    public MyDateTime updateDateTime() {
         dateTimeGMT = new Date().getTime();
         DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateTimeFormat.setTimeZone(TimeZone.getDefault());

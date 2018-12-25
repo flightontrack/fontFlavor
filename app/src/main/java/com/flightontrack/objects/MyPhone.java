@@ -10,7 +10,6 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.flightontrack.locationclock.SvcLocationClock;
 import com.flightontrack.shared.Props;
 
 import static com.flightontrack.definitions.SHPREF.CDMASIGNALSTRENGTH;

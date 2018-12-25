@@ -276,10 +276,10 @@
                 <TextView
                     android:id="@+id/txtCached"
                     style="@style/label_text"
-                    android:layout_width="0dp"
+                    android:layout_width="42dp"
                     android:layout_height="match_parent"
-                    android:gravity="start"
-                    android:layout_weight="1" />
+                    android:layout_weight="2"
+                    android:gravity="start" />
 
 
             </LinearLayout>

@@ -1,28 +1,25 @@
 package com.flightontrack.mysql;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityFlight;
 import com.flightontrack.model.EntityLogMessage;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.flightontrack.definitions.Finals.*;
+import static com.flightontrack.mysql.DBSchema.SPACE;
 import static com.flightontrack.mysql.DbTableFlightHistory.*;
-import static com.flightontrack.shared.Props.SessionProp.dbLocationRecCountNormal;
-import static com.flightontrack.shared.Props.SessionProp.dbTempFlightRecCount;
 import static com.flightontrack.shared.Props.ctxApp;
+import static com.flightontrack.definitions.EventEnums.*;
 
 //import android.content.Context;
 
@@ -89,7 +86,7 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         dbw = getReadableDatabase();
         ArrayList<EntityFlight> flightList = new ArrayList<>();
 
-        try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTENTITY  , new String[]{})) {
+        try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTRECORDSET, new String[]{})) {
             while (cu.moveToNext()) {
                 EntityFlight f = new EntityFlight();
                 f.i = cu.getPosition();
@@ -108,11 +105,32 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         finally {
             dbw.close();
         }
-
-//        flightList.add(new EntityFlight("700000","7000","12:00pm","35 min"));
-//        flightList.add(new EntityFlight("700100","7000","12:00pm","11 min"));
-//        flightList.add(new EntityFlight("700200","7000","12:00pm","1 h 35 min"));
         return flightList;
+    }
+    public EntityFlight getFlightHistEntity(String fn) {
+
+        dbw = getReadableDatabase();
+        EntityFlight f = new EntityFlight();
+        String sql = SQL_SELECT_FLIGHTENTITY+ " where " + FLIGHTHIST_FlightNumber+" = "+fn;
+        try (Cursor cu = dbw.rawQuery(sql, new String[]{})) {
+            while (cu.moveToNext()) {
+                f.i = cu.getPosition();
+                f.dbid = cu.getInt(cu.getColumnIndexOrThrow(_ID));
+                f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightNumber));
+                f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_RouteNumber));
+                f.flightDate = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDate));
+                f.flightTimeStart = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightTimeStart));
+                f.flightDuration =  cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDuration));
+                f.flightAcft = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightAcft));
+            }
+        }
+        catch (Exception e){
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+        }
+        finally {
+            dbw.close();
+        }
+        return f;
     }
     public int updateFlightEntityDuration(int id, String flightduration){
         int rn=0;
@@ -211,8 +229,8 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         return r;
     }
     @Override
-    public void eventReceiver(EventMessage eventMessage){
-        EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage){
+        EVENT ev = entityEventMessage.event;
         switch(ev){
         }
     }

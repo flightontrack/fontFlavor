@@ -1,4 +1,4 @@
-package com.flightontrack.locationclock;
+package com.flightontrack.clock;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,18 +13,20 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import com.flightontrack.definitions.EventEnums;
 import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.objects.MyPhone;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
-import com.flightontrack.shared.GetTime;
+import com.flightontrack.objects.MyDateTime;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.shared.Props;
 
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
+import static com.flightontrack.definitions.EventEnums.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.shared.Props.ctxApp;
 
@@ -41,7 +43,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     public static int intervalClockSecPrev = _intervalClockSecCurrent;
     public static long  alarmNextTimeUTCmsec;
     MyPhone phStateListener;
-    GetTime getTime;
+    MyDateTime myDateTime;
 
     public SvcLocationClock() {
     }
@@ -73,7 +75,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         SvcLocationClock.stopLocationUpdates();
         set_intervalClockSecCurrent(timeSec);
         //setClockNextTimeLocalMsec(0);
-        alarmNextTimeUTCmsec = getTime.getTimeGMT();
+        alarmNextTimeUTCmsec = myDateTime.getTimeGMT();
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, _intervalClockSecCurrent * 1000, distance, this);
         }
@@ -86,7 +88,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         switch (_mode){
             case CLOCK_ONLY:
                 requestLocationUpdate(MIN_TIME_BW_GPS_UPDATES_SEC, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
-                EventBus.distribute(new EventMessage(EVENT.CLOCK_MODECLOCK_ONLY));
+                EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_MODECLOCK_ONLY));
                 break;
             case CLOCK_LOCATION:
                 requestLocationUpdate(MIN_TIME_BW_GPS_UPDATES_SEC, DISTANCE_CHANGE_FOR_UPDATES_MIN);
@@ -115,12 +117,12 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         }
         else {
             tryCounter =0;
-            long currTime = getTime.getTimeGMT();
+            long currTime = myDateTime.getTimeGMT();
             if (currTime + TIME_RESERVE >= alarmNextTimeUTCmsec) {
                 /// it is a protection
                 //setClockNextTimeLocalMsec(_intervalClockSecCurrent);
                 alarmNextTimeUTCmsec = currTime+ _intervalClockSecCurrent*1000;
-                EventBus.distribute(new EventMessage(EVENT.CLOCK_ONTICK).setEventMessageValueClockMode(_mode).setEventMessageValueLocation(location));
+                EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK).setEventMessageValueClockMode(_mode).setEventMessageValueLocation(location));
             }
         }
     }
@@ -165,10 +167,10 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         new FontLogAsync().execute(new EntityLogMessage(TAG,"onCreate",'d'));
         instanceSvcLocationClock =this;
         _mode = MODE.CLOCK_LOCATION;
-        EventBus.distribute(new EventMessage(EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
+        EventBus.distribute(new EntityEventMessage(EventEnums.EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
         //ctx = getApplicationContext();
-        getTime = new GetTime();
-        alarmNextTimeUTCmsec = getTime.dateTimeGMT;
+        myDateTime = new MyDateTime();
+        alarmNextTimeUTCmsec = myDateTime.dateTimeGMT;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
@@ -221,7 +223,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
             stopLocationUpdates();
             setToNull();
         }
-        EventBus.distribute(new EventMessage(EVENT.CLOCK_SERVICESELFSTOPPED));
+        EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_SERVICESELFSTOPPED));
         stopSelf();
     }
     void setToNull(){
@@ -233,8 +235,8 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
 //    }
 
     @Override
-    public void eventReceiver(EventMessage eventMessage){
-        EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage){
+        EVENT ev = entityEventMessage.event;
         new FontLogAsync().execute(new EntityLogMessage(TAG,"eventReceiver:"+ev,'d'));
         switch(ev){
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
@@ -249,19 +251,19 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
                 stopServiceSelf();
                 break;
             case SESSION_ONSUCCESS_COMMAND:
-                if (eventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) set_mode(MODE.CLOCK_ONLY);
+                if (entityEventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) set_mode(MODE.CLOCK_ONLY);
                 break;
             case ROUTE_NOACTIVEROUTE:
                 set_mode(MODE.CLOCK_ONLY);
                 break;
             case ROUTE_ONRESTART:
-                if (!eventMessage.eventMessageValueBool) set_mode(MODE.CLOCK_ONLY);
+                if (!entityEventMessage.eventMessageValueBool) set_mode(MODE.CLOCK_ONLY);
                 break;
             case FLIGHT_ONSPEEDABOVEMIN:
                 requestLocationUpdate(Props.SessionProp.pIntervalLocationUpdateSec, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
                 break;
             case FLIGHT_ONSPEEDCHANGE:
-                requestLocationUpdate(eventMessage.eventMessageValueInt, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+                requestLocationUpdate(entityEventMessage.eventMessageValueInt, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
                 break;
         }
     }

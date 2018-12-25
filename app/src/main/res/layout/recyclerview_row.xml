@@ -27,7 +27,7 @@
         android:layout_toLeftOf="@+id/item_acft"
         android:layout_toRightOf="@+id/id_oval"
         android:gravity="right"
-        android:text="Aircraft: "
+        android:text="Aircraft :"
 />
     <TextView
         android:id="@+id/item_acft"
@@ -47,7 +47,7 @@
         android:layout_toLeftOf="@+id/item_date"
         android:layout_toRightOf="@+id/id_oval"
         android:gravity="right"
-        android:text="Date: " />
+        android:text="Date :" />
     <TextView
         android:id="@+id/item_date"
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_toLeftOf="@+id/item_starttime"
         android:gravity="right"
-        android:text="Started: " />
+        android:text="Started :" />
 
     <TextView
         android:id="@+id/item_starttime"
@@ -83,7 +83,7 @@
         android:layout_below="@+id/item_starttime"
         android:layout_marginLeft="@dimen/activity_hist_margin_left"
         android:layout_marginBottom="10dp"
-        android:text="Duration: "/>
+        android:text="Duration :"/>
     <TextView
         android:id="@+id/item_dur"
         android:layout_width="wrap_content"

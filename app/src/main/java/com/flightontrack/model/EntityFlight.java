@@ -1,18 +1,18 @@
 package com.flightontrack.model;
 
 
+import static com.flightontrack.definitions.Finals.FLIGHT_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.FLIGHT_TIME_ZERO;
+import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.TIME_TALK_INTERVAL_MIN;
 
 import com.flightontrack.mysql.SQLFlightEntity;
 
 public class EntityFlight {
     public int i;
-
-
     private SQLFlightEntity sqlFlightEntity;
-    public String flightNumber;
-    public String routeNumber;
+    public String flightNumber  = FLIGHT_NUMBER_DEFAULT;
+    public String routeNumber = ROUTE_NUMBER_DEFAULT;
     public String flightDate;
     public String flightTimeStart;
     public long   flightTimeStartGMT;
@@ -56,6 +56,10 @@ public class EntityFlight {
     public EntityFlight(){
     }
 
+    public EntityFlight(String fn){
+        EntityFlightCopy(sqlFlightEntity.getFlightHistEntity(fn));
+    }
+
     public EntityFlight(String f,String r,String d,String t,String a){
         flightAcft      =a;
         flightNumber    =f;
@@ -66,11 +70,20 @@ public class EntityFlight {
         dbid= sqlFlightEntity.insertFlightEntityRecord(this);
 
     }
-//    public EntityFlight(String f,String r,String t,String d,String a){
-//        flightAcft      =a;
-//        flightNumber    =f;
-//        routeNumber     =r;
-//        flightTimeStart =t;
-//        flightDuration  =d;
-//    }
+    public EntityFlight(String r,String d,String a){
+        flightAcft      =a;
+        routeNumber     =r;
+        flightDate      =d;
+        sqlFlightEntity = new SQLFlightEntity();
+        dbid= sqlFlightEntity.insertFlightEntityRecord(this);
+
+    }
+    private void EntityFlightCopy(EntityFlight e){
+        this.flightNumber    =e.flightNumber;
+        this.flightAcft      =e.flightAcft;
+        this.routeNumber     =e.routeNumber;
+        this.flightTimeStart =e.flightTimeStart;
+        this.flightDuration  =e.flightDuration;
+        this.dbid              =e.dbid;
+    }
 }

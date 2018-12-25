@@ -34,7 +34,7 @@ static final String SPACE = " ";
 //
 //static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTENTITY;
 //
-//static final String SQL_SELECT_FLIGHTENTITY =
+//static final String SQL_SELECT_FLIGHTRECORDSET =
 //"select " +
 //    FLIGHTHIST_FlightNumber  + COMMA_SEP +
 //    FLIGHTHIST_RouteNumber + COMMA_SEP +

@@ -89,6 +89,14 @@
     <string name="label_flightid">Flight ID:</string>
     <string name="label_btnsave">Save Settings</string>
 
+    <!--labels ActivityHistory-->
+    <string name="label_hflight">Flight</string>
+    <string name="label_hdate">Date: </string>
+    <string name="label_haircraft">Aircraft: </string>
+    <string name="label_hstarted">Started: </string>
+    <string name="label_hduration">Duration: </string>
+
+    <!--labels other-->
     <string name="instructions1">Scan aircraft NFC tag</string>
     <string name="instructions2">Update fields manually or turn the NFC switch on to scan tag</string>
 

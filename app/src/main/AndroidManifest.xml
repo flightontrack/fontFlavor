@@ -85,7 +85,7 @@
         </activity>
 
         <service
-            android:name=".locationclock.SvcLocationClock"
+            android:name=".clock.SvcLocationClock"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false"></service>

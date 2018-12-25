@@ -21,16 +21,17 @@ import com.flightontrack.R;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.Pilot;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
-import com.flightontrack.shared.EventMessage;
 
 import shared.AppConfig;
 import ui.SimpleSettingsActivityExt;
 
 import static com.flightontrack.definitions.Finals.MY_PERMISSIONS_RITE_EXTERNAL_STORAGE;
 import static com.flightontrack.shared.Props.SessionProp;
-import static com.flightontrack.shared.Props.SessionProp.sqlHelper;
+import static com.flightontrack.shared.Props.SessionProp.sqlLocation;
 import static shared.AppConfig.pIsRelease;
+import static com.flightontrack.definitions.EventEnums.*;
 
 
 public class SimpleSettingsActivity extends Activity implements AdapterView.OnItemSelectedListener,EventBus {
@@ -67,11 +68,11 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
             //MainActivity.spinnerMinSpeed.setSelection(Util.getSpinnerSpeedPos());
         });
         clearCacheButton = findViewById(R.id.btnClearCache);
-        clearCacheButton.setOnClickListener(view -> EventBus.distribute(new EventMessage(EVENT.SETTINGACT_BUTTONCLEARCACHE_CLICKED)));
+        clearCacheButton.setOnClickListener(view -> EventBus.distribute(new EntityEventMessage(EVENT.SETTINGACT_BUTTONCLEARCACHE_CLICKED)));
         sendCacheButton = findViewById(R.id.btnSendCache);
         sendCacheButton.setOnClickListener(view -> {
             progressBar.show();
-            EventBus.distribute(new EventMessage(EVENT.SETTINGACT_BUTTONSENDCACHE_CLICKED));
+            EventBus.distribute(new EntityEventMessage(EVENT.SETTINGACT_BUTTONSENDCACHE_CLICKED));
         });
         getPswButton = findViewById(R.id.btnGetPsw);
         getPswButton.setOnClickListener(view -> {
@@ -121,7 +122,7 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         spinnerUrls.setAdapter(adapterUrl);
         spinnerUrls.setOnItemSelectedListener(this);
         txtCached= findViewById((R.id.txtCached));
-        txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+        txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
 
         progressBar = new ProgressDialog(this);
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -228,16 +229,16 @@ public class SimpleSettingsActivity extends Activity implements AdapterView.OnIt
         chBoxIsRoad.setChecked(SessionProp.pIsRoad);
     }
 @Override
-    public void eventReceiver(EventMessage eventMessage){
-    EVENT ev = eventMessage.event;
+    public void eventReceiver(EntityEventMessage entityEventMessage){
+    EVENT ev = entityEventMessage.event;
     new FontLogAsync().execute(new EntityLogMessage(TAG, " eventReceiver : "+ev, 'd'));
         switch(ev){
             case SESSION_ONSENDCACHECOMPLETED:
-                txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
                 if (progressBar!=null)  progressBar.dismiss();
                 break;
             case SQL_ONCLEARCACHE_COMPLETED:
-                txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
+                txtCached.setText(String.valueOf(sqlLocation.getLocationTableCountTotal()));
                 break;
             case FLIGHTBASE_GETFLIGHTNUM:
                 if (progressBar!=null)  progressBar.dismiss();

@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.flightontrack.R;
+import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.mysql.SQLHelper;
+import com.flightontrack.mysql.SQLLocation;
 
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
+import static com.flightontrack.definitions.EventEnums.*;
 import static shared.AppConfig.pIsAppTypePublic;
 import static shared.AppConfig.pIsRelease;
 
@@ -29,6 +31,7 @@ public final class Props implements EventBus{
     public static MainActivity mainactivityInstance;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
+
 
 //    public static class AppConfig {
 //        public static String pAppRelease = "1.81";
@@ -71,7 +74,7 @@ public final class Props implements EventBus{
         //public static boolean       pIsStartedOnReboot =false;
         public static boolean      pIsActivityFinished =false;
 
-        public static SQLHelper sqlHelper;
+        //public static SQLLocation sqlLocation;
         public static int dbLocationRecCountNormal = 0;
         //public static int dbLocationRecCountTemp = 0;
         public static int dbTempFlightRecCount = 0;
@@ -116,7 +119,7 @@ public final class Props implements EventBus{
             //String s = Arrays.toString(Thread.currentThread().getStackTrace());
             //new FontLogAsync().execute(new LogMessage(TAG, "StackTrace: "+s,'d');
             pIsMultileg=isMultileg;
-            EventBus.distribute(new EventMessage(EVENT.PROP_CHANGED_MULTILEG).setEventMessageValueBool(isMultileg));
+            EventBus.distribute(new EntityEventMessage(EVENT.PROP_CHANGED_MULTILEG).setEventMessageValueBool(isMultileg));
             return;
             //MainActivity.chBoxIsMultiLeg.setChecked(isMultileg);
         }
@@ -175,18 +178,18 @@ public final class Props implements EventBus{
         sharedPreferences.edit().clear().commit();
     }
     @Override
-    public void eventReceiver(EventMessage eventMessage){
+    public void eventReceiver(EntityEventMessage entityEventMessage){
         new FontLogAsync().execute(new EntityLogMessage(TAG, "eventReceiver Interface is called on Props", 'd'));
-        EVENT ev = eventMessage.event;
+        EVENT ev = entityEventMessage.event;
         switch(ev){
             case MACT_MULTILEG_ONCLICK:
-                SessionProp.set_isMultileg(eventMessage.eventMessageValueBool);
+                SessionProp.set_isMultileg(entityEventMessage.eventMessageValueBool);
                 break;
             case MACT_BIGBUTTON_ONCLICK_STOP:
                 SessionProp.set_isMultileg(false);
                 break;
             case SESSION_ONSUCCESS_COMMAND:
-                String server_command = eventMessage.eventMessageValueString;
+                String server_command = entityEventMessage.eventMessageValueString;
                 switch (server_command) {
                     case COMMAND_TERMINATEFLIGHT:
                         SessionProp.set_isMultileg(false);

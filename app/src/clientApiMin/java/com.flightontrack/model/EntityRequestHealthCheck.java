@@ -1,7 +1,7 @@
 package model;
 
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.locationclock.SvcLocationClock;
+import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.objects.MyPhone;
 
