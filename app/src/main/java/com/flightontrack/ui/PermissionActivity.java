@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.flight.Route;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 
@@ -21,7 +20,7 @@ public class PermissionActivity extends Activity {
     private static final String TAG = "PermissionActivity";
 
     private static Activity thisAct = null;
-    protected Route route;
+    //protected Route route;
     protected static boolean autostart = false;
     
     //public static boolean productionRelease = false;

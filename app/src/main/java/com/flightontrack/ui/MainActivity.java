@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Fabric.with(this, new Crashlytics());
-        sqlLocation = SQLLocation.getInstance();
         try {
             //Log.d(TAG, "MainActivityThread:" + Thread.currentThread().getId());
             initProp(getApplicationContext(), this);
+            sqlLocation = SQLLocation.getInstance();
             setContentView(R.layout.activity_main);
 
             txtAcftNum      = findViewById(R.id.txtAcftNum);

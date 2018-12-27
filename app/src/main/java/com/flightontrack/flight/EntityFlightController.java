@@ -14,7 +14,7 @@ import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 
 public class EntityFlightController{
     static final String TAG = "EntityFlightController";
-    EntityFlight entityFlight;
+    public EntityFlight entityFlight;
 
     public enum FLIGHT_STATE {
         DEFAULT,
@@ -68,7 +68,11 @@ public class EntityFlightController{
 
     public void removeMyself(){
         sqlFlightControllerEntity.deleteFlightEntity(dbid);
-        RouteControl.flightControlList.remove(this);
+        if (RouteControl.flightControlList != null) {
+            RouteControl.flightControlList.remove(this);
+            if (RouteControl.activeFlightControl == this) RouteControl.activeFlightControl = null;
+        }
+
     }
 
     public FLIGHT_STATE flightState = FLIGHT_STATE.DEFAULT;
@@ -92,19 +96,19 @@ public class EntityFlightController{
 
     boolean isLimitReached  = false;
     public int    isJunk = 0;
-    private int             dbid;
+    public int    dbid;
 
     SQLFlightControllerEntity sqlFlightControllerEntity = new SQLFlightControllerEntity();
     SQLLocation sqlLocation = SQLLocation.getInstance();
     FlightControl flightControl;
 
+    EntityFlightController() {
+    }
     EntityFlightController(String rn, int leg) {
         routeNumber = rn;
         legNumber = leg;
-        RouteBase.activeEntityFlightController = this;
         dbid = sqlFlightControllerEntity.insertFlightControllerEntityRecord(this);
         //flightControl = new FlightControl(this);
-
         //this.entityFlight = flightControl.entityFlight;
         //setFlightState(FLIGHT_STATE.GETTINGFLIGHT);
     }

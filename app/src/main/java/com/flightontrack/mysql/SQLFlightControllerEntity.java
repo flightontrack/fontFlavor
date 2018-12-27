@@ -6,9 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.flightontrack.flight.EntityFlightController;
+import com.flightontrack.flight.FlightControl;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.model.EntityEventMessage;
-import com.flightontrack.model.EntityFlight;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.shared.EventBus;
 
@@ -162,7 +161,6 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         }
         return rn;
     }
-
     public void deleteFlightEntity(int id) {
         String selection = DBTableFlightContol._ID +"=" + id;
         //int[] selectionArgs = {id};
@@ -181,4 +179,30 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         }
     }
 
+    public List<FlightControl> getDBFlightList() {
+
+        dbw = getReadableDatabase();
+        List<FlightControl> flightList = new ArrayList<>();
+
+        try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTCONTROLLER_RECORDSET, new String[]{})) {
+            while (cu.moveToNext()) {
+                FlightControl f = new FlightControl();
+                f.dbid = cu.getPosition();
+                f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBER));
+                f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(ROUTENUMBER));
+                f.flightState = EntityFlightController.FLIGHT_STATE.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTSTATE)));
+                f.flightNumStatus = EntityFlightController.FLIGHTNUMBER_SRC.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBERSTATUS)));
+                f.legNumber =  cu.getInt(cu.getColumnIndexOrThrow(LEGNUMBER));
+                f.isJunk = cu.getInt(cu.getColumnIndexOrThrow(ISJUNK));
+                flightList.add(f);
+            }
+        }
+        catch (Exception e){
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+        }
+        finally {
+            dbw.close();
+        }
+        return flightList;
+    }
 }

@@ -14,7 +14,7 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.flightontrack.definitions.EventEnums;
-import com.flightontrack.flight.RouteBase;
+import com.flightontrack.flight.RouteControl;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.objects.MyPhone;
@@ -105,7 +105,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     }
     @Override
     public void onLocationChanged(final Location location) {
-        if(_mode==MODE.CLOCK_ONLY && RouteBase.activeFlight==null){
+        if(_mode==MODE.CLOCK_ONLY && RouteControl.activeFlightControl==null){
             tryCounter++;
             new FontLogAsync().execute(new EntityLogMessage(TAG,"TimerCounter:" + tryCounter,'d'));
             //FontLog.appendLog(TAG + "TimerCounter:" + tryCounter, 'd');
@@ -253,7 +253,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
             case SESSION_ONSUCCESS_COMMAND:
                 if (entityEventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) set_mode(MODE.CLOCK_ONLY);
                 break;
-            case ROUTE_FLIGHTLISTCLEAR:
+            case ROUTE_FLIGHTLIST_EMPTY:
                 set_mode(MODE.CLOCK_ONLY);
                 break;
             case ROUTE_ONRESTART:

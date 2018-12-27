@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.flight.RouteBase;
+import com.flightontrack.flight.RouteControl;
 import com.flightontrack.shared.Props;
 
 import java.io.BufferedWriter;
@@ -29,7 +29,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
         try {
             String text = String.format("%1$-20s", msgobj[0].tag);
             text += ":";
-            //text += String.format("%1$-20s","af-" +RouteBase.getInstance().activeFlight.flightNumber + "-afs-" + RouteBase.activeFlight.flightState + ":");
+            //text += String.format("%1$-20s","af-" +RouteControl.getInstance().activeFlight.flightNumber + "-afs-" + RouteControl.activeFlight.flightState + ":");
             text += msgobj[0].msg;
             appendLogcat(text, msgobj[0].msgType);
             if (Props.SessionProp.pIsDebug) appendCustomLog(text);
@@ -57,8 +57,8 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
     void appendCustomLog(String text){
         String timeStr = "[" + getDateTimeNow() + "]";
         String af = " no active flight";
-        if (RouteBase.activeFlight !=null) {
-            af = String.format("%1$-10s", " af:" + RouteBase.activeFlight.entityFlight.flightNumber + " afs:" + RouteBase.activeFlight.flightState + ": ");
+        if (RouteControl.activeFlightControl !=null) {
+            af = String.format("%1$-10s", " af:" + RouteControl.activeFlightControl.flightNumber + " afs:" + RouteControl.activeFlightControl.flightState + ": ");
         }
         String LINE_SEPARATOR = System.getProperty("line.separator");
         File sdcard=null;

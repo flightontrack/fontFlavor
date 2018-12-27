@@ -46,7 +46,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
     static final String TAG = "FlightControl";
 
     //EntityFlightController entityFlightController;
-    EntityFlight entityFlight;
+    //EntityFlight entityFlight;
     private List<Integer>   dbIdList = new ArrayList<>();
     private MyDateTime myDateTime;
     private boolean         isGettingFlight = false;
@@ -57,19 +57,15 @@ public class FlightControl extends EntityFlightController implements EventBus {
     private boolean         isElevationCheckDone = false;
     boolean isSpeedAboveMin = false;
 
-//    public FlightControl(EntityFlightController fc) {
-//        //entityFlightController = fc;
-//        RouteBase.activeFlightControl = this;
-//        myDateTime = new MyDateTime();
-//        entityFlight = new EntityFlight(fc.routeNumber, myDateTime.dateLocal,new Aircraft().AcftNum);
-//    }
+    public FlightControl() {
+    }
 
     public FlightControl(String routeNumber, int leg) {
         super(routeNumber,leg);
-        RouteBase.activeFlightControl = this;
+        RouteControl.activeFlightControl = this;
         myDateTime = new MyDateTime();
         entityFlight = new EntityFlight(super.routeNumber, myDateTime.dateLocal,new Aircraft().AcftNum);
-        super.entityFlight = flightControl.entityFlight;
+        //super.entityFlight = flightControl.entityFlight;
         super.flightControl = this;
         setFlightState(GETTINGFLIGHT);
     }
@@ -93,14 +89,13 @@ public class FlightControl extends EntityFlightController implements EventBus {
         // new FontLogAsync().execute(new LogMessage(TAG, "set_speedCurrent: " + speedCurrent, 'd');
     }
 
-
     boolean is_DoubleSpeedAboveMin() {
         double cutoffSpeed = get_cutoffSpeed();
         boolean isCurrSpeedAboveMin = (speedCurrent >= cutoffSpeed);
         boolean isPrevSpeedAboveMin = (speedPrev >= cutoffSpeed);
         //new FontLogAsync().execute(new LogMessage(TAG, "is_DoubleSpeedAboveMin: cutoffSpeed: " + cutoffSpeed, 'd');
         if (isCurrSpeedAboveMin && isPrevSpeedAboveMin) return true;
-            //else if (RouteBase.activeFlight.lastAction == FACTION.CHANGE_IN_FLIGHT && (isCurrSpeedAboveMin ^ isPrevSpeedAboveMin)) {
+            //else if (RouteControl.activeFlight.lastAction == FACTION.CHANGE_IN_FLIGHT && (isCurrSpeedAboveMin ^ isPrevSpeedAboveMin)) {
         else if (isCurrSpeedAboveMin ^ isPrevSpeedAboveMin) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "isCurrSpeedAboveMin:" + isCurrSpeedAboveMin + " isPrevSpeedAboveMin:" + isPrevSpeedAboveMin, 'd'));
             int intervalClockSec = DEFAULT_TIME_BW_GPS_UPDATES_SEC;
@@ -210,7 +205,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
             }
         }
 
-        void get_CloseFlight() {
+    void get_CloseFlight() {
         String TAG = "getCloseFlightNew";
         new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight: " + flightNumber, 'd'));
         setFlightState(CLOSING);
@@ -255,6 +250,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "get_CloseFlight" + e.getMessage(), 'e'));
         }
     }
+
     public void saveLocCheckSpeed(final Location location) {
 
         float speedCurrent = location.getSpeed();
@@ -334,7 +330,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
     }
 
     double get_cutoffSpeed() {
-        //return SessionProp.pSpinnerMinSpeed * (RouteBase.activeFlight.flightState == INFLIGHT_SPEEDABOVEMIN ? 0.75 : 1.0);
+        //return SessionProp.pSpinnerMinSpeed * (RouteControl.activeFlight.flightState == INFLIGHT_SPEEDABOVEMIN ? 0.75 : 1.0);
         return SessionProp.pSpinnerMinSpeed * (flightState == INFLIGHT_SPEEDABOVEMIN ? 0.75 : 1.0);
     }
 
@@ -372,7 +368,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
             case CLOSING:
                 break;
             case CLOSED:
-                EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(flightNumber));
+                EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_CLOSEFLIGHT_COMPLETED).setEventMessageValueString(flightNumber).setEventMessageValueObject(this));
                 break;
 //            default:
 //                super.change_flightState(fs);
@@ -395,8 +391,8 @@ public class FlightControl extends EntityFlightController implements EventBus {
     public void onClock(EntityEventMessage entityEventMessage) {
 
         new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber+" afs:"+flightState+" loccount:"+ sqlLocation.getLocationFlightCount(flightNumber), 'd'));
-        //if (RouteBase.activeFlight == this
-        if (RouteBase.activeEntityFlightController == this
+        //if (RouteControl.activeFlight == this
+        if (RouteControl.activeFlightControl == this
                 && (flightState == READY_TOSAVELOCATIONS || flightState == INFLIGHT_SPEEDABOVEMIN)
                 && entityEventMessage.eventMessageValueLocation != null) {
             //                    String s = Arrays.toString(Thread.currentThread().getStackTrace());
@@ -407,7 +403,7 @@ public class FlightControl extends EntityFlightController implements EventBus {
             if (flightNumStatus == FLIGHTNUMBER_SRC.LOCAL) get_NewFlightID();
         }
         if (flightState == STOPPED && sqlLocation.getLocationFlightCount(flightNumber) == 0) {
-            setFlightState(READY_TOBECLOSED); //onFlightStateChanged(READY_TOBECLOSED);
+            setFlightState(READY_TOBECLOSED);
         }
     }
 
@@ -455,6 +451,13 @@ public class FlightControl extends EntityFlightController implements EventBus {
                 break;
             case FLIGHT_FLIGHTTIME_UPDATE_COMPLETED:
                 //entityFlight.flightDuration = flightTimeString;
+                break;
+            case FLIGHT_CLOSEFLIGHT_COMPLETED:
+                    //new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
+                    if (flightState.equals(FLIGHT_STATE.CLOSED)) {
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "removing flight from list: " +flightNumber, 'd'));
+                        removeMyself();
+                    }
                 break;
         }
     }

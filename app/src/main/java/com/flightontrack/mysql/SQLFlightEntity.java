@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.flightontrack.definitions.Finals.*;
-import static com.flightontrack.mysql.DBSchema.SPACE;
 import static com.flightontrack.mysql.DbTableFlightHistory.*;
 import static com.flightontrack.shared.Props.ctxApp;
 import static com.flightontrack.definitions.EventEnums.*;
@@ -86,7 +85,7 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         dbw = getReadableDatabase();
         ArrayList<EntityFlight> flightList = new ArrayList<>();
 
-        try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTRECORDSET, new String[]{})) {
+        try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTHISTORY_RECORDSET, new String[]{})) {
             while (cu.moveToNext()) {
                 EntityFlight f = new EntityFlight();
                 f.i = cu.getPosition();

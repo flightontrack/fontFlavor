@@ -29,7 +29,7 @@ static final String SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS =
 
 static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTENTITY;
 
-static final String SQL_SELECT_FLIGHTRECORDSET =
+static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
      "select " +
          FLIGHTHIST_FlightNumber  + COMMA_SEP +
          FLIGHTHIST_RouteNumber + COMMA_SEP +

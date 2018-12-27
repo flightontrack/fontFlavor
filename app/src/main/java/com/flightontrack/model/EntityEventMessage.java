@@ -3,7 +3,7 @@ import android.location.Location;
 
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.flight.Session.*;
-import static com.flightontrack.flight.Route.*;
+import static com.flightontrack.flight.RouteControl.*;
 import static com.flightontrack.definitions.EventEnums.*;
 
 /**

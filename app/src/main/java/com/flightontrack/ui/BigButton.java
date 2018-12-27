@@ -1,8 +1,8 @@
 package com.flightontrack.ui;
 
 import com.flightontrack.R;
+import com.flightontrack.flight.RouteControl;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.flight.RouteBase;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
@@ -60,10 +60,10 @@ public class BigButton implements EventBus {
     }
 
     static String setTextGreen() {
-        return "Flight: " + (RouteBase.activeFlight.entityFlight.flightNumber) + '\n' +
-                "Point: " + RouteBase.activeFlight.entityFlight.wayPointsCount +
-                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.getFlightTime() + '\n'
-                + "Alt: " + RouteBase.activeFlight.lastAltitudeFt + " ft";
+        return "Flight: " + (RouteControl.activeFlightControl.flightNumber) + '\n' +
+                "Point: " + RouteControl.activeFlightControl.entityFlight.wayPointsCount +
+                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime() + '\n'
+                + "Alt: " + RouteControl.activeFlightControl.lastAltitudeFt + " ft";
     }
 
     static String setTextRedFlightStopped() {
@@ -71,13 +71,13 @@ public class BigButton implements EventBus {
         String fTime = "";
         String flightN = FLIGHT_NUMBER_DEFAULT;
 
-        if (RouteBase.activeRoute == null) {
+        if (RouteControl.routeControlInstance == null) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setTextRedFlightStopped: activeRoute == null", 'd'));
             fText = Props.SessionProp.pTrackingButtonText;
         } else {
-            if (RouteBase.activeFlight != null) {
-                flightN = RouteBase.activeFlight.entityFlight==null?FLIGHT_NUMBER_DEFAULT:RouteBase.activeFlight.entityFlight.flightNumber;
-                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteBase.activeFlight.getFlightTime();
+            if (RouteControl.activeFlightControl != null) {
+                flightN = RouteControl.activeFlightControl==null?FLIGHT_NUMBER_DEFAULT:RouteControl.activeFlightControl.flightNumber;
+                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime();
             }
             fText = "Flight " + flightN + '\n' + "Stopped"; // + '\n';
         }
@@ -90,7 +90,7 @@ public class BigButton implements EventBus {
                 Props.SessionProp.pTrackingButtonText=setTextRedFlightStopped();
                 break;
             case BUTTON_STATE_YELLOW:
-                Props.SessionProp.pTrackingButtonText="Flight " + (RouteBase.activeFlight.entityFlight.flightNumber) + ctxApp.getString(R.string.tracking_ready_to_takeoff);
+                Props.SessionProp.pTrackingButtonText="Flight " + (RouteControl.activeFlightControl.flightNumber) + ctxApp.getString(R.string.tracking_ready_to_takeoff);
                 break;
             case BUTTON_STATE_GREEN:
                 Props.SessionProp.pTrackingButtonText=setTextGreen();
@@ -132,7 +132,7 @@ public class BigButton implements EventBus {
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
                 /// swithch to red
                 break;
-            case ROUTE_FLIGHTLISTCLEAR:
+            case ROUTE_FLIGHTLIST_EMPTY:
                 setTrackingButton(BUTTONREQUEST.BUTTON_STATE_RED);
                 break;
         }

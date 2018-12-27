@@ -7,14 +7,16 @@ import android.widget.Toast;
 
 import com.flightontrack.R;
 import com.flightontrack.model.EntityEventMessage;
+import com.flightontrack.mysql.SQLFlightControllerEntity;
 import com.flightontrack.ui.MainActivity;
 
 //import static com.flightontrack.communication.SvcComm.commBatchSize;
-import static com.flightontrack.flight.FlightOffline.*;
+import static com.flightontrack.flight.EntityFlightController.*;
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.definitions.EventEnums.*;
-import static com.flightontrack.flight.RouteBase.isFlightNumberInList;
+import static com.flightontrack.flight.EntityFlightController.FLIGHTNUMBER_SRC.LOCAL;
+import static com.flightontrack.flight.RouteControl.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -35,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
@@ -54,7 +57,7 @@ public class Session implements EventBus{
     public static Integer commBatchSize = COMM_BATCH_SIZE_MAX;
     //boolean isSendNextStarted = false;
     //static EnumMap<EVENT,SACTION> eventReaction = new EnumMap<>(EVENT.class);
-    Map<Integer,EntityLocation> locRequestList = new HashMap<Integer,EntityLocation>();
+    Map<Integer,EntityLocation> locRequestList = new HashMap<>();
     EVENT ev;
 
     EntityEventMessage entityEventMessage;
@@ -184,20 +187,35 @@ public class Session implements EventBus{
                     }
                 break;
             case GET_OFFLINE_FLIGHTS:
-                /// firsrt to check all temp flights in not ready to send state.
-                /// Get new flight and request flight number.
 
-                for (String flightNumTemp: sqlLocation.getTempFlightList()){
-                    if(isFlightNumberInList(flightNumTemp)) {
-                        /// flightOnline take care of the flight
+                List<FlightControl> flightList = new SQLFlightControllerEntity().getDBFlightList();
+                for (FlightControl f: flightList){
+
+                    if(RouteControl.getInstance().isFlightNumberInList(f.flightNumber)) {
                         continue;
                     }
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
-                    if (isNetworkAvailable()) new FlightOffline(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+                    else flightControlList.add(f);
+                    /// at this point the clock is stopped so imitating the clock to tick once
+                    if (isNetworkAvailable()) EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
                     else {
                         new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
                         EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
                     }
+
+//                for (String flightNumTemp: sqlLocation.getTempFlightList()){
+//                    if(isFlightNumberInList(flightNumTemp)) {
+//                        /// flightOnline take care of the flight
+//                        continue;
+//                    }
+                    /// firsrt to check all temp flights in not ready to send state.
+                    /// Get new flight and request flight number.
+//                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Get flightOffline for " + flightNumTemp, 'd'));
+//                    //if (isNetworkAvailable()) new FlightOffline(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+//                    if (isNetworkAvailable()) new FlightControl(flightNumTemp).change_flightState(FLIGHT_STATE.GETTINGFLIGHT);
+//                    else {
+//                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
+//                        EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+//                    }
                 }
 
                 /// second to check flights is ready to send which are for some reason not in flightList (may left from previous session).

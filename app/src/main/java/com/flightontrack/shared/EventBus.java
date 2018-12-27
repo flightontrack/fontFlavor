@@ -30,7 +30,7 @@ public interface EventBus{
                 interfaceList.add(mainactivityInstance);
                 break;
             case MACT_BIGBUTTON_ONCLICK_START:
-                interfaceList.add(new RouteControl());
+                interfaceList.add(RouteControl.getInstance());
                 break;
             case MACT_BIGBUTTON_ONCLICK_STOP:
                 interfaceList.add(Props.getInstance());
@@ -61,7 +61,8 @@ public interface EventBus{
                 interfaceList.add(RouteControl.activeFlightControl);
                 break;
             case FLIGHT_CLOSEFLIGHT_COMPLETED:
-                interfaceList.add(RouteControl.getInstance()); /// remove flight
+                interfaceList.add((FlightControl) entityEventMessage.eventMessageValueObject); ///self remove flight fom list
+                interfaceList.add(RouteControl.getInstance()); /// check if list is empty
                 break;
             case FLIGHT_ONSPEEDLOW:
                 if(!SessionProp.pIsMultileg) interfaceList.add(SvcLocationClock.getInstance());//TODO doing nothing
@@ -79,9 +80,10 @@ public interface EventBus{
             case ROUTE_ONLEGLIMITREACHED:
                 ///TODO
                 break;
-            case ROUTE_FLIGHTLISTCLEAR:
+            case ROUTE_FLIGHTLIST_EMPTY:
                 if (SvcLocationClock.getInstance()!=null) interfaceList.add(SvcLocationClock.getInstance());
                 else interfaceList.add(BigButton.getInstance()); //interfaceList.add(mainactivityInstance);
+                interfaceList.add(RouteControl.getInstance());
                 break;
             case ROUTE_ONRESTART:
                 interfaceList.add(SvcLocationClock.getInstance());
@@ -154,13 +156,13 @@ public interface EventBus{
                 interfaceList.add((FlightControl) entityEventMessage.eventMessageValueObject);
                 break;
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
-                interfaceList.add(RouteControl.getInstance()); // set route number
-                interfaceList.add(new SvcLocationClock()); //start clock service in location mode
+                //interfaceList.add(RouteControl.getInstance()); // set route number
+                interfaceList.add(Session.getInstance()); //start clock service in location mode
                 //interfaceList.add(mainactivityInstance);
                 interfaceList.add(BigButton.getInstance());
                 break;
             case FLIGHT_REMOTENUMBER_RECEIVED:
-                interfaceList.add(RouteControl.getInstance()); /// add the offline flights to flightlist if it is not in
+                //interfaceList.add(RouteControl.getInstance()); /// add the offline flights to flightlist if it is not in
                 interfaceList.add(Session.getInstance());   /// start send locations for the flights with replaced flight number
                 break;
             case SESSION_ONSENDCACHECOMPLETED:
