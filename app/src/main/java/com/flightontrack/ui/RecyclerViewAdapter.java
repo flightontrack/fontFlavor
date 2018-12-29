@@ -6,14 +6,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.flightontrack.R;
-import com.flightontrack.model.EntityFlight;
+import com.flightontrack.model.EntityFlightHist;
 
 import java.util.List;
 
 import static com.flightontrack.shared.Props.ctxApp;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>  {
-    private List<EntityFlight> mDataset;
+    private List<EntityFlightHist> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -38,7 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapter(List<EntityFlight> list) {
+    public RecyclerViewAdapter(List<EntityFlightHist> list) {
         mDataset = list;
     }
 

@@ -157,7 +157,7 @@ public interface EventBus{
                 break;
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
                 //interfaceList.add(RouteControl.getInstance()); // set route number
-                interfaceList.add(Session.getInstance()); //start clock service in location mode
+                interfaceList.add(new SvcLocationClock()); //start clock service in location mode
                 //interfaceList.add(mainactivityInstance);
                 interfaceList.add(BigButton.getInstance());
                 break;

@@ -82,6 +82,8 @@ public final class Props implements EventBus{
         //public static String        pTextRed;
         //public static String        pTextGreen;
         public static String        pTrackingButtonText;
+        public static String        pLastKnownFlightNumber=FLIGHT_NUMBER_DEFAULT;
+
 
         public static void save() {
             editor.putBoolean("pIsMultileg", pIsMultileg);

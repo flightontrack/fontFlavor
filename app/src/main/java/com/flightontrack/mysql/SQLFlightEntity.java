@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.model.EntityFlight;
+import com.flightontrack.model.EntityFlightHist;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.shared.EventBus;
@@ -54,7 +54,7 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         onCreate(db);
     }
 
-    public int insertFlightEntityRecord(EntityFlight flight){
+    public int insertFlightEntityRecord(EntityFlightHist flight){
         dbw = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -80,15 +80,15 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
         return (int) r;
     }
 
-    public List<EntityFlight> getFlightHistList() {
+    public List<EntityFlightHist> getFlightHistList() {
 
         dbw = getReadableDatabase();
-        ArrayList<EntityFlight> flightList = new ArrayList<>();
+        ArrayList<EntityFlightHist> flightList = new ArrayList<>();
 
         try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTHISTORY_RECORDSET, new String[]{})) {
             while (cu.moveToNext()) {
-                EntityFlight f = new EntityFlight();
-                f.i = cu.getPosition();
+                EntityFlightHist f = new EntityFlightHist();
+                f.dbid = cu.getPosition();
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightNumber));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_RouteNumber));
                 f.flightDate = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDate));
@@ -99,22 +99,22 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
             }
         }
         catch (Exception e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: "+e.getMessage(), 'e'));
         }
         finally {
             dbw.close();
         }
         return flightList;
     }
-    public EntityFlight getFlightHistEntity(String fn) {
+    public EntityFlightHist getFlightHistEntity(String fn) {
 
         dbw = getReadableDatabase();
-        EntityFlight f = new EntityFlight();
-        String sql = SQL_SELECT_FLIGHTENTITY+ " where " + FLIGHTHIST_FlightNumber+" = "+fn;
+        EntityFlightHist f = new EntityFlightHist();
+        String sql = SQL_SELECT_FLIGHTENTITY_ALL + "where " + FLIGHTHIST_FlightNumber+" = "+fn;
         try (Cursor cu = dbw.rawQuery(sql, new String[]{})) {
             while (cu.moveToNext()) {
-                f.i = cu.getPosition();
-                f.dbid = cu.getInt(cu.getColumnIndexOrThrow(_ID));
+                f.dbid = cu.getPosition();
+                //f.dbid = cu.getInt(cu.getColumnIndexOrThrow(_ID));
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightNumber));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_RouteNumber));
                 f.flightDate = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDate));
@@ -124,7 +124,7 @@ public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
             }
         }
         catch (Exception e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: "+e.getMessage() , 'e'));
         }
         finally {
             dbw.close();

@@ -101,10 +101,10 @@ public class SQLLocation extends SQLiteOpenHelper implements EventBus {
             int lcount = (int) DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-            //dbw.execSQL(SQL_DROP_TABLE_FLIGHTENTITY);
+            dbw.execSQL(DBTableFlightContol.SQL_DROP_TABLE_FLIGHTCONTROLLER);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
             dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
-            //dbw.execSQL(SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS);
+            dbw.execSQL(DBTableFlightContol.SQL_CREATE_TTABLE_FLIGHTCONTROLLER_IF_NOT_EXISTS);
             dbLocationRecCountNormal = 0;
             dbTempFlightRecCount = 0;
             //Toast.makeText(ctxApp, "Deleted " + lcount + " location points", Toast.LENGTH_LONG).show();

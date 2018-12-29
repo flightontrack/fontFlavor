@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import java.util.List;
 
 import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
-import com.flightontrack.model.EntityFlight;
+import com.flightontrack.model.EntityFlightHist;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.mysql.SQLFlightEntity;
 
@@ -30,7 +29,7 @@ public class FlightHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightHistorytActivity onCreate", 'd'));
         setContentView(R.layout.activity_h);
-        List<EntityFlight> flightList = new SQLFlightEntity().getFlightHistList();
+        List<EntityFlightHist> flightList = new SQLFlightEntity().getFlightHistList();
         mRecyclerView = findViewById(R.id.my_recycler_view);
         clearHistory = findViewById(R.id.btnClearHist);
 

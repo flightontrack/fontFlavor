@@ -13,11 +13,11 @@ import java.util.List;
 import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN;
+import static com.flightontrack.definitions.Finals.FLIGHT_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
-import static com.flightontrack.flight.EntityFlightController.*;
 
 public class RouteControl implements EventBus{
-    final String TAG = "RouteControl";
+    final static String TAG = "RouteControl";
 
     public enum RACTION {
         OPEN_NEW_FLIGHT,
@@ -25,11 +25,23 @@ public class RouteControl implements EventBus{
         RESTART_NEW_FLIGHT,
         CHECK_IF_CLOSED_FLIGHT,
         CHECK_IF_ADD_FLIGHT_TO_FLIGHTLIST
-
     }
 
     public static RouteControl routeControlInstance;
+
+    public static void setActiveFlightControl(FlightControl afc) {
+        RouteControl.activeFlightControl = afc;
+        //if (afc != null) LastKnownFlightNumber = afc.flightNumber;
+    }
+
     public static FlightControl activeFlightControl;
+
+//    public static void setLastKnownFlightNumber(String fn) {
+//        new FontLogAsync().execute(new EntityLogMessage(TAG,"setLastKnownFlightNumber: "+fn, 'd'));
+//        LastKnownFlightNumber = fn;
+//    }
+
+    //public static String LastKnownFlightNumber =FLIGHT_NUMBER_DEFAULT;
     public static List<FlightControl> flightControlList;
     EntityEventMessage entityEventMessage;
     EVENT ev;
@@ -66,37 +78,9 @@ public class RouteControl implements EventBus{
         RouteControl.routeControlInstance = null;
         RouteControl.activeFlightControl = null;
         RouteControl.flightControlList = null;
+        //RouteControl.LastKnownFlightNumber = null;
     }
 
-//    void set_rAction(RACTION request) {
-//        new FontLogAsync().execute(new EntityLogMessage(TAG, "reaction:" + request, 'd'));
-//        switch (request) {
-////            case CHECK_IF_CLOSED_FLIGHT:
-////                for (FlightControl f : new ArrayList<>(flightControlList)) {
-////                    //new FontLogAsync().execute(new EntityLogMessage(TAG, "f:" + f.entityFlight.flightNumber + ":" + request, 'd'));
-////                    if (f.flightState.equals(FLIGHT_STATE.CLOSED)) {
-////                        new FontLogAsync().execute(new EntityLogMessage(TAG, "remove flight if closed: " +f.flightNumber, 'd'));
-////                        if (f==activeFlightControl) activeFlightControl =null;
-////                        /// remove from the list and database
-////                        f.removeMyself();
-////                    }
-////                    if (flightControlList.isEmpty()) {
-////                        //if (activeRoute == this) activeRoute = null;
-////                        new FontLogAsync().execute(new EntityLogMessage(TAG, "flightControlList isEmpty", 'd'));
-////                        setToNull();
-////                    }
-////                }
-////                break;
-//////            case CHECK_IF_ADD_FLIGHT_TO_FLIGHTLIST:
-////                FlightControl f = (FlightControl) entityEventMessage.eventMessageValueObject;
-////                new FontLogAsync().execute(new EntityLogMessage(TAG, "flight added to flightlist "+f.flightNumber, 'd'));
-////                if (flightControlList.contains(f)) break;
-////                else {
-////                    flightControlList.add(f);
-////                    break;
-////                }
-//        }
-//    }
 
     private void restartNewFlight(){
         int legCount = activeFlightControl.legNumber++;
@@ -146,7 +130,7 @@ public void eventReceiver(EntityEventMessage entityEventMessage){
                 setToNull();
                 break;
             case CLOCK_MODECLOCK_ONLY:
-                activeFlightControl = null;
+                setActiveFlightControl(null);
                 break;
 //            case FLIGHT_STATECHANGEDTO_READYTOSAVE:
 //                //if (routeNumber.equals(ROUTE_NUMBER_DEFAULT)) routeNumber = entityEventMessage.eventMessageValueString;

@@ -11,11 +11,9 @@ import com.flightontrack.mysql.SQLFlightControllerEntity;
 import com.flightontrack.ui.MainActivity;
 
 //import static com.flightontrack.communication.SvcComm.commBatchSize;
-import static com.flightontrack.flight.EntityFlightController.*;
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.definitions.EventEnums.*;
-import static com.flightontrack.flight.EntityFlightController.FLIGHTNUMBER_SRC.LOCAL;
 import static com.flightontrack.flight.RouteControl.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
@@ -50,7 +48,7 @@ public class Session implements EventBus{
         SEND_CACHED_LOCATIONS,
         CLOSEAPP_NO_CACHE_CHECK,
         CHECK_CACHE_FIRST,
-        GET_OFFLINE_FLIGHTS
+        GET_UNSENT_FLIGHTS
     }
     static Session sessionInstance = null;
     static SQLLocation sqlLocation;
@@ -81,7 +79,7 @@ public class Session implements EventBus{
 //        if(eventMessage.eventMessageValueAlertResponse== ALERT_RESPONSE.NEG) set_Action(SACTION.CLOSEAPP_NO_CACHE_CHECK);
 //        eventReaction.put(ALERT_STOPAPP:
 //        if(eventMessage.eventMessageValueAlertResponse== ALERT_RESPONSE.POS) set_Action(SACTION.CLOSEAPP_NO_CACHE_CHECK);
-//        eventReaction.put(SETTINGACT_BUTTONSENDCACHE_CLICKED,SACTION.GET_OFFLINE_FLIGHTS);
+//        eventReaction.put(SETTINGACT_BUTTONSENDCACHE_CLICKED,SACTION.GET_UNSENT_FLIGHTS);
 //        eventReaction.put(FLIGHT_REMOTENUMBER_RECEIVED:
 
 
@@ -186,21 +184,21 @@ public class Session implements EventBus{
                         EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
                     }
                 break;
-            case GET_OFFLINE_FLIGHTS:
+            case GET_UNSENT_FLIGHTS:
 
                 List<FlightControl> flightList = new SQLFlightControllerEntity().getDBFlightList();
-                for (FlightControl f: flightList){
 
+                for (FlightControl f: flightList){
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "DB Flight List:  " + f.flightNumber, 'd'));
                     if(RouteControl.getInstance().isFlightNumberInList(f.flightNumber)) {
                         continue;
                     }
-                    else flightControlList.add(f);
-                    /// at this point the clock is stopped so imitating the clock to tick once
-                    if (isNetworkAvailable()) EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
                     else {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't get flight number", 'd'));
-                        EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "DB Flight addeded to flightList:  " + f.flightNumber, 'd'));
+                        flightControlList.add(f);
                     }
+                    /// at this point the clock may stopped so imitating the clock tick once
+                    EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
 
 //                for (String flightNumTemp: sqlLocation.getTempFlightList()){
 //                    if(isFlightNumberInList(flightNumTemp)) {
@@ -324,7 +322,11 @@ public class Session implements EventBus{
     public void onClock(EntityEventMessage entityEventMessage){
         new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock ", 'd'));
         if (dbLocationRecCountNormal > 0) set_Action(SACTION.SEND_CACHED_LOCATIONS);
-        if (dbTempFlightRecCount>0) set_Action(SACTION.GET_OFFLINE_FLIGHTS);
+        if (dbTempFlightRecCount>0 && isNetworkAvailable()) set_Action(SACTION.GET_UNSENT_FLIGHTS);
+        else {
+            //new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable", 'd'));
+            EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+        }
     }
 
     @Override
@@ -354,7 +356,7 @@ public class Session implements EventBus{
                 else
                 {
                     if (dbLocationRecCountNormal > 0) set_Action(SACTION.SEND_CACHED_LOCATIONS); /// only for the fligts in flightList already
-                    set_Action(SACTION.GET_OFFLINE_FLIGHTS); /// check to see if any other flights need to be added to the flightList
+                    set_Action(SACTION.GET_UNSENT_FLIGHTS); /// check to see if any other flights need to be added to the flightList
                 }
                 break;
             case FLIGHT_REMOTENUMBER_RECEIVED:

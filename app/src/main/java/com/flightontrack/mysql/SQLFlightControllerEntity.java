@@ -5,16 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.flightontrack.flight.EntityFlightController;
+import com.flightontrack.flight.EntityFlightControl;
 import com.flightontrack.flight.FlightControl;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.shared.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.DATABASE_NAME;
 import static com.flightontrack.definitions.Finals.DATABASE_VERSION;
 
@@ -55,7 +53,7 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public int insertFlightControllerEntityRecord(EntityFlightController fc){
+    public int insertFlightControllerEntityRecord(EntityFlightControl fc){
         dbw = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -162,14 +160,14 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         return rn;
     }
     public void deleteFlightEntity(int id) {
-        String selection = DBTableFlightContol._ID +"=" + id;
+        //String selection = DBTableFlightContol._ID +"=" + id;
         //int[] selectionArgs = {id};
 
         try{
             dbw = getWritableDatabase();
             dbw.delete(
-                    DBSchema.TABLE_LOCATION,
-                    selection,
+                    DBTableFlightContol.TABLE_FLIGHTCONTROLLER,
+                    DBTableFlightContol._ID +"=" + id,
                     null
                     //selectionArgs
             );
@@ -190,15 +188,15 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
                 f.dbid = cu.getPosition();
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBER));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(ROUTENUMBER));
-                f.flightState = EntityFlightController.FLIGHT_STATE.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTSTATE)));
-                f.flightNumStatus = EntityFlightController.FLIGHTNUMBER_SRC.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBERSTATUS)));
+                f.flightState = EntityFlightControl.FLIGHT_STATE.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTSTATE)));
+                f.flightNumStatus = EntityFlightControl.FLIGHTNUMBER_SRC.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBERSTATUS)));
                 f.legNumber =  cu.getInt(cu.getColumnIndexOrThrow(LEGNUMBER));
                 f.isJunk = cu.getInt(cu.getColumnIndexOrThrow(ISJUNK));
                 flightList.add(f);
             }
         }
         catch (Exception e){
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: ", 'e'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "onException e: "+e.getMessage(), 'e'));
         }
         finally {
             dbw.close();

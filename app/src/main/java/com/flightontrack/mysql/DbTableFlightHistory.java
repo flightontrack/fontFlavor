@@ -46,7 +46,7 @@ static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
              //"limit 5";
              ;
 
-     static final String SQL_SELECT_FLIGHTENTITY =
+     static final String SQL_SELECT_FLIGHTENTITY_ALL =
              "select " +
                      FLIGHTHIST_FlightNumber  + COMMA_SEP +
                      FLIGHTHIST_RouteNumber + COMMA_SEP +
@@ -54,11 +54,7 @@ static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
                      FLIGHTHIST_FlightTimeStart + COMMA_SEP +
                      FLIGHTHIST_FlightAcft + COMMA_SEP +
                      FLIGHTHIST_FlightDuration + SPACE +
-                     "from" + SPACE + TABLE_FLIGHTENTITY + SPACE +
-                     "where" + SPACE+ FLIGHTHIST_IsJunk+" = 0" + SPACE +
-                     "order by" + SPACE +
-                     _ID +  SPACE +
-                     "desc"
+                     "from" + SPACE + TABLE_FLIGHTENTITY + SPACE
              //+ SPACE+
              //"limit 5";
              ;

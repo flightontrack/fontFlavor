@@ -35,6 +35,7 @@ public static final String SQL_DROP_TABLE_FLIGHTCONTROLLER =    "DROP TABLE IF E
                     FLIGHTSTATE + COMMA_SEP +
                     FLIGHTNUMBERSTATUS + COMMA_SEP +
                     LEGNUMBER + COMMA_SEP +
+                    ISJUNK + SPACE +
                     "from" + SPACE + TABLE_FLIGHTCONTROLLER + SPACE +
                     "where" + SPACE+ ISJUNK+" = 0" + SPACE
             //+ SPACE+

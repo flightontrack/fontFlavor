@@ -5,6 +5,7 @@ import com.flightontrack.flight.RouteControl;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
+import com.flightontrack.mysql.SQLFlightEntity;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.Props;
 
@@ -61,27 +62,31 @@ public class BigButton implements EventBus {
 
     static String setTextGreen() {
         return "Flight: " + (RouteControl.activeFlightControl.flightNumber) + '\n' +
-                "Point: " + RouteControl.activeFlightControl.entityFlight.wayPointsCount +
+                "Point: " + RouteControl.activeFlightControl.entityFlightHist.wayPointsCount +
                 ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime() + '\n'
                 + "Alt: " + RouteControl.activeFlightControl.lastAltitudeFt + " ft";
     }
 
     static String setTextRedFlightStopped() {
         String fText;
-        String fTime = "";
-        String flightN = FLIGHT_NUMBER_DEFAULT;
+        //String fTime = "";
+        String flightN = Props.SessionProp.pLastKnownFlightNumber;
 
         if (RouteControl.routeControlInstance == null) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setTextRedFlightStopped: activeRoute == null", 'd'));
             fText = Props.SessionProp.pTrackingButtonText;
         } else {
-            if (RouteControl.activeFlightControl != null) {
-                flightN = RouteControl.activeFlightControl==null?FLIGHT_NUMBER_DEFAULT:RouteControl.activeFlightControl.flightNumber;
-                fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime();
-            }
-            fText = "Flight " + flightN + '\n' + "Stopped"; // + '\n';
+           //if (RouteControl.activeFlightControl != null) {
+                //flightN = Props.SessionProp.pLastKnownFlightNumber ==null?FLIGHT_NUMBER_DEFAULT:RouteControl.LastKnownFlightNumber;
+                //fTime = ctxApp.getString(R.string.tracking_flight_time) + SPACE + new SQLFlightEntity().getFlightHistEntity(flightN).flightDuration;
+                        //RouteControl.activeFlightControl.getFlightTime();
+            fText = "Flight " + flightN
+                //+ '\n'
+                + ctxApp.getString(R.string.tracking_flight_time) + SPACE + new SQLFlightEntity().getFlightHistEntity(flightN).flightDuration
+                + '\n'
+                + "Stopped";
         }
-        return fText + fTime;
+        return fText;
     }
 
     static String getButtonText(BUTTONREQUEST request) {

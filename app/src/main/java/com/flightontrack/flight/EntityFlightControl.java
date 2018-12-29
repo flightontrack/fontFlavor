@@ -2,19 +2,20 @@ package com.flightontrack.flight;
 
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
-import com.flightontrack.model.EntityFlight;
+import com.flightontrack.model.EntityFlightHist;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.mysql.SQLFlightControllerEntity;
 import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.shared.EventBus;
+import com.flightontrack.shared.Props;
 
 import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.FLIGHT_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 
-public class EntityFlightController{
-    static final String TAG = "EntityFlightController";
-    public EntityFlight entityFlight;
+public class EntityFlightControl {
+    static final String TAG = "EntityFlightControl";
+    public EntityFlightHist entityFlightHist;
 
     public enum FLIGHT_STATE {
         DEFAULT,
@@ -51,8 +52,11 @@ public class EntityFlightController{
 
     public void setFlightNumber(String fn) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, " setFlightNumber: " + fn + " flightNumStatus: " + flightNumStatus, 'd'));
+        flightNumber = fn;
         routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
-        entityFlight.setFlightNumber(fn);
+        entityFlightHist.setFlightNumber(fn);
+        //RouteControl.setLastKnownFlightNumber(fn);
+        Props.SessionProp.pLastKnownFlightNumber=fn;
         sqlFlightControllerEntity.updateFlightNum(dbid,fn,routeNumber);
         if (sqlLocation.updateTempFlightNum(flightNumber, fn) > 0) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: replace  in location table: " + flightNumber+"->" +fn, 'd'));
@@ -67,10 +71,11 @@ public class EntityFlightController{
     }
 
     public void removeMyself(){
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "removeMyself f: " + this.flightNumber + " dbid: "+ dbid, 'd'));
         sqlFlightControllerEntity.deleteFlightEntity(dbid);
         if (RouteControl.flightControlList != null) {
             RouteControl.flightControlList.remove(this);
-            if (RouteControl.activeFlightControl == this) RouteControl.activeFlightControl = null;
+            if (RouteControl.activeFlightControl == this) RouteControl.setActiveFlightControl(null);
         }
 
     }
@@ -102,9 +107,9 @@ public class EntityFlightController{
     SQLLocation sqlLocation = SQLLocation.getInstance();
     FlightControl flightControl;
 
-    EntityFlightController() {
+    EntityFlightControl() {
     }
-    EntityFlightController(String rn, int leg) {
+    EntityFlightControl(String rn, int leg) {
         routeNumber = rn;
         legNumber = leg;
         dbid = sqlFlightControllerEntity.insertFlightControllerEntityRecord(this);

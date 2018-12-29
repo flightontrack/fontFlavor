@@ -8,8 +8,8 @@ import static com.flightontrack.definitions.Finals.TIME_TALK_INTERVAL_MIN;
 
 import com.flightontrack.mysql.SQLFlightEntity;
 
-public class EntityFlight {
-    public int i;
+public class EntityFlightHist {
+    //public int i;
     private SQLFlightEntity sqlFlightEntity;
     public String flightNumber  = FLIGHT_NUMBER_DEFAULT;
     public String routeNumber = ROUTE_NUMBER_DEFAULT;
@@ -53,14 +53,14 @@ public class EntityFlight {
         sqlFlightEntity.updateFlightEntityDuration(dbid,flightDuration);
     }
 
-    public EntityFlight(){
+    public EntityFlightHist(){
     }
 
-    public EntityFlight(String fn){
+    public EntityFlightHist(String fn){
         EntityFlightCopy(sqlFlightEntity.getFlightHistEntity(fn));
     }
 
-    public EntityFlight(String f,String r,String d,String t,String a){
+    public EntityFlightHist(String f, String r, String d, String t, String a){
         flightAcft      =a;
         flightNumber    =f;
         routeNumber     =r;
@@ -70,7 +70,7 @@ public class EntityFlight {
         dbid= sqlFlightEntity.insertFlightEntityRecord(this);
 
     }
-    public EntityFlight(String r,String d,String a){
+    public EntityFlightHist(String r, String d, String a){
         flightAcft      =a;
         routeNumber     =r;
         flightDate      =d;
@@ -78,7 +78,7 @@ public class EntityFlight {
         dbid= sqlFlightEntity.insertFlightEntityRecord(this);
 
     }
-    private void EntityFlightCopy(EntityFlight e){
+    private void EntityFlightCopy(EntityFlightHist e){
         this.flightNumber    =e.flightNumber;
         this.flightAcft      =e.flightAcft;
         this.routeNumber     =e.routeNumber;
