@@ -5,7 +5,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.flight.RouteControl;
+import com.flightontrack.control.RouteControl;
 
 import static com.flightontrack.shared.Props.ctxApp;
 import static com.flightontrack.shared.Props.mainactivityInstance;

@@ -14,7 +14,7 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.flightontrack.definitions.EventEnums;
-import com.flightontrack.flight.RouteControl;
+import com.flightontrack.control.RouteControl;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.objects.MyPhone;

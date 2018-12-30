@@ -1,4 +1,4 @@
-package com.flightontrack.flight;
+package com.flightontrack.control;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -14,7 +14,7 @@ import com.flightontrack.ui.MainActivity;
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.definitions.EventEnums.*;
-import static com.flightontrack.flight.RouteControl.*;
+import static com.flightontrack.control.RouteControl.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
@@ -177,28 +177,32 @@ public class Session implements EventBus{
                 if(entityEventMessage.eventMessageValueAlertResponse== ALERT_RESPONSE.POS) mainactivityInstance.finishActivity();
                 break;
             case SEND_CACHED_LOCATIONS:
-                    if (isNetworkAvailable()) {
-                        startLocationRequest();
-                    } else {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't send location", 'd'));
-                        EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
-                    }
+                    //if (isNetworkAvailable()) {
+                if (dbLocationRecCountNormal > 0)    startLocationRequest();
+                    //} else {
+//                        new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't send location", 'd'));
+//                        EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+//                    }
                 break;
             case GET_UNSENT_FLIGHTS:
 
                 List<FlightControl> flightList = new SQLFlightControllerEntity().getDBFlightList();
+                //List<String> flightTempList =  sqlLocation.getTempFlightList();
+                for (FlightControl f: flightList) {
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Flight in DB List:  " + f.flightNumber, 'd'));
+                }
 
                 for (FlightControl f: flightList){
-                    new FontLogAsync().execute(new EntityLogMessage(TAG, "DB Flight List:  " + f.flightNumber, 'd'));
                     if(RouteControl.getInstance().isFlightNumberInList(f.flightNumber)) {
+                    new FontLogAsync().execute(new EntityLogMessage(TAG, "Flight in flightList already:  " + f.flightNumber, 'd'));
                         continue;
                     }
                     else {
-                        new FontLogAsync().execute(new EntityLogMessage(TAG, "DB Flight addeded to flightList:  " + f.flightNumber, 'd'));
-                        flightControlList.add(f);
+                        new FontLogAsync().execute(new EntityLogMessage(TAG, "DB Flight added to flightList:  " + f.flightNumber, 'd'));
+                        RouteControl.flightControlList.add(f);
                     }
                     /// at this point the clock may stopped so imitating the clock tick once
-                    EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
+                    //EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
 
 //                for (String flightNumTemp: sqlLocation.getTempFlightList()){
 //                    if(isFlightNumberInList(flightNumTemp)) {
@@ -226,7 +230,7 @@ public class Session implements EventBus{
 //                    //new FlightOffline(fn).onFlightStateChanged(FlightOffline.FLIGHT_STATE.READY_TOSENDLOCATIONS);
 //                    new FlightOffline(fn)
 //                            .onFlightStateChanged(FLIGHT_STATE.STOPPED)
-//                            .set_flightNumStatus(FlightOffline.FLIGHTNUMBER_SRC.REMOTE_DEFAULT);
+//                            .set_flightNumStatus(FlightOffline.FLIGHTNUMBER_SRC.REMOTE);
 //                }
 
 //                List tempFlights = sqlHelper.getTempFlightList();
@@ -319,16 +323,23 @@ public class Session implements EventBus{
 
     }
     @Override
-    public void onClock(EntityEventMessage entityEventMessage){
+    public void onClock(EntityEventMessage entityEventMessage) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock ", 'd'));
-        if (dbLocationRecCountNormal > 0) set_Action(SACTION.SEND_CACHED_LOCATIONS);
-        if (dbTempFlightRecCount>0 && isNetworkAvailable()) set_Action(SACTION.GET_UNSENT_FLIGHTS);
+        if (isNetworkAvailable()) {
+
+            set_Action(SACTION.SEND_CACHED_LOCATIONS);
+
+            set_Action(SACTION.GET_UNSENT_FLIGHTS);
+//            else {
+//                //new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable", 'd'));
+//                EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
+//            }
+        }
         else {
-            //new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable", 'd'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "Connectivity unavailable Can't send location", 'd'));
             EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(false));
         }
     }
-
     @Override
     public void eventReceiver(EntityEventMessage entityEventMessage){
         //Array eventReaction[EVENT];

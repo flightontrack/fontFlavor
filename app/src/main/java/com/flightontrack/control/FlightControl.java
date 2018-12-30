@@ -1,4 +1,4 @@
-package com.flightontrack.flight;
+package com.flightontrack.control;
 
 import android.content.ContentValues;
 import android.location.Location;
@@ -34,11 +34,12 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import other.Talk;
 
+import static com.flightontrack.control.EntityFlightControl.FLIGHTNUMBER_SRC.DEFAULT;
 import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.*;
-import static com.flightontrack.flight.EntityFlightControl.FLIGHTNUMBER_SRC.*;
-import static com.flightontrack.flight.EntityFlightControl.FLIGHT_STATE.*;
-import static com.flightontrack.flight.Session.isNetworkAvailable;
+import static com.flightontrack.control.EntityFlightControl.FLIGHTNUMBER_SRC.*;
+import static com.flightontrack.control.EntityFlightControl.FLIGHT_STATE.*;
+import static com.flightontrack.control.Session.isNetworkAvailable;
 import static com.flightontrack.shared.Props.SessionProp;
 import static com.flightontrack.shared.Props.mainactivityInstance;
 
@@ -58,6 +59,7 @@ public class FlightControl extends EntityFlightControl implements EventBus {
     boolean isSpeedAboveMin = false;
 
     public FlightControl() {
+        super.flightControl = this;
     }
 
     public FlightControl(String routeNumber, int leg) {
@@ -151,17 +153,18 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                         return;
                     }
                     if (response.responseNewFlightNum != null) {
-
-                        if (flightNumStatus == FLIGHTNUMBER_SRC.LOCAL){
-                            /// in case of request resubmitting for flight number on this flight
-                            setFlightNumStatus(FLIGHTNUMBER_SRC.REMOTE_DEFAULT);
-                        }
-                        else {
-                            /// normal flow
-                            //isGetFlightCallSuccess = true;
-                            //route._legCount++;
-                        }
-                        setFlightNumber(response.responseNewFlightNum);
+//
+//                        if (flightNumStatus == FLIGHTNUMBER_SRC.LOCAL){
+//                            /// in case of request resubmitting for flight number on this flight
+//                            setFlightNumStatus(FLIGHTNUMBER_SRC.REMOTE);
+//                        }
+//                        else {
+//                            /// normal flow
+//                            //isGetFlightCallSuccess = true;
+//                            //route._legCount++;
+//                        }
+                        setFlightNumStatus(REMOTE,response.responseNewFlightNum);
+                        //setFlightNumber(response.responseNewFlightNum);
                     }
                 }
 
@@ -169,11 +172,11 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                 public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                     new FontLogAsync().execute(new EntityLogMessage(TAG, "onFailure e: " + e.getMessage(), 'd'));
                     //client.isFailed = true;
-                    if (flightNumStatus == REMOTE_DEFAULT) if (mainactivityInstance != null) {
+                    if (flightNumStatus == DEFAULT) if (mainactivityInstance != null) {
                         Toast.makeText(mainactivityInstance, R.string.temp_flight_alloc, Toast.LENGTH_LONG).show();
                         EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_GETNEWFLIGHT_COMPLETED)
-                                .setEventMessageValueBool(false)
-                                .setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
+                                .setEventMessageValueBool(false));
+                                //.setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
                     }
                 }
 
@@ -181,11 +184,11 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                 public void onFailure(int statusCode, Header[] headers, String s, Throwable e) {
                     new FontLogAsync().execute(new EntityLogMessage(TAG, "onFailure URL method not found status code: " + statusCode, 'd'));
                     //client.isFailed = true;
-                    if (flightNumStatus == REMOTE_DEFAULT) if (mainactivityInstance != null) {
+                    if (flightNumStatus == DEFAULT) if (mainactivityInstance != null) {
                         Toast.makeText(mainactivityInstance, R.string.temp_flight_alloc, Toast.LENGTH_LONG).show();
                         EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_GETNEWFLIGHT_COMPLETED)
-                                .setEventMessageValueBool(false)
-                                .setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
+                                .setEventMessageValueBool(false));
+                                //.setEventMessageValueString(FLIGHT_NUMBER_DEFAULT));
                     }
                 }
 
@@ -441,8 +444,8 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                 //TODO remove flight points
                 break;
             case SQL_LOCALFLIGHTNUM_ALLOCATED:
-                setFlightNumStatus(FLIGHTNUMBER_SRC.LOCAL);
-                setFlightNumber(entityEventMessage.eventMessageValueString);
+                setFlightNumStatus(LOCAL,entityEventMessage.eventMessageValueString);
+                //setFlightNumber(entityEventMessage.eventMessageValueString);
                 //isGetFlightCallSuccess = true;
                 //route._legCount++;
                 //onFlightStateChanged(READY_TOSAVELOCATIONS);

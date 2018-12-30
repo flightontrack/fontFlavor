@@ -6,11 +6,11 @@ import static com.flightontrack.definitions.Finals.FLIGHT_TIME_ZERO;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.TIME_TALK_INTERVAL_MIN;
 
-import com.flightontrack.mysql.SQLFlightEntity;
+import com.flightontrack.mysql.SQLFlightHistory;
 
 public class EntityFlightHist {
     //public int i;
-    private SQLFlightEntity sqlFlightEntity;
+    private SQLFlightHistory sqlFlightHistory;
     public String flightNumber  = FLIGHT_NUMBER_DEFAULT;
     public String routeNumber = ROUTE_NUMBER_DEFAULT;
     public String flightDate;
@@ -33,12 +33,12 @@ public class EntityFlightHist {
 
     public void setIsJunk(int isJunk) {
         this.isJunk = isJunk;
-        sqlFlightEntity.updateFlightEntityJunkFlag(dbid,isJunk);
+        sqlFlightHistory.updateFlightEntityJunkFlag(dbid,isJunk);
     }
 
     public void setFlightTimeStart(String flightTimeStart) {
         this.flightTimeStart = flightTimeStart;
-        sqlFlightEntity.updateFlightEntityTimeStart(dbid,flightTimeStart);
+        sqlFlightHistory.updateFlightEntityTimeStart(dbid,flightTimeStart);
     }
     public void setFlightTimeStartGMT(long flightTimeStart) {
         this.flightTimeStartGMT = flightTimeStart;
@@ -46,18 +46,18 @@ public class EntityFlightHist {
     }
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
-        sqlFlightEntity.updateFlightEntityFlightNum(dbid,flightNumber);
+        sqlFlightHistory.updateFlightEntityFlightNum(dbid,flightNumber);
     }
     public void setFlightDuration(String flightDuration) {
         this.flightDuration = flightDuration;
-        sqlFlightEntity.updateFlightEntityDuration(dbid,flightDuration);
+        sqlFlightHistory.updateFlightEntityDuration(dbid,flightDuration);
     }
 
     public EntityFlightHist(){
     }
 
     public EntityFlightHist(String fn){
-        EntityFlightCopy(sqlFlightEntity.getFlightHistEntity(fn));
+        EntityFlightCopy(sqlFlightHistory.getFlightHistEntity(fn));
     }
 
     public EntityFlightHist(String f, String r, String d, String t, String a){
@@ -66,16 +66,16 @@ public class EntityFlightHist {
         routeNumber     =r;
         flightTimeStart =t;
         flightDate      =d;
-        sqlFlightEntity = new SQLFlightEntity();
-        dbid= sqlFlightEntity.insertFlightEntityRecord(this);
+        sqlFlightHistory = new SQLFlightHistory();
+        dbid= sqlFlightHistory.insertFlightEntityRecord(this);
 
     }
     public EntityFlightHist(String r, String d, String a){
         flightAcft      =a;
         routeNumber     =r;
         flightDate      =d;
-        sqlFlightEntity = new SQLFlightEntity();
-        dbid= sqlFlightEntity.insertFlightEntityRecord(this);
+        sqlFlightHistory = new SQLFlightHistory();
+        dbid= sqlFlightHistory.insertFlightEntityRecord(this);
 
     }
     private void EntityFlightCopy(EntityFlightHist e){

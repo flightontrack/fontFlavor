@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.flight.RouteControl;
+import com.flightontrack.control.RouteControl;
 import com.flightontrack.shared.Props;
 
 import java.io.BufferedWriter;

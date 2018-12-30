@@ -1,11 +1,11 @@
 package com.flightontrack.ui;
 
 import com.flightontrack.R;
-import com.flightontrack.flight.RouteControl;
+import com.flightontrack.control.RouteControl;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
-import com.flightontrack.mysql.SQLFlightEntity;
+import com.flightontrack.mysql.SQLFlightHistory;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.Props;
 
@@ -82,7 +82,7 @@ public class BigButton implements EventBus {
                         //RouteControl.activeFlightControl.getFlightTime();
             fText = "Flight " + flightN
                 //+ '\n'
-                + ctxApp.getString(R.string.tracking_flight_time) + SPACE + new SQLFlightEntity().getFlightHistEntity(flightN).flightDuration
+                + ctxApp.getString(R.string.tracking_flight_time) + SPACE + new SQLFlightHistory().getFlightHistEntity(flightN).flightDuration
                 + '\n'
                 + "Stopped";
         }

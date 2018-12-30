@@ -5,8 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.flightontrack.flight.EntityFlightControl;
-import com.flightontrack.flight.FlightControl;
+import com.flightontrack.control.EntityFlightControl;
+import com.flightontrack.control.FlightControl;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
 

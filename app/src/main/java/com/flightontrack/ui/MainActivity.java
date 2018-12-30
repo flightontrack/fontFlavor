@@ -39,7 +39,7 @@ import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
-import static com.flightontrack.flight.Session.*;
+import static com.flightontrack.control.Session.*;
 import static com.flightontrack.definitions.EventEnums.*;
 //import com.google.android.gms.appindexing.Action;
 //import com.google.android.gms.appindexing.AppIndex;

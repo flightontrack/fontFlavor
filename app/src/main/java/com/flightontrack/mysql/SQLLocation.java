@@ -16,7 +16,7 @@ import com.flightontrack.model.EntityEventMessage;
 import static com.flightontrack.definitions.Finals.DATABASE_NAME;
 import static com.flightontrack.definitions.Finals.DATABASE_VERSION;
 //import static com.flightontrack.flight.RouteBase.get_FlightInstanceByNumber;
-import static com.flightontrack.flight.RouteControl.get_FlightInstanceByNumber;
+import static com.flightontrack.control.RouteControl.get_FlightInstanceByNumber;
 import static com.flightontrack.mysql.DbTableFlightHistory.*;
 import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
 import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;

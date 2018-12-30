@@ -13,7 +13,7 @@ import com.flightontrack.R;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityFlightHist;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.mysql.SQLFlightEntity;
+import com.flightontrack.mysql.SQLFlightHistory;
 
 
 public class FlightHistoryActivity extends Activity {
@@ -29,7 +29,7 @@ public class FlightHistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         new FontLogAsync().execute(new EntityLogMessage(TAG, "FlightHistorytActivity onCreate", 'd'));
         setContentView(R.layout.activity_h);
-        List<EntityFlightHist> flightList = new SQLFlightEntity().getFlightHistList();
+        List<EntityFlightHist> flightList = new SQLFlightHistory().getFlightHistList();
         mRecyclerView = findViewById(R.id.my_recycler_view);
         clearHistory = findViewById(R.id.btnClearHist);
 
@@ -59,7 +59,7 @@ public class FlightHistoryActivity extends Activity {
     }
 
     public void  clearHistory(View v){
-        new SQLFlightEntity().clearFlightEntityTable();
+        new SQLFlightHistory().clearFlightEntityTable();
         finish();
     }
 }

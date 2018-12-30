@@ -1,4 +1,4 @@
-package com.flightontrack.flight;
+package com.flightontrack.control;
 
 import com.flightontrack.definitions.Limits;
 import com.flightontrack.log.FontLogAsync;
@@ -13,7 +13,6 @@ import java.util.List;
 import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED;
 import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN;
-import static com.flightontrack.definitions.Finals.FLIGHT_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 
 public class RouteControl implements EventBus{

@@ -23,14 +23,14 @@ import static com.flightontrack.definitions.EventEnums.*;
 //import android.content.Context;
 
 
-public class SQLFlightEntity extends SQLiteOpenHelper implements EventBus {
+public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
     private static final String TAG = "SQLFlightEntity";
 
 
     public SQLiteDatabase dbw;
 
     //public SQLFlightEntity(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, SQLiteDatabase dbwp) {
-    public SQLFlightEntity() {
+    public SQLFlightHistory() {
         super(ctxApp, DATABASE_NAME, null, DATABASE_VERSION);
         try {
             dbw = getWritableDatabase();

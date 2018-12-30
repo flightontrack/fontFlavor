@@ -1,11 +1,11 @@
 package com.flightontrack.shared;
-import com.flightontrack.flight.FlightControl;
-import com.flightontrack.flight.RouteControl;
+import com.flightontrack.control.FlightControl;
+import com.flightontrack.control.RouteControl;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.ui.BigButton;
 import com.flightontrack.ui.SimpleSettingsActivity;
-import com.flightontrack.flight.Session;
+import com.flightontrack.control.Session;
 import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;

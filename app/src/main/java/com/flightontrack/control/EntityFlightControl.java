@@ -1,4 +1,4 @@
-package com.flightontrack.flight;
+package com.flightontrack.control;
 
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
@@ -9,6 +9,10 @@ import com.flightontrack.mysql.SQLLocation;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.Props;
 
+import static com.flightontrack.control.EntityFlightControl.FLIGHTNUMBER_SRC.DEFAULT;
+import static com.flightontrack.control.EntityFlightControl.FLIGHTNUMBER_SRC.LOCAL;
+import static com.flightontrack.control.EntityFlightControl.FLIGHTNUMBER_SRC.REMOTE;
+import static com.flightontrack.control.EntityFlightControl.FLIGHT_STATE.READY_TOSAVELOCATIONS;
 import static com.flightontrack.definitions.EventEnums.EVENT;
 import static com.flightontrack.definitions.Finals.FLIGHT_NUMBER_DEFAULT;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
@@ -28,8 +32,9 @@ public class EntityFlightControl {
         CLOSED
     }
     public enum FLIGHTNUMBER_SRC {
-        REMOTE_DEFAULT,
-        LOCAL
+        DEFAULT,
+        LOCAL,
+        REMOTE
     }
 
     public String flightNumber = FLIGHT_NUMBER_DEFAULT;
@@ -51,18 +56,16 @@ public class EntityFlightControl {
     }
 
     public void setFlightNumber(String fn) {
-        new FontLogAsync().execute(new EntityLogMessage(TAG, " setFlightNumber: " + fn + " flightNumStatus: " + flightNumStatus, 'd'));
-        flightNumber = fn;
-        routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
-        entityFlightHist.setFlightNumber(fn);
-        //RouteControl.setLastKnownFlightNumber(fn);
         Props.SessionProp.pLastKnownFlightNumber=fn;
-        sqlFlightControllerEntity.updateFlightNum(dbid,fn,routeNumber);
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: new fn:" + fn + " flightNumStatus: " + flightNumStatus, 'd'));
         if (sqlLocation.updateTempFlightNum(flightNumber, fn) > 0) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: replace  in location table: " + flightNumber+"->" +fn, 'd'));
         }
         else new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: nothing to replace in location table: " + flightNumber+"->" +fn, 'd'));
-        setFlightState(FLIGHT_STATE.READY_TOSAVELOCATIONS);
+        routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
+        sqlFlightControllerEntity.updateFlightNum(dbid,fn,routeNumber);
+        entityFlightHist.setFlightNumber(fn);
+        flightNumber = fn;
     }
 
     public void setIsJunk(int ij) {
@@ -82,22 +85,27 @@ public class EntityFlightControl {
 
     public FLIGHT_STATE flightState = FLIGHT_STATE.DEFAULT;
 
-    public void setFlightNumStatus(FLIGHTNUMBER_SRC fns) {
-        this.flightNumStatus = fns;
-        sqlFlightControllerEntity.updateFlightNumStatus(dbid,fns.name());
+    public void setFlightNumStatus(FLIGHTNUMBER_SRC fns, String fn) {
+        setFlightNumber(fn);
         switch (fns) {
-            case REMOTE_DEFAULT:
-                EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_REMOTENUMBER_RECEIVED)
-                        .setEventMessageValueObject(this)
-                        .setEventMessageValueString(flightNumber)
-                );
+            case REMOTE:
+                if (flightNumStatus ==  DEFAULT) setFlightState(READY_TOSAVELOCATIONS);
+                else if (flightNumStatus ==  LOCAL) {
+                    EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_REMOTENUMBER_RECEIVED)
+                            .setEventMessageValueObject(this)
+                            .setEventMessageValueString(flightNumber)
+                    );
+                }
                 break;
             case LOCAL:
+                setFlightState(READY_TOSAVELOCATIONS);
                 break;
         }
+        this.flightNumStatus = fns;
+        sqlFlightControllerEntity.updateFlightNumStatus(dbid,fns.name());
     }
 
-    public FLIGHTNUMBER_SRC flightNumStatus = FLIGHTNUMBER_SRC.REMOTE_DEFAULT;
+    public FLIGHTNUMBER_SRC flightNumStatus = DEFAULT;
 
     boolean isLimitReached  = false;
     public int    isJunk = 0;
