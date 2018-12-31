@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.communication.HttpJsonClient;
-import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.http.HttpJsonClient;
+import com.flightontrack.http.ResponseJsonObj;
 import com.flightontrack.model.EntityLogMessage;
 import com.flightontrack.model.EntityProgressBarGetPsw;
 import com.flightontrack.model.EntityRequestGetPsw;

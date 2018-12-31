@@ -1,4 +1,4 @@
-package com.flightontrack.communication;
+package com.flightontrack.http;
 
 import com.flightontrack.R;
 import com.flightontrack.model.EntityLogMessage;
@@ -13,7 +13,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import static com.flightontrack.shared.Props.*;
-import static com.flightontrack.communication.URLs.*;
+import static com.flightontrack.http.URLs.*;
 
 public class HttpJsonClient  extends AsyncHttpClient implements AutoCloseable{
     static final String TAG = "HttpJsonClient";

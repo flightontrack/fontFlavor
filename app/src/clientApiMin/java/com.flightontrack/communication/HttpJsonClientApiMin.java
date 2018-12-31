@@ -8,7 +8,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import static com.flightontrack.communication.URLs.getTrackingURL;
+import static com.flightontrack.http.URLs.getTrackingURL;
 import static com.flightontrack.shared.Props.ctxApp;
 
 

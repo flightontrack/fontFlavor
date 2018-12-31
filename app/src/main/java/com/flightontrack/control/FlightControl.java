@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import com.flightontrack.R;
 import com.flightontrack.clock.SvcLocationClock;
-import com.flightontrack.communication.HttpJsonClient;
-import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.http.HttpJsonClient;
+import com.flightontrack.http.ResponseJsonObj;
 import com.flightontrack.definitions.Limits;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityEventMessage;
@@ -343,7 +343,9 @@ public class FlightControl extends EntityFlightControl implements EventBus {
         switch (flightState) {
             case GETTINGFLIGHT:
                 EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_GETNEWFLIGHT_STARTED));
-                get_NewFlightID();
+                if(isNetworkAvailable()) get_NewFlightID();
+                else EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_GETNEWFLIGHT_COMPLETED)
+                     .setEventMessageValueBool(false));
                 break;
             case READY_TOSAVELOCATIONS:
                 EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_STATECHANGEDTO_READYTOSAVE).setEventMessageValueString(flightNumber));

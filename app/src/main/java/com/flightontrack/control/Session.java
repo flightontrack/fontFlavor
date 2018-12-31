@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.flightontrack.R;
+import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.mysql.SQLFlightControllerEntity;
 import com.flightontrack.ui.MainActivity;
@@ -14,13 +15,12 @@ import com.flightontrack.ui.MainActivity;
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.definitions.EventEnums.*;
-import static com.flightontrack.control.RouteControl.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 
-import com.flightontrack.communication.HttpJsonClient;
+import com.flightontrack.http.HttpJsonClient;
 //import com.flightontrack.communication.SvcComm;
-import com.flightontrack.communication.ResponseJsonObj;
+import com.flightontrack.http.ResponseJsonObj;
 import com.flightontrack.model.EntityRequestPostLocation;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
@@ -202,6 +202,8 @@ public class Session implements EventBus{
                         RouteControl.flightControlList.add(f);
                     }
                     /// at this point the clock may stopped so imitating the clock tick once
+                    //if (!SvcLocationClock.isInstanceCreated()) set_Action(SACTION.SEND_CACHED_LOCATIONS);;
+                    //if (!SvcLocationClock.isMyServiceRunning()) EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
                     //EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_ONTICK));
 
 //                for (String flightNumTemp: sqlLocation.getTempFlightList()){

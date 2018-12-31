@@ -81,8 +81,8 @@ public interface EventBus{
                 ///TODO
                 break;
             case ROUTE_FLIGHTLIST_EMPTY:
-                if (SvcLocationClock.getInstance()!=null) interfaceList.add(SvcLocationClock.getInstance());
-                else interfaceList.add(BigButton.getInstance()); //interfaceList.add(mainactivityInstance);
+                interfaceList.add(SvcLocationClock.getInstance());
+                //else interfaceList.add(BigButton.getInstance()); //interfaceList.add(mainactivityInstance);
                 interfaceList.add(RouteControl.getInstance());
                 break;
             case ROUTE_ONRESTART:
@@ -114,6 +114,7 @@ public interface EventBus{
                 interfaceList.add(SQLLocation.getInstance());
                 break;
             case SETTINGACT_BUTTONSENDCACHE_CLICKED:
+                interfaceList.add(SvcLocationClock.getInstance());
                 interfaceList.add(Session.getInstance());
                 break;
             case MACT_MULTILEG_ONCLICK:
@@ -157,7 +158,8 @@ public interface EventBus{
                 break;
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
                 //interfaceList.add(RouteControl.getInstance()); // set route number
-                interfaceList.add(new SvcLocationClock()); //start clock service in location mode
+                //interfaceList.add(new SvcLocationClock()); //start clock service in location mode
+                interfaceList.add(SvcLocationClock.getInstance()); //start clock service in location mode
                 //interfaceList.add(mainactivityInstance);
                 interfaceList.add(BigButton.getInstance());
                 break;

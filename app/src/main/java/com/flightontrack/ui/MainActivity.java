@@ -1,7 +1,9 @@
 package com.flightontrack.ui;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -388,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     }
 
     public void finishActivity() {
-        if (SvcLocationClock.isInstanceCreated()) SvcLocationClock.instanceSvcLocationClock.stopServiceSelf();
+        if (isClockServiceRunning()) SvcLocationClock.getInstance().stopServiceSelf();
         new AppConfig().unregisterReceivers(this);
 //        if (alarmReceiver != null) {
 //            unregisterReceiver(alarmReceiver);
@@ -422,7 +424,15 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 //        }
         return true;
     }
-
+    public boolean isClockServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SvcLocationClock.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.

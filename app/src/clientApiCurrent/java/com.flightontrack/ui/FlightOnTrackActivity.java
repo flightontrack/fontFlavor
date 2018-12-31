@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -12,12 +11,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.flightontrack.R;
-import com.flightontrack.objects.Pilot;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static com.flightontrack.communication.URLs.getWebserverURL;
+import static com.flightontrack.http.URLs.getWebserverURL;
 
 
 public class FlightOnTrackActivity extends Activity {

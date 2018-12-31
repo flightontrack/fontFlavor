@@ -64,7 +64,7 @@ public class EntityFlightControl {
         else new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: nothing to replace in location table: " + flightNumber+"->" +fn, 'd'));
         routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
         sqlFlightControllerEntity.updateFlightNum(dbid,fn,routeNumber);
-        entityFlightHist.setFlightNumber(fn);
+        if (null!=entityFlightHist) entityFlightHist.setFlightNumber(fn);
         flightNumber = fn;
     }
 

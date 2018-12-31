@@ -1,5 +1,6 @@
 package com.flightontrack.clock;
 
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -48,12 +49,13 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     public SvcLocationClock() {
     }
 
-    public static boolean isInstanceCreated() {
-        return instanceSvcLocationClock != null;
-    }
     public static SvcLocationClock getInstance() {
+        if(instanceSvcLocationClock == null) {
+            instanceSvcLocationClock = new SvcLocationClock();
+        }
         return instanceSvcLocationClock;
     }
+
 
     public static boolean isBound() {
         return isBound;
@@ -264,6 +266,9 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
                 break;
             case FLIGHT_ONSPEEDCHANGE:
                 requestLocationUpdate(entityEventMessage.eventMessageValueInt, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
+                break;
+            case SETTINGACT_BUTTONSENDCACHE_CLICKED:
+                ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
                 break;
         }
     }

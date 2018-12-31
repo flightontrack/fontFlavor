@@ -1,4 +1,4 @@
-package com.flightontrack.communication;
+package com.flightontrack.http;
 
 import android.util.Log;
 
