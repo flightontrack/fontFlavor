@@ -47,6 +47,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     MyDateTime myDateTime;
 
     public SvcLocationClock() {
+        myDateTime = new MyDateTime();
     }
 
     public static SvcLocationClock getInstance() {
@@ -167,11 +168,11 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         }
 
         new FontLogAsync().execute(new EntityLogMessage(TAG,"onCreate",'d'));
-        instanceSvcLocationClock =this;
+        //instanceSvcLocationClock =this;
         _mode = MODE.CLOCK_LOCATION;
         EventBus.distribute(new EntityEventMessage(EventEnums.EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
         //ctx = getApplicationContext();
-        myDateTime = new MyDateTime();
+        //myDateTime = new MyDateTime();
         alarmNextTimeUTCmsec = myDateTime.dateTimeGMT;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }

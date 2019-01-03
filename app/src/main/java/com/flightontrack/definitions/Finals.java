@@ -63,7 +63,7 @@ public abstract class Finals {
     public static final String SMS_RECEIPIENT_PHONE_CC = "9784295693";
     public static final String SMS_LOWBATTERY_TEXT = "Battery is low, please recharge.";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "FONTDB_v1.dbw";
 
 }

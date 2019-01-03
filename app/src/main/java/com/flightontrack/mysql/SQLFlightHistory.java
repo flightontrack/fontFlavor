@@ -88,7 +88,8 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
         try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTHISTORY_RECORDSET, new String[]{})) {
             while (cu.moveToNext()) {
                 EntityFlightHist f = new EntityFlightHist();
-                f.dbid = cu.getPosition();
+                //f.dbid = cu.getPosition();
+                f.dbid =  cu.getInt(cu.getColumnIndexOrThrow(_ID));
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightNumber));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_RouteNumber));
                 f.flightDate = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDate));
@@ -113,8 +114,8 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
         String sql = SQL_SELECT_FLIGHTENTITY_ALL + "where " + FLIGHTHIST_FlightNumber+" = "+fn;
         try (Cursor cu = dbw.rawQuery(sql, new String[]{})) {
             while (cu.moveToNext()) {
-                f.dbid = cu.getPosition();
-                //f.dbid = cu.getInt(cu.getColumnIndexOrThrow(_ID));
+                //f.dbid = cu.getPosition();
+                f.dbid =  cu.getInt(cu.getColumnIndexOrThrow(_ID));
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightNumber));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_RouteNumber));
                 f.flightDate = cu.getString(cu.getColumnIndexOrThrow(FLIGHTHIST_FlightDate));

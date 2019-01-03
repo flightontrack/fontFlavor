@@ -185,7 +185,8 @@ public class SQLFlightControllerEntity extends SQLiteOpenHelper{
         try (Cursor cu = dbw.rawQuery(SQL_SELECT_FLIGHTCONTROLLER_RECORDSET, new String[]{})) {
             while (cu.moveToNext()) {
                 FlightControl f = new FlightControl();
-                f.dbid = cu.getPosition();
+                //f.dbid = cu.getPosition();
+                f.dbid =  cu.getInt(cu.getColumnIndexOrThrow(_ID));
                 f.flightNumber = cu.getString(cu.getColumnIndexOrThrow(FLIGHTNUMBER));
                 f.routeNumber = cu.getString(cu.getColumnIndexOrThrow(ROUTENUMBER));
                 f.flightState = EntityFlightControl.FLIGHT_STATE.valueOf(cu.getString(cu.getColumnIndexOrThrow(FLIGHTSTATE)));

@@ -132,116 +132,152 @@
                 android:onClick="trackingButtonOnClick"
                 />
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingEnd="20dp"
-            android:theme="@style/BottomArea"
-            >
-            <TextView
-                android:id="@+id/text1"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_height="wrap_content"
-                android:layout_width="@dimen/activity_center_line"
-                />
-
-            <TextView
-                android:id="@+id/text11"
-                style="@style/label_text"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/patternCheckBox"
-                android:layout_toEndOf="@+id/text1"
-                android:gravity="bottom|end"
-                android:text="@string/label_pattern" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:theme="@style/BottomArea"
+                >
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/patternCheckBox"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:scaleX="2"
-                    android:scaleY="2"
-                    android:theme="@style/MyCheckbox"
-                    />
-
-                <TextView
-                    android:id="@+id/text2"
-                    android:layout_below="@+id/patternCheckBox"
-                    android:layout_width="@dimen/activity_center_line"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_interval"
-                    android:gravity="end"
-                    style="@style/label_label"
-                    />
-
-                <Spinner
-                    android:id="@+id/spinnerId"
-                    android:layout_below="@+id/patternCheckBox"
-                    android:layout_toEndOf="@+id/text2"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    android:theme="@style/AppSpinner"
-                    />
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    >
 
-                <TextView
-                    android:id="@+id/text3"
-                    android:layout_below="@+id/text2"
-                    android:layout_height="wrap_content"
-                    android:layout_width="@dimen/activity_center_line"
-                    android:text="@string/label_minspeedMPH"
-                    android:gravity="end"
-                    style="@style/label_label"
-                    />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_pattern"
+                        android:layout_gravity="bottom"
+                        android:gravity="start"
+                        style="@style/label_label"
+                        />
 
-                <Spinner
-                    android:id="@+id/spinnerMinSpeedId"
-                    android:layout_below="@+id/spinnerId"
-                    android:layout_toEndOf="@+id/text3"
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/patternCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:scaleX="2"
+                        android:scaleY="2"
+                        android:theme="@style/MyCheckbox" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_interval"
+                        android:gravity="start"
+                        style="@style/label_label"
+                        />
+                    <LinearLayout
+
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="0dp"
+                        >
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:id="@+id/spinnerId"
+                        android:spinnerMode="dialog"
+                        android:theme="@style/AppSpinner"
+                        android:clickable="true"
+                        />
+                    <View
+                        android:layout_below="@id/spinnerId"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_gravity="bottom"
+                        android:background="@android:color/darker_gray"/>
+                </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    android:gravity="start"
-                    android:theme="@style/AppSpinner"
-                    />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="10"
+                    >
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_below="@+id/text3"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="@string/label_minspeedMPH"
+                        android:gravity="start"
+                        style="@style/label_label"
+                        />
+                    <LinearLayout
+
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_marginLeft="0dp"
+                        >
+                    <Spinner
+                        android:id="@+id/spinnerMinSpeedId"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:spinnerMode="dialog"
+                        android:theme="@style/AppSpinner"
+                        />
+                        <View
+                            android:layout_below="@id/spinnerId"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_gravity="bottom"
+                            android:background="@android:color/darker_gray"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="?android:attr/listDivider"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-            <TextView
+                <TextView
                     android:id="@+id/txtCache"
-                    android:layout_below="@+id/divider2"
                     style="@style/label_label"
-                    android:layout_width="@dimen/activity_center_line"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:layout_weight="7"
                     android:text="@string/label_cachedpoints" />
 
                 <TextView
                     android:id="@+id/txtCached"
-                    android:layout_below="@+id/divider2"
-                    android:layout_toEndOf="@+id/txtCache"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
                     style="@style/label_text"
-                    />
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="start" />
 
-        </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
     <include layout="@layout/actionmenubar_bottom"/>
     <View

@@ -14,6 +14,13 @@
     </string-array>
 
     <string-array name="speed_array">
+        <item>40 mph</item>
+        <item>20 mph</item>
+        <item>10 mph</item>
+        <item>0  mph</item>
+    </string-array>
+
+    <string-array name="speed_array_int">
         <item>40</item>
         <item>20</item>
         <item>10</item>

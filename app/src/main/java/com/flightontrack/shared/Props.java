@@ -128,7 +128,7 @@ public final class Props implements EventBus{
 
         public static void set_pSpinnerMinSpeedPos(int pos) {
             pSpinnerMinSpeedPos = pos;
-            String[] minSpeedArray=ctxApp.getResources().getStringArray(R.array.speed_array);
+            String[] minSpeedArray=ctxApp.getResources().getStringArray(R.array.speed_array_int);
             pSpinnerMinSpeed = Double.parseDouble(minSpeedArray[pos]) * 0.44704;
             mainactivityInstance.spinnerMinSpeed.setSelection(pos);
 

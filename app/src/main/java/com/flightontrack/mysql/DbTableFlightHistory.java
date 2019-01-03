@@ -31,16 +31,16 @@ static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + T
 
 static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
      "select " +
-         FLIGHTHIST_FlightNumber  + COMMA_SEP +
-         FLIGHTHIST_RouteNumber + COMMA_SEP +
-         FLIGHTHIST_FlightDate + COMMA_SEP +
-         FLIGHTHIST_FlightTimeStart + COMMA_SEP +
-         FLIGHTHIST_FlightAcft + COMMA_SEP +
-         FLIGHTHIST_FlightDuration + SPACE +
+        _ID  + COMMA_SEP +
+        FLIGHTHIST_FlightNumber  + COMMA_SEP +
+        FLIGHTHIST_RouteNumber + COMMA_SEP +
+        FLIGHTHIST_FlightDate + COMMA_SEP +
+        FLIGHTHIST_FlightTimeStart + COMMA_SEP +
+        FLIGHTHIST_FlightAcft + COMMA_SEP +
+        FLIGHTHIST_FlightDuration + SPACE +
      "from" + SPACE + TABLE_FLIGHTENTITY + SPACE +
      "where" + SPACE+ FLIGHTHIST_IsJunk+" = 0" + SPACE +
-     "order by" + SPACE +
-         _ID +  SPACE +
+     "order by" + SPACE + _ID +  SPACE +
      "desc"
              //+ SPACE+
              //"limit 5";
@@ -48,6 +48,7 @@ static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
 
      static final String SQL_SELECT_FLIGHTENTITY_ALL =
              "select " +
+                     _ID  + COMMA_SEP +
                      FLIGHTHIST_FlightNumber  + COMMA_SEP +
                      FLIGHTHIST_RouteNumber + COMMA_SEP +
                      FLIGHTHIST_FlightDate + COMMA_SEP +
