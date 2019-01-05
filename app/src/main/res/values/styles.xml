@@ -55,10 +55,10 @@
     <style name="Cards" parent="@style/AppTheme">
         <!--background for text -->
         <item name="android:background">@color/colorPrimaryLight</item>
-        <item name="android:paddingStart">@dimen/activity_card_padding_left</item>
-        <item name="android:paddingEnd">@dimen/activity_card_padding_right</item>
-        <item name="android:paddingTop">@dimen/activity_card_padding_top</item>
-        <item name="android:paddingBottom">@dimen/activity_card_padding_bottom</item>
+        <item name="android:paddingStart">@dimen/padding_margin4</item>
+        <item name="android:paddingEnd">@dimen/padding_margin4</item>
+        <item name="android:paddingTop">@dimen/padding_margin1</item>
+        <item name="android:paddingBottom">@dimen/padding_margin1</item>
     </style>
 
     <style name="AppSpinner" parent="Widget.AppCompat.Light.DropDownItem.Spinner">
@@ -99,8 +99,8 @@
     <style name="BottomArea">
         <!--background for text -->
         <!--<item name="android:background">@color/winbackgr</item>-->
-        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginEnd">@dimen/padding_margin6</item>
+        <item name="android:layout_marginTop">@dimen/padding_margin4</item>
     </style>
 
     <style name="label_text">

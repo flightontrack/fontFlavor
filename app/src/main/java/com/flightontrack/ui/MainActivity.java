@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
 
             txtAcftNum      = findViewById(R.id.txtAcftNum);
             txtUserName     = findViewById(R.id.txtUserName);
-            spinnerUpdFreq  = findViewById(R.id.spinnerId);
+            spinnerUpdFreq  = findViewById(R.id.spinnerFreq);
             spinnerMinSpeed = findViewById(R.id.spinnerMinSpeedId);
             trackingButton  = findViewById(R.id.btnTracking);
             txtCached       = findViewById((R.id.txtCached));
