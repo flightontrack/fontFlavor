@@ -57,6 +57,9 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         return instanceSvcLocationClock;
     }
 
+    public static boolean isInstanceCreated() {
+        return instanceSvcLocationClock!=null;
+    }
 
     public static boolean isBound() {
         return isBound;

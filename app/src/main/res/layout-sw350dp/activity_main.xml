@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_top_layout"
-        card_view:cardCornerRadius="4dp"
+        card_view:cardCornerRadius="8dp"
         card_view:cardElevation="8dp"
         card_view:cardUseCompatPadding="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -47,7 +47,7 @@
         <RelativeLayout
             android:id="@+id/cardLayoutId1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:clickable="true"
             android:focusable="true"
@@ -101,8 +101,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/card_view"
-        android:layout_marginStart="@dimen/padding_margin20"
-        android:layout_marginEnd="@dimen/padding_margin20"
+        android:layout_marginStart="@dimen/padding_margin10"
+        android:layout_marginEnd="@dimen/padding_margin10"
         >
 
             <RelativeLayout
@@ -129,7 +129,7 @@
                 android:scaleX="2"
                 android:scaleY="2"
                 android:theme="@style/MyCheckbox"
-                android:layout_marginStart="@dimen/padding_margin10"
+                android:layout_marginStart="@dimen/padding_margin20"
                 />
             </RelativeLayout>
 
@@ -137,7 +137,7 @@
             android:id="@+id/btnTracking"
             style="@style/track_button"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+
             android:layout_below="@id/multilegLayout"
             android:layout_marginBottom="@dimen/padding_margin8"
             android:background="@drawable/bttn_status_red"

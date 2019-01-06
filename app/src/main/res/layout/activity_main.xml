@@ -1,15 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="@dimen/padding_margin6"
-    android:paddingRight="@dimen/padding_margin6"
-    android:paddingTop="@dimen/padding_margin4"
-    android:paddingBottom="@dimen/padding_margin4"
-    tools:context=".ui.MainActivity"
-    android:weightSum="100"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/padding_margin6"
+    android:layout_marginEnd="@dimen/padding_margin6"
+    >
+    <!--<include layout="@layout/toolbar_top"/>-->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/padding_margin8"
         >
 
         <android.support.v7.widget.Toolbar
@@ -25,206 +24,206 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp"
             android:theme="@style/ToolbarTheme"
             app:navigationIcon="@drawable/ic_launcher_36"
             app:popupTheme="@style/ToolbarPopupTheme">
         </android.support.v7.widget.Toolbar>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="5dp"
-        android:weightSum="1"
-        android:layout_weight="1.46">
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="140dp"
-        android:weightSum="1"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="14.29">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bttn_status_red"
-            android:id="@+id/btnTracking"
-            style="@style/track_button_small"
-            android:onClick="trackingButtonOnClick"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:text="@string/label_pattern"
-            style="@style/label_text_small"
-            android:gravity="center_vertical"
-            />
-
-        <CheckBox
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/patternCheckBox"
-            android:layout_weight="1"
-            android:ellipsize="middle"
-            android:scaleX="2"
-            android:scaleY="2"
-            android:gravity="fill"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="fill_parent"
-            android:text="@string/label_interval"
-            style="@style/label_text_small"
-            android:gravity="center_vertical" />
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="fill_parent"
-            android:id="@+id/spinnerFreq"
-            android:textAlignment="gravity"
-            android:gravity="end" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="fill_parent"
-            android:text="@string/label_minspeed"
-            style="@style/label_text_small"
-            android:gravity="center_vertical" />
-        <Spinner
-            android:id="@+id/spinnerMinSpeedId"
-            android:layout_width="0dp"
-            android:layout_weight="6"
-            android:layout_height="match_parent"
-            android:textAlignment="textEnd"
-            android:gravity="end"
-            />
 
     </LinearLayout>
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10">
-
-        <TextView
-            android:id="@+id/txtCache"
-            style="@style/label_text_small"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:text="@string/label_cachedpoints" />
-
-        <TextView
-            android:id="@+id/txtCached"
-            style="@style/label_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="start"
-            android:layout_weight="2" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/toolbar_top_layout"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:theme="@style/Cards"
+        android:layout_marginBottom="@dimen/padding_margin8"
         >
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <RelativeLayout
+            android:id="@+id/cardLayoutId1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/card_view"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="4dp"
-            card_view:cardUseCompatPadding="true"
+            android:orientation="vertical"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:theme="@style/Cards"
+            android:focusable="true"
             >
-            <LinearLayout
-                android:id="@+id/cardLayoutId1"
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/center_line_card_min"
+                android:gravity="end"
+                android:text="@string/label_pilotphone"
+                android:typeface="normal" />
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                style="@style/label_text"
+                />
+
+
+            <TextView
+                android:id="@+id/acftLabel"
+                android:layout_below="@+id/textView2"
+                android:layout_width="@dimen/center_line_card_min"
+                android:layout_height="wrap_content"
+                android:text="@string/label_aircrafttag"
+                android:gravity="end"
+                />
+
+            <TextView
+                android:id="@+id/txtAcftNum"
+                android:layout_below="@+id/textView2"
+                android:layout_toEndOf="@+id/acftLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                style="@style/label_text"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/card_view"
+        android:layout_marginStart="@dimen/padding_margin20"
+        android:layout_marginEnd="@dimen/padding_margin20"
+        >
+
+            <RelativeLayout
+            android:id="@+id/multilegLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_margin8"
+            >
+            <TextView
+                android:id="@+id/label_multileg"
+                style="@style/label_label"
+                android:layout_width="@dimen/center_line_min"
+                android:layout_height="wrap_content"
+                android:gravity="center|end"
+                android:text="@string/label_pattern"
+                />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/patternCheckBox"
+                android:layout_toEndOf="@+id/label_multileg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:theme="@style/MyCheckbox"
+                android:layout_marginStart="@dimen/padding_margin10"
+                />
+            </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnTracking"
+            style="@style/track_button_small"
+            android:layout_width="match_parent"
+            android:layout_below="@id/multilegLayout"
+            android:layout_marginBottom="@dimen/padding_margin8"
+            android:background="@drawable/bttn_status_red"
+            android:elevation="10dp"
+            android:onClick="trackingButtonOnClick"
+            android:text="@string/tracking_holdon" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnTracking"
                 android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true"
+                android:theme="@style/BottomArea"
+
                 >
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    >
-
                     <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="0dp"
+                        android:id="@+id/text2"
+                        android:layout_alignParentTop="true"
+                        android:layout_width="@dimen/center_line_min"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:gravity="start"
-                        android:text="@string/label_pilotphone"
-                        android:typeface="normal" />
-
-                    <TextView
-                        android:id="@+id/txtUserName"
-                        android:layout_width="0dp"
-                        android:layout_weight="6"
-                        android:layout_height="wrap_content"
+                        android:text="@string/label_interval"
                         android:gravity="end"
-                        style="@style/label_text"
+                        style="@style/label_label"
                         />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
+                    <Spinner
+                        android:id="@+id/spinnerFreq"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/text2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_aircrafttag"
-                        android:gravity="start"
+                        android:spinnerMode="dialog"
+                        android:theme="@style/AppSpinner"
                         />
 
                     <TextView
-                        android:id="@+id/txtAcftNum"
-                        android:layout_width="0dp"
-                        android:layout_weight="6"
+                        android:id="@+id/text3"
+                        android:layout_below="@+id/text2"
                         android:layout_height="wrap_content"
+                        android:layout_width="@dimen/center_line_min"
+                        android:text="@string/label_minspeedMPH"
                         android:gravity="end"
-                        style="@style/label_text"
+                        style="@style/label_label"
                         />
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/spinnerMinSpeedId"
+                        android:layout_below="@+id/spinnerFreq"
+                        android:layout_toEndOf="@+id/text3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        android:gravity="start"
+                        android:theme="@style/AppSpinner"
+                        />
+
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_below="@+id/text3"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="@dimen/padding_margin4"
+                        android:layout_marginBottom="@dimen/padding_margin4"
+                        />
+
+                    <TextView
+                            android:id="@+id/txtCache"
+                            android:layout_below="@+id/divider2"
+                            style="@style/label_label"
+                            android:layout_width="@dimen/center_line_min"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@string/label_cachedpoints" />
+
+                    <TextView
+                        android:id="@+id/txtCached"
+                        android:layout_below="@+id/divider2"
+                        android:layout_toEndOf="@+id/txtCache"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        style="@style/label_text"
+                        android:layout_marginStart="@dimen/padding_margin15"
+                        />
+
+            </RelativeLayout>
+    </RelativeLayout>
 
     <View
         android:id="@+id/TagView"
@@ -233,4 +232,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         />
-</LinearLayout>
+</RelativeLayout>
+
+

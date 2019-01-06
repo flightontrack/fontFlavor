@@ -1,4 +1,4 @@
-package communication;
+package http;
 
 import com.flightontrack.R;
 import com.flightontrack.model.EntityLogMessage;

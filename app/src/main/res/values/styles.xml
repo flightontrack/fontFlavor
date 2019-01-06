@@ -57,8 +57,8 @@
         <item name="android:background">@color/colorPrimaryLight</item>
         <item name="android:paddingStart">@dimen/padding_margin4</item>
         <item name="android:paddingEnd">@dimen/padding_margin4</item>
-        <item name="android:paddingTop">@dimen/padding_margin1</item>
-        <item name="android:paddingBottom">@dimen/padding_margin1</item>
+        <!--<item name="android:paddingTop">@dimen/padding_margin1</item>-->
+        <!--<item name="android:paddingBottom">@dimen/padding_margin1</item>-->
     </style>
 
     <style name="AppSpinner" parent="Widget.AppCompat.Light.DropDownItem.Spinner">
@@ -129,8 +129,9 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <!--<item name="android:layout_marginLeft">5dp</item>-->
-        <item name="android:layout_marginTop">1dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
+        <!--<item name="android:layout_marginTop">1dp</item>-->
+        <!--<item name="android:layout_marginBottom">1dp</item>-->
+        <item name="android:layout_height">200dp</item>
     </style>
     <style name="track_button_small" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
@@ -143,8 +144,9 @@
         <item name="android:background">@drawable/bttn_status_red</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_height">140dp</item>
+        <!--<item name="android:layout_marginLeft">5dp</item>-->
+        <!--<item name="android:layout_marginTop">1dp</item>-->
     </style>
 
     <style name="MyCheckbox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">

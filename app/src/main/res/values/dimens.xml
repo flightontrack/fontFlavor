@@ -9,6 +9,9 @@
     <dimen name="padding_margin15">15dp</dimen>
     <dimen name="padding_margin20">20dp</dimen>
 
+    <dimen name="center_line_min">130dp</dimen>
+    <dimen name="center_line_card_min">140dp</dimen>
+
     <dimen name="center_line">150dp</dimen>
     <dimen name="center_line_card">160dp</dimen>
 </resources>

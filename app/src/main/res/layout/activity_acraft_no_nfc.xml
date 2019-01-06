@@ -17,7 +17,7 @@
 
         <TextView
             android:layout_width="0dp"
-            style="@style/label_text_small"
+            style="@style/label_text"
             android:layout_height="wrap_content"
             android:text="Aircraft Number"
             android:layout_weight="6.5"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aircraft Name"
-            style="@style/label_text_small"
+            style="@style/label_text"
             android:layout_weight="4"
             />
 
