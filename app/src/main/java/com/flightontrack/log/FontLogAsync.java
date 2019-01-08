@@ -56,7 +56,7 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
 
     void appendCustomLog(String text){
         String timeStr = "[" + getDateTimeNow() + "]";
-        String af = " no active flight";
+        String af = " No active flight : ";
         if (RouteControl.activeFlightControl !=null) {
             af = String.format("%1$-10s", " af:" + RouteControl.activeFlightControl.flightNumber + " afs:" + RouteControl.activeFlightControl.flightState + ": ");
         }

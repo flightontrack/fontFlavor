@@ -47,7 +47,7 @@ public class ReceiverHealthCheckAlarm extends BroadcastReceiver {
         if(!alarmDisable && !pIsAppTypePublic) {
             healthCheckComm();
 
-            if (!SvcLocationClock.isInstanceCreated()) {
+            if (!SvcLocationClock.isServiceInstanceCreated()) {
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "Restarting : performClick()",'d'));
                 SessionProp.set_isMultileg(true);
                 EventBus.distribute(new EntityEventMessage(HEALTHCHECK_ONRESTART));

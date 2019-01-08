@@ -1,6 +1,5 @@
 package com.flightontrack.clock;
 
-import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +34,7 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     static final String TAG = "SvcLocationClock";
     //private static Context ctx;
     static LocationManager locationManager;
-    public static SvcLocationClock instanceSvcLocationClock = null;
+    public static SvcLocationClock instanceOfService = null;
     static boolean isBound = false;
     static int tryCounter = 0;
     final int TRY_NUMBER = 3;
@@ -51,24 +50,24 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     }
 
     public static SvcLocationClock getInstance() {
-        if(instanceSvcLocationClock == null) {
-            instanceSvcLocationClock = new SvcLocationClock();
-        }
-        return instanceSvcLocationClock;
+//        if(instanceOfService == null) {
+//            instanceOfService = new SvcLocationClock();
+//        }
+        return instanceOfService;
     }
 
-    public static boolean isInstanceCreated() {
-        return instanceSvcLocationClock!=null;
+    public static boolean isServiceInstanceCreated() {
+        return instanceOfService !=null;
     }
 
     public static boolean isBound() {
         return isBound;
     }
 
-    public static void stopLocationUpdates() {
-        new FontLogAsync().execute(new EntityLogMessage(TAG,"stopLocationUpdates : instanceSvcLocationClock = " + instanceSvcLocationClock, 'd'));
+    public void stopLocationUpdates() {
+        new FontLogAsync().execute(new EntityLogMessage(TAG,"stopLocationUpdates : instance = " + instanceOfService, 'd'));
         try {
-            locationManager.removeUpdates(instanceSvcLocationClock);
+            locationManager.removeUpdates(this);
         }
         catch(SecurityException e ){
             new FontLogAsync().execute(new EntityLogMessage(TAG, e.getMessage(), 'e'));
@@ -77,8 +76,8 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
 
     public void requestLocationUpdate(int timeSec, long distance) {
 
-        new FontLogAsync().execute(new EntityLogMessage(TAG, "requestLocationUpdate: interval: " + timeSec + " dist: " + distance, 'd'));
-        SvcLocationClock.stopLocationUpdates();
+        new FontLogAsync().execute(new EntityLogMessage(TAG, "requestLocationUpdate: instance ="+ instanceOfService +"  : interval: " + timeSec + " dist: " + distance, 'd'));
+        stopLocationUpdates();
         set_intervalClockSecCurrent(timeSec);
         //setClockNextTimeLocalMsec(0);
         alarmNextTimeUTCmsec = myDateTime.getTimeGMT();
@@ -104,7 +103,6 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     public static void set_intervalClockSecCurrent(int timeSec){
         intervalClockSecPrev = _intervalClockSecCurrent;
         _intervalClockSecCurrent = timeSec;
-        //Util.appendLog(TAG + "set_intervalClockSecCurrent: "+_intervalClockSecCurrent, 'd');
     }
     public static int get_intervalClockSecCurrent(){
         return _intervalClockSecCurrent;
@@ -114,7 +112,6 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         if(_mode==MODE.CLOCK_ONLY && RouteControl.activeFlightControl==null){
             tryCounter++;
             new FontLogAsync().execute(new EntityLogMessage(TAG,"TimerCounter:" + tryCounter,'d'));
-            //FontLog.appendLog(TAG + "TimerCounter:" + tryCounter, 'd');
             if(tryCounter >TRY_NUMBER || dbLocationRecCountNormal <1) {
                 tryCounter = 0;
                 stopServiceSelf();
@@ -152,15 +149,6 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         isBound = true;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        phStateListener = new MyPhone();
-        setSignalStrengthListener(true);
-        _mode = MODE.CLOCK_LOCATION;
-        requestLocationUpdate((int)MIN_TIME_BW_GPS_UPDATES/1000, DISTANCE_CHANGE_FOR_UPDATES_MIN);
-        return START_STICKY;
-    }
 
     @Override
     public void onCreate() {
@@ -171,13 +159,21 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         }
 
         new FontLogAsync().execute(new EntityLogMessage(TAG,"onCreate",'d'));
-        //instanceSvcLocationClock =this;
+        instanceOfService =this;
         _mode = MODE.CLOCK_LOCATION;
         EventBus.distribute(new EntityEventMessage(EventEnums.EVENT.CLOCK_SERVICESTARTED_MODELOCATION));
-        //ctx = getApplicationContext();
-        //myDateTime = new MyDateTime();
         alarmNextTimeUTCmsec = myDateTime.dateTimeGMT;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        phStateListener = new MyPhone();
+        setSignalStrengthListener(true);
+        _mode = MODE.CLOCK_LOCATION;
+        requestLocationUpdate((int)MIN_TIME_BW_GPS_UPDATES/1000, DISTANCE_CHANGE_FOR_UPDATES_MIN);
+        return START_STICKY;
     }
 
     public  void setSignalStrengthListener(boolean start){
@@ -207,7 +203,6 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
     public void onDestroy() {
         super.onDestroy();
         new FontLogAsync().execute(new EntityLogMessage(TAG,"onDestroy",'d'));
-        //FontLog.appendLog(TAG + "onDestroy", 'd');
         setToNull();
     }
 
@@ -222,18 +217,15 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
 
     }
     public void stopServiceSelf() {
-        //FontLog.appendLog(TAG + "stopServiceSelf",'d');
         new FontLogAsync().execute(new EntityLogMessage(TAG,"stopServiceSelf",'d'));
         setSignalStrengthListener(false);
-        if(!(instanceSvcLocationClock ==null)){
-            stopLocationUpdates();
-            setToNull();
-        }
-        EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_SERVICESELFSTOPPED));
+        stopLocationUpdates();
+        setToNull();
         stopSelf();
+        EventBus.distribute(new EntityEventMessage(EVENT.CLOCK_SERVICESELFSTOPPED));
     }
     void setToNull(){
-        instanceSvcLocationClock =null;
+        instanceOfService =null;
     }
 
 //    void setClockNextTimeLocalMsec(int intervalSec) {
@@ -247,7 +239,8 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
         switch(ev){
             case FLIGHT_STATECHANGEDTO_READYTOSAVE:
                 //if (!SvcLocationClock.isInstanceCreated()) ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
-                ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
+                //ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
+                ctxApp.startService(new Intent(ctxApp, this.getClass()));
                 break;
             case SESSION_ONSUCCESS_EXCEPTION:
                 stopServiceSelf();
@@ -272,7 +265,8 @@ public class SvcLocationClock extends Service implements EventBus, LocationListe
                 requestLocationUpdate(entityEventMessage.eventMessageValueInt, DISTANCE_CHANGE_FOR_UPDATES_ZERO);
                 break;
             case SETTINGACT_BUTTONSENDCACHE_CLICKED:
-                ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
+//                ctxApp.startService(new Intent(ctxApp, SvcLocationClock.class));
+                ctxApp.startService(new Intent(ctxApp, this.getClass()));
                 break;
         }
     }

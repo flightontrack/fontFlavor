@@ -25,7 +25,7 @@ public class EntityRequestHealthCheck   extends RequestParams implements AutoClo
         put("phonenumber", MyPhone.myPhoneId);
         put("deviceid", MyPhone.myDeviceId);
         put("isdebug", Props.SessionProp.pIsDebug);
-        put("isClockOn", SvcLocationClock.isInstanceCreated());
+        put("isClockOn", SvcLocationClock.isServiceInstanceCreated());
         put("isrestart", isRestart);
         put("battery", ReceiverBatteryLevel.getBattery());
 
