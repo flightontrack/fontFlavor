@@ -74,7 +74,7 @@ public class ReceiverHealthCheckAlarm extends BroadcastReceiver {
                                 new FontLogAsync().execute(new EntityLogMessage(TAG, "healthCheckComm onSuccess", 'd'));
                                 ResponseJsonObj response = new ResponseJsonObj(jsonObject);
 
-                                if (response.isException= true) {
+                                if (response.isException) {
                                     new FontLogAsync().execute(new EntityLogMessage(TAG, "healthCheckComm onSuccess|Exception|" + response.responseException, 'd'));
                                 }
                             }

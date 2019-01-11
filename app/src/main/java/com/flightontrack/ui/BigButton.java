@@ -9,6 +9,8 @@ import com.flightontrack.mysql.SQLFlightHistory;
 import com.flightontrack.shared.EventBus;
 import com.flightontrack.shared.Props;
 
+import java.util.Arrays;
+
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.shared.Props.SessionProp.trackingButtonState;
@@ -61,10 +63,19 @@ public class BigButton implements EventBus {
     }
 
     static String setTextGreen() {
-        return "Flight: " + (RouteControl.activeFlightControl.flightNumber) + '\n' +
-                "Point: " + RouteControl.activeFlightControl.entityFlightHist.wayPointsCount +
-                ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime() + '\n'
-                + "Alt: " + RouteControl.activeFlightControl.lastAltitudeFt + " ft";
+        try {
+            RouteControl r = RouteControl.getInstance();
+            return "Flight: " + (RouteControl.activeFlightControl.flightNumber) + '\n' +
+                    "Point: " + RouteControl.activeFlightControl.entityFlightHist.wayPointsCount +
+                    ctxApp.getString(R.string.tracking_flight_time) + SPACE + RouteControl.activeFlightControl.getFlightTime() + '\n'
+                    + "Alt: " + RouteControl.activeFlightControl.lastAltitudeFt + " ft";
+        }
+        catch (Exception e ){
+            String s = Arrays.toString(Thread.currentThread().getStackTrace());
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "StackTrace: "+s,'d'));
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "setTextGreen Exception: "+e.getMessage(), 'e'));
+            return "Exception";
+        }
     }
 
     static String setTextRedFlightStopped() {

@@ -397,7 +397,6 @@ public class FlightControl extends EntityFlightControl implements EventBus {
     public void onClock(EntityEventMessage entityEventMessage) {
 
         new FontLogAsync().execute(new EntityLogMessage(TAG, "onClock "+flightNumber+" afs:"+flightState+" loccount:"+ sqlLocation.getLocationFlightCount(flightNumber), 'd'));
-        //if (RouteControl.activeFlight == this
         if (RouteControl.activeFlightControl == this
                 && (flightState == READY_TOSAVELOCATIONS || flightState == INFLIGHT_SPEEDABOVEMIN)
                 && entityEventMessage.eventMessageValueLocation != null) {
