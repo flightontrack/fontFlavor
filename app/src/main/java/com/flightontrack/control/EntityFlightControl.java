@@ -62,7 +62,7 @@ public class EntityFlightControl {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: replace  in location table: " + flightNumber+"->" +fn, 'd'));
         }
         else new FontLogAsync().execute(new EntityLogMessage(TAG, "setFlightNumber: nothing to replace in location table: " + flightNumber+"->" +fn, 'd'));
-        routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
+//        routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
         sqlFlightControllerEntity.updateFlightNum(dbid,fn,routeNumber);
         if (null!=entityFlightHist) entityFlightHist.setFlightNumber(fn);
         flightNumber = fn;
@@ -89,6 +89,7 @@ public class EntityFlightControl {
         setFlightNumber(fn);
         switch (fns) {
             case REMOTE:
+                routeNumber = routeNumber.equals(ROUTE_NUMBER_DEFAULT)?fn:routeNumber;
                 if (flightNumStatus ==  DEFAULT) setFlightState(READY_TOSAVELOCATIONS);
                 else if (flightNumStatus ==  LOCAL) {
                     EventBus.distribute(new EntityEventMessage(EVENT.FLIGHT_REMOTENUMBER_RECEIVED)
