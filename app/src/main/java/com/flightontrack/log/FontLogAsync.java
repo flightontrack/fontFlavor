@@ -74,7 +74,8 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
 //        if (!dir.exists()) {
 //            dir.mkdir();
 //        }
-        File logFile = new File(dir, "FONTLog_"+myPhoneId+"_"+android.os.Process.myPid()+".txt");
+        //File logFile = new File(dir, "f_"+getDateHrNow()+"["+myPhoneId+"]"+android.os.Process.myPid()+".txt");
+        File logFile = new File(dir, "f_"+getDateHrNow()+"["+myPhoneId+"]"+".txt");
         try (
                 BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true))
         ){
@@ -95,13 +96,16 @@ public class FontLogAsync extends AsyncTask<EntityLogMessage, Void, Boolean> imp
 
     }
     private static String getDateTimeNow() {
-        /// this method id identical to GetTime default method
-        long currTime = new Date().getTime();
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getDefault());
-        return dateFormat.format(currTime);
+        return dateFormat.format(new Date().getTime());
     }
-
+    private static String getDateHrNow() {
+        DateFormat dateFormat = new SimpleDateFormat("[MM-dd][HH]");
+        dateFormat.setTimeZone(TimeZone.getDefault());
+        return dateFormat.format(new Date().getTime());
+    }
     static void startLogcat(String source) {
         //if (MyApplication.productionRelease) return;
         Log.e(TAG, "startLogcat :" + source);
