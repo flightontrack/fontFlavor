@@ -10,10 +10,10 @@ public abstract class Finals {
     public static final int REQUEST_PSW = 6;
     public static final int REQUEST_IS_CLOCK_ON = 7;
 
-    public static final String COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN = "TerminateFlightLowSpeed";
-    public static final String COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED = "TerminateFlightMaxPointsReached";
+    public static final String COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN = "TerminateFlightLowSpeed";
+    public static final String COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED = "TerminateFlightMaxPointsReached";
     public static final int COMMAND_FLIGHT_STATE_PENDING = -7;
-    public static final String COMMAND_TERMINATEFLIGHT = "TerminateFlightOnAltitude";
+    public static final String COMMAND_TERMINATEFLIGHT_ON_ALTITUDE = "TerminateFlightOnAltitude";
 
     public static final long DISTANCE_CHANGE_FOR_UPDATES_MIN = 0; //20; //  meters
     public static final long DISTANCE_CHANGE_FOR_UPDATES_ZERO = 0; //  meters

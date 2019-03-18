@@ -34,7 +34,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
         super(ctxApp, DATABASE_NAME, null, DATABASE_VERSION);
         try {
             dbw = getWritableDatabase();
-            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS);
+            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTHISTORY_IF_NOT_EXISTS);
         }
         catch(Exception e){
             new FontLogAsync().execute(new EntityLogMessage(TAG, "EXCEPTION!!!!: "+e.toString(), 'e'));
@@ -68,7 +68,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
 
         long r = 0;
         try {
-            r = dbw.insert(TABLE_FLIGHTENTITY,
+            r = dbw.insert(TABLE_FLIGHTHISTORY,
                     null,
                     values);
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
             ContentValues values = new ContentValues();
             values.put(DbTableFlightHistory.FLIGHTHIST_FlightDuration, flightduration);
             rn = dbw.update(
-                    DbTableFlightHistory.TABLE_FLIGHTENTITY,
+                    DbTableFlightHistory.TABLE_FLIGHTHISTORY,
                     values,
                     DbTableFlightHistory._ID + "=" + id,
                     null
@@ -160,7 +160,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
             values.put(DbTableFlightHistory.FLIGHTHIST_FlightTimeStart, starttime);
             values.put(DbTableFlightHistory.FLIGHTHIST_IsJunk, 0);
             rn = dbw.update(
-                    DbTableFlightHistory.TABLE_FLIGHTENTITY,
+                    DbTableFlightHistory.TABLE_FLIGHTHISTORY,
                     values,
                     DbTableFlightHistory._ID + "=" + id,
                     null
@@ -180,7 +180,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
             ContentValues values = new ContentValues();
             values.put(DbTableFlightHistory.FLIGHTHIST_IsJunk, isJunk);
             rn = dbw.update(
-                    DbTableFlightHistory.TABLE_FLIGHTENTITY,
+                    DbTableFlightHistory.TABLE_FLIGHTHISTORY,
                     values,
                     DbTableFlightHistory._ID + "=" + id,
                     null
@@ -200,7 +200,7 @@ public class SQLFlightHistory extends SQLiteOpenHelper implements EventBus {
             ContentValues values = new ContentValues();
             values.put(DbTableFlightHistory.FLIGHTHIST_FlightNumber, flightnum);
             rn = dbw.update(
-                    DbTableFlightHistory.TABLE_FLIGHTENTITY,
+                    DbTableFlightHistory.TABLE_FLIGHTHISTORY,
                     values,
                     DbTableFlightHistory._ID + "=" + id,
                     null

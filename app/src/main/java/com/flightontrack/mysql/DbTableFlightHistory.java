@@ -5,7 +5,7 @@ import static com.flightontrack.mysql.DBSchema.*;
 
 abstract class DbTableFlightHistory implements BaseColumns {
 
-static final String TABLE_FLIGHTENTITY = "FlightHistory";
+static final String TABLE_FLIGHTHISTORY = "FlightHistory";
 
      static final String FLIGHTHIST_FlightNumber = "FlightNumber";
      static final String FLIGHTHIST_RouteNumber = "RouteNumber";
@@ -15,8 +15,8 @@ static final String TABLE_FLIGHTENTITY = "FlightHistory";
      static final String FLIGHTHIST_FlightAcft = "FlightAcft";
      static final String FLIGHTHIST_IsJunk = "IsJunk";
 
-static final String SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS =
-    "CREATE TABLE IF NOT EXISTS " + TABLE_FLIGHTENTITY + " (" +
+static final String SQL_CREATE_TABLE_FLIGHTHISTORY_IF_NOT_EXISTS =
+    "CREATE TABLE IF NOT EXISTS " + TABLE_FLIGHTHISTORY + " (" +
           _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
           FLIGHTHIST_FlightNumber + INT_TYPE +COMMA_SEP +
           FLIGHTHIST_RouteNumber + TEXT_TYPE +COMMA_SEP +
@@ -27,7 +27,7 @@ static final String SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS =
           FLIGHTHIST_IsJunk + INT_TYPE +
      " )";
 
-static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTENTITY;
+static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTHISTORY;
 
 static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
      "select " +
@@ -38,7 +38,7 @@ static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
         FLIGHTHIST_FlightTimeStart + COMMA_SEP +
         FLIGHTHIST_FlightAcft + COMMA_SEP +
         FLIGHTHIST_FlightDuration + SPACE +
-     "from" + SPACE + TABLE_FLIGHTENTITY + SPACE +
+     "from" + SPACE + TABLE_FLIGHTHISTORY + SPACE +
      "where" + SPACE+ FLIGHTHIST_IsJunk+" = 0" + SPACE +
      "order by" + SPACE + _ID +  SPACE +
      "desc"
@@ -55,7 +55,7 @@ static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
                      FLIGHTHIST_FlightTimeStart + COMMA_SEP +
                      FLIGHTHIST_FlightAcft + COMMA_SEP +
                      FLIGHTHIST_FlightDuration + SPACE +
-                     "from" + SPACE + TABLE_FLIGHTENTITY + SPACE
+                     "from" + SPACE + TABLE_FLIGHTHISTORY + SPACE
              //+ SPACE+
              //"limit 5";
              ;

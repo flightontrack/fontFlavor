@@ -15,11 +15,13 @@ import com.flightontrack.model.EntityEventMessage;
 
 import static com.flightontrack.definitions.Finals.DATABASE_NAME;
 import static com.flightontrack.definitions.Finals.DATABASE_VERSION;
+import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT_ON_ALTITUDE;
 //import static com.flightontrack.flight.RouteBase.get_FlightInstanceByNumber;
 import static com.flightontrack.control.RouteControl.get_FlightInstanceByNumber;
+import static com.flightontrack.mysql.DBSchema.*;
+import static com.flightontrack.mysql.DBTableFlightContol.*;
 import static com.flightontrack.mysql.DbTableFlightHistory.*;
-import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
-import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT;
+//import static com.flightontrack.mysql.DBSchema.TABLE_FLIGHTNUMBER_ALLOCATION;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
 import static com.flightontrack.definitions.EventEnums.*;
@@ -50,37 +52,37 @@ public class SQLLocation extends SQLiteOpenHelper implements EventBus {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "SQLHelper:SQLHelper", 'd'));
         try {
             dbw = getWritableDatabase();
-            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
-            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHT);
-            //dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
-            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS);
-            dbw.close();
-            dbLocationRecCountNormal = getLocationRecCountNormal();
+            dbw.execSQL(SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
+            //dbw.close();
+
+//            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
+//            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTHISTORY_IF_NOT_EXISTS);
+//            dbw.execSQL(SQL_CREATE_TTABLE_FLIGHTCONTROLLER_IF_NOT_EXISTS);
             //if (dbLocationRecCountNormal == 0 && getLocationTableCountTemp() == 0) {
-            if (getLocationTableCountTotal() == 0) {
-                /// TODO - to come up with something... - reset ids to 1
+            if (DatabaseUtils.queryNumEntries(dbw, DBSchema.TABLE_LOCATION) == 0) {
                 ///dropCreateDb();
-//                dbw = getWritableDatabase();
-//                dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
-//                dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
-//                dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
-//                dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
-//                dbw.close();
+                //dbw = getWritableDatabase();
+                dbw.execSQL(SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
+                dbw.execSQL(SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
+                dbw.execSQL(SQL_DROP_TABLE_FLIGHTCONTROLLER);
+                dbw.execSQL(SQL_CREATE_TTABLE_FLIGHTCONTROLLER_IF_NOT_EXISTS);
+                //dbw.close();
             }
             else {
-                dbw = getReadableDatabase();
+                //dbw = getReadableDatabase();
                 dbTempFlightRecCount = (int) DatabaseUtils.queryNumEntries(dbw, TABLE_FLIGHTNUMBER_ALLOCATION);
-                dbw.close();
+                //dbw.close();
+                dbLocationRecCountNormal = getLocationRecCountNormal();
             }
             new FontLogAsync().execute(new EntityLogMessage(TAG, "Unsent Locations from Previous Session :  " + dbLocationRecCountNormal, 'd'));
             new FontLogAsync().execute(new EntityLogMessage(TAG, "Temp Flights Previous Session :  " + dbTempFlightRecCount, 'd'));
-            dbw.close();
+            //dbw.close();
         }
         catch(Exception e){
             new FontLogAsync().execute(new EntityLogMessage(TAG, "EXCEPTION!!!!: "+e.toString(), 'e'));
+        }
+        finally {
+            dbw.close() ;
         }
     }
 
@@ -102,8 +104,8 @@ public class SQLLocation extends SQLiteOpenHelper implements EventBus {
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_LOCATION);
             dbw.execSQL(DBSchema.SQL_DROP_TABLE_FLIGHTNUMBER_ALLOC);
             dbw.execSQL(DBTableFlightContol.SQL_DROP_TABLE_FLIGHTCONTROLLER);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
-            dbw.execSQL(DBSchema.SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
+            dbw.execSQL(SQL_CREATE_TABLE_LOCATION_IF_NOT_EXISTS);
+            dbw.execSQL(SQL_CREATE_TABLE_FLIGHTNUM_ALLOC_IF_NOT_EXISTS);
             dbw.execSQL(DBTableFlightContol.SQL_CREATE_TTABLE_FLIGHTCONTROLLER_IF_NOT_EXISTS);
             dbLocationRecCountNormal = 0;
             dbTempFlightRecCount = 0;
@@ -470,7 +472,7 @@ public class SQLLocation extends SQLiteOpenHelper implements EventBus {
                 }
                 break;
             case SESSION_ONSUCCESS_COMMAND:
-                if (entityEventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT)) flightLocationsDelete(entityEventMessage.eventMessageValueString);
+                if (entityEventMessage.eventMessageValueString.equals(COMMAND_TERMINATEFLIGHT_ON_ALTITUDE)) flightLocationsDelete(entityEventMessage.eventMessageValueString);
                 break;
             case FLIGHT_GETNEWFLIGHT_COMPLETED:
                 if(!entityEventMessage.eventMessageValueBool)

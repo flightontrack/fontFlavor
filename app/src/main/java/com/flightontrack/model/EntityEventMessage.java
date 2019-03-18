@@ -13,6 +13,7 @@ import static com.flightontrack.definitions.EventEnums.*;
 public class EntityEventMessage {
 public EVENT event;
 public boolean eventMessageValueBool;
+public String eventMessageValueFlightNumString;
 public String eventMessageValueString;
 public int eventMessageValueInt;
 public Object eventMessageValueObject;
@@ -63,6 +64,10 @@ public EntityEventMessage setEventMessageValueString(String val){
     this.eventMessageValueString= val;
     return this;
 }
+    public EntityEventMessage setEventMessageValueFlightNumString(String val){
+        this.eventMessageValueFlightNumString = val;
+        return this;
+    }
 public EntityEventMessage setEventMessageValueObject(Object val){
     this.eventMessageValueObject= val;
     return this;

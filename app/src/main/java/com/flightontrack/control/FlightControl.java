@@ -362,7 +362,7 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                 break;
             case STOPPED:
                 if (sqlLocation.getLocationFlightCount(flightNumber) == 0) {
-                    if(RouteControl.activeFlightControl == this)  RouteControl.setActiveFlightControl(null);
+                    //if(RouteControl.activeFlightControl == this)  RouteControl.setActiveFlightControl(null);
                     setFlightState(READY_TOBECLOSED);
                 }
                 break;
@@ -421,7 +421,7 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                 String server_command = entityEventMessage.eventMessageValueString;
                 new FontLogAsync().execute(new EntityLogMessage(TAG, "server_command int: " + server_command, 'd'));
                 switch (server_command) {
-                    case COMMAND_TERMINATEFLIGHT:
+                    case COMMAND_TERMINATEFLIGHT_ON_ALTITUDE:
                         //isJunkFlight = true;
                         Toast.makeText(mainactivityInstance, R.string.driving, Toast.LENGTH_LONG).show();
                         entityFlightHist.setIsJunk(1);
@@ -430,10 +430,10 @@ public class FlightControl extends EntityFlightControl implements EventBus {
                         //set_flightState(STOPPED, "Terminate flight server command");
                         //set_fAction(FACTION.TERMINATE_FLIGHT);
                         break;
-                    case COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN:
+                    case COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN:
                         /// this server request is disabled for now
                         break;
-                    case COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED:
+                    case COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED:
                         isLimitReached = true;
                         setFlightState(STOPPED); //                     onFlightStateChanged(STOPPED);
                         break;

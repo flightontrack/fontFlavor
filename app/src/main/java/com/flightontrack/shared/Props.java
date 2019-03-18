@@ -8,7 +8,6 @@ import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.ui.MainActivity;
 import com.flightontrack.log.FontLogAsync;
 import com.flightontrack.model.EntityLogMessage;
-import com.flightontrack.mysql.SQLLocation;
 
 import static com.flightontrack.definitions.Finals.*;
 import static com.flightontrack.definitions.Enums.*;
@@ -58,6 +57,7 @@ public final class Props implements EventBus{
 //    }
 
     public static class SessionProp implements EventBus{
+        private static final String TAG = "SessionProp";
         public static boolean      pIsMultileg;
         public static int          pIntervalLocationUpdateSec;
         public static int          pIntervalSelectedItem;
@@ -120,6 +120,8 @@ public final class Props implements EventBus{
         public static void set_isMultileg(boolean isMultileg) {
             //String s = Arrays.toString(Thread.currentThread().getStackTrace());
             //new FontLogAsync().execute(new LogMessage(TAG, "StackTrace: "+s,'d');
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "StackTrace set_isMultileg: ",'d'));
+            Thread.dumpStack();
             pIsMultileg=isMultileg;
             EventBus.distribute(new EntityEventMessage(EVENT.PROP_CHANGED_MULTILEG).setEventMessageValueBool(isMultileg));
             return;
@@ -193,12 +195,12 @@ public final class Props implements EventBus{
             case SESSION_ONSUCCESS_COMMAND:
                 String server_command = entityEventMessage.eventMessageValueString;
                 switch (server_command) {
-                    case COMMAND_TERMINATEFLIGHT:
+                    case COMMAND_TERMINATEFLIGHT_ON_ALTITUDE:
                         SessionProp.set_isMultileg(false);
                         break;
-                    case COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN:
+                    case COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN:
                         break;
-                    case COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED:
+                    case COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED:
                         break;
                 }
                 break;

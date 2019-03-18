@@ -12,7 +12,7 @@ static final String SPACE = " ";
 
 
 // /// Table FLIGHTHISTORY stores latest flights
-//static final String TABLE_FLIGHTENTITY = "FlightHistory";
+//static final String TABLE_FLIGHTHISTORY = "FlightHistory";
 //
 //     static public final String FLIGHTHIST_FlightNumber = "FlightNumber";
 //     static final String FLIGHTHIST_RouteNumber = "RouteNumber";
@@ -21,8 +21,8 @@ static final String SPACE = " ";
 //     static final String FLIGHTHIST_FlightDuration = "FlightDuration";
 //     static final String FLIGHTHIST_FlightAcft = "FlightAcft";
 //
-//static final String SQL_CREATE_TABLE_FLIGHTENTITY_IF_NOT_EXISTS =
-//    "CREATE TABLE IF NOT EXISTS " + TABLE_FLIGHTENTITY + " (" +
+//static final String SQL_CREATE_TABLE_FLIGHTHISTORY_IF_NOT_EXISTS =
+//    "CREATE TABLE IF NOT EXISTS " + TABLE_FLIGHTHISTORY + " (" +
 //        _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //        FLIGHTHIST_FlightNumber + INT_TYPE +COMMA_SEP +
 //        FLIGHTHIST_RouteNumber + TEXT_TYPE +COMMA_SEP +
@@ -32,7 +32,7 @@ static final String SPACE = " ";
 //        FLIGHTHIST_FlightDuration + TEXT_TYPE +
 //     " )";
 //
-//static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTENTITY;
+//static final String SQL_DROP_TABLE_FLIGHTENTITY =    "DROP TABLE IF EXISTS " + TABLE_FLIGHTHISTORY;
 //
 //static final String SQL_SELECT_FLIGHTHISTORY_RECORDSET =
 //"select " +
@@ -43,7 +43,7 @@ static final String SPACE = " ";
 //    FLIGHTHIST_FlightAcft + COMMA_SEP +
 //    FLIGHTHIST_FlightDuration + SPACE +
 //"from" + SPACE +
-//    TABLE_FLIGHTENTITY + SPACE +
+//    TABLE_FLIGHTHISTORY + SPACE +
 //"order by" + SPACE +
 //    _ID +  SPACE +
 //"desc"

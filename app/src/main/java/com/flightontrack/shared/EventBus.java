@@ -96,17 +96,18 @@ public interface EventBus{
             case SESSION_ONSUCCESS_COMMAND:
                 //interfaceList.add(Route.get_FlightInstanceByNumber(eventMessage.eventMessageValueString));
                 switch (entityEventMessage.eventMessageValueString){
-                    case COMMAND_TERMINATEFLIGHT:
+                    case COMMAND_TERMINATEFLIGHT_ON_ALTITUDE:
                         interfaceList.add(Props.getInstance()); //set multileg to false
                         //interfaceList.add(sqlHelper); // delete all locations on the flight
-                        interfaceList.add(RouteControl.activeFlightControl); // stop active flight
-                        interfaceList.add(SvcLocationClock.getInstance()); //swithch to clockonly
+                        interfaceList.add((FlightControl) entityEventMessage.eventMessageValueObject); // stop active flight
+                        if(RouteControl.activeFlightControl==entityEventMessage.eventMessageValueObject){
+                            interfaceList.add(SvcLocationClock.getInstance());} //swithch to clockonly
                         break;
-                    case COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN:
+                    case COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN:
                         interfaceList.add(RouteControl.getInstance()); //initiate a new flight if multileg
                         break;
-                    case COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED:
-                        interfaceList.add(RouteControl.activeFlightControl); // stop active flight
+                    case COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED:
+                        interfaceList.add(RouteControl.get_FlightInstanceByNumber(entityEventMessage.eventMessageValueFlightNumString)); // stop active flight
                         interfaceList.add(RouteControl.getInstance()); //initiate a new flight if multileg
                         break;
                 }

@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.flightontrack.R;
-import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.model.EntityEventMessage;
 import com.flightontrack.mysql.SQLFlightControllerEntity;
 import com.flightontrack.ui.MainActivity;
@@ -287,10 +286,12 @@ public class Session implements EventBus{
                             }
                             if (response.responseCommand != null) {
                                 new FontLogAsync().execute(new EntityLogMessage(TAG, "onSuccess : RESPONSE_TYPE_COMMAND : " + response.responseCommand, 'd'));
-                                if (response.responseCommand.equals(COMMAND_TERMINATEFLIGHT) && SessionProp.pIsRoad)
+                                if (response.responseCommand.equals(COMMAND_TERMINATEFLIGHT_ON_ALTITUDE) && SessionProp.pIsRoad)
                                     return;
                                 EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSUCCESS_COMMAND)
-                                        .setEventMessageValueString(response.responseCommand));
+                                        .setEventMessageValueString(response.responseCommand)
+                                        .setEventMessageValueFlightNumString(response.responseCurrentFlightNum)
+                                );
                             }
                             locRequestList.remove(k);
                             EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSENDCACHECOMPLETED).setEventMessageValueBool(true));

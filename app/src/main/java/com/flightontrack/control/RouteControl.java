@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.flightontrack.definitions.EventEnums.EVENT;
-import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED;
-import static com.flightontrack.definitions.Finals.COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN;
+import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED;
+import static com.flightontrack.definitions.Finals.COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN;
 import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 
 public class RouteControl implements EventBus{
@@ -144,9 +144,9 @@ public void eventReceiver(EntityEventMessage entityEventMessage){
                 break;
             case SESSION_ONSUCCESS_COMMAND:
                 switch (entityEventMessage.eventMessageValueString) {
-                    case COMMAND_STOP_FLIGHT_SPEED_BELOW_MIN:
+                    case COMMAND_TERMINATEFLIGHT_SPEED_BELOW_MIN:
                         break;
-                    case COMMAND_STOP_FLIGHT_ON_LIMIT_REACHED:
+                    case COMMAND_TERMINATEFLIGHT_ON_LIMIT_REACHED:
                         restartNewFlight();
                         break;
                 }
