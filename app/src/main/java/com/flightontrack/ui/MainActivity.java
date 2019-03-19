@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     Button          trackingButton;
     TextView        txtUserName;
     TextView        txtCached;
-    CheckBox        chBoxIsMultiLeg;
+    public CheckBox        chBoxIsMultiLeg;
     ActionMenuView  bottomMenu;
     View            cardLayout1;
     public Spinner  spinnerUpdFreq;
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             txtCached       = findViewById((R.id.txtCached));
 
             chBoxIsMultiLeg = findViewById(R.id.patternCheckBox);
+            chBoxIsMultiLeg.setChecked(pIsMultileg);
             chBoxIsMultiLeg.setOnCheckedChangeListener((compoundButton, b) -> {
                 EventBus.distribute(new EntityEventMessage(EVENT.MACT_MULTILEG_ONCLICK).setEventMessageValueBool(chBoxIsMultiLeg.isChecked()));
             });
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             new AppConfig(this);
             updFreqSpinnerSetup();
             minSpeedSpinnerSetup();
-            SessionProp.set_isMultileg(true);
+            //SessionProp.set_isMultileg(true);
             SessionProp.save();
 
         } catch (Exception e) {
@@ -407,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         spinnerMinSpeed = null;
         chBoxIsMultiLeg = null;
         trackingButton = null;
+        trackingButtonState = BUTTONREQUEST.BUTTON_STATE_RED;
         BigButton.bigButtonInstance = null;
         mainactivityInstance = null;
         finish();
@@ -455,9 +457,9 @@ public class MainActivity extends AppCompatActivity implements EventBus {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "eventReceiver : " + ev, 'd'));
         //txtCached.setText(String.valueOf(sqlHelper.getLocationTableCountTotal()));
         switch (ev) {
-            case PROP_CHANGED_MULTILEG:
-                chBoxIsMultiLeg.setChecked(entityEventMessage.eventMessageValueBool);
-                break;
+//            case PROP_CHANGED_MULTILEG:
+//                chBoxIsMultiLeg.setChecked(entityEventMessage.eventMessageValueBool);
+//                break;
             case SESSION_ONSUCCESS_EXCEPTION:
                 Toast.makeText(mainactivityInstance, R.string.toast_server_error, Toast.LENGTH_LONG).show();
                 break;

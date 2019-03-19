@@ -38,9 +38,9 @@ public interface EventBus{
                 //interfaceList.add(Session.getInstance());
                 interfaceList.add(SvcLocationClock.getInstance());
                 break;
-            case PROP_CHANGED_MULTILEG:
-                interfaceList.add(mainactivityInstance);
-                break;
+//            case PROP_CHANGED_MULTILEG:
+//                interfaceList.add(mainactivityInstance);
+//                break;
             case FLIGHT_GETNEWFLIGHT_STARTED:
                 //interfaceList.add(mainactivityInstance);
                 interfaceList.add(BigButton.getInstance());

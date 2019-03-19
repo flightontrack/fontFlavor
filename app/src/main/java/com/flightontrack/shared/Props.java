@@ -58,7 +58,7 @@ public final class Props implements EventBus{
 
     public static class SessionProp implements EventBus{
         private static final String TAG = "SessionProp";
-        public static boolean      pIsMultileg;
+        public static boolean      pIsMultileg = true;
         public static int          pIntervalLocationUpdateSec;
         public static int          pIntervalSelectedItem;
         public static boolean      pIsEmptyAcftOk;
@@ -86,7 +86,7 @@ public final class Props implements EventBus{
 
 
         public static void save() {
-            editor.putBoolean("pIsMultileg", pIsMultileg);
+            //editor.putBoolean("pIsMultileg", pIsMultileg);
             //editor.putInt("pIntervalLocationUpdateSec", pIntervalLocationUpdateSec);
             editor.putInt("pIntervalSelectedItem", pIntervalSelectedItem);
             editor.putInt("pSpinnerMinSpeedPos", pSpinnerMinSpeedPos);
@@ -103,7 +103,8 @@ public final class Props implements EventBus{
         }
 
         public static void get() {
-            set_isMultileg( sharedPreferences.getBoolean("pIsMultileg", true));
+            //set_isMultileg( sharedPreferences.getBoolean("pIsMultileg", true));
+            //pIsMultileg = sharedPreferences.getBoolean("pIsMultileg", true);
             set_pSpinnerMinSpeedPos(sharedPreferences.getInt("pSpinnerMinSpeedPos", DEFAULT_SPEED_SPINNER_POS));
             set_pIntervalLocationUpdateSecPos(sharedPreferences.getInt("pIntervalSelectedItem", DEFAULT_INTERVAL_SELECTED_ITEM));
             pIsEmptyAcftOk=sharedPreferences.getBoolean("pIsEmptyAcftOk", false);
@@ -120,12 +121,10 @@ public final class Props implements EventBus{
         public static void set_isMultileg(boolean isMultileg) {
             //String s = Arrays.toString(Thread.currentThread().getStackTrace());
             //new FontLogAsync().execute(new LogMessage(TAG, "StackTrace: "+s,'d');
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "StackTrace set_isMultileg: ",'d'));
-            Thread.dumpStack();
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "set_isMultileg: ",'d'));
+            //Thread.dumpStack();
             pIsMultileg=isMultileg;
-            EventBus.distribute(new EntityEventMessage(EVENT.PROP_CHANGED_MULTILEG).setEventMessageValueBool(isMultileg));
             return;
-            //MainActivity.chBoxIsMultiLeg.setChecked(isMultileg);
         }
 
         public static void set_pSpinnerMinSpeedPos(int pos) {

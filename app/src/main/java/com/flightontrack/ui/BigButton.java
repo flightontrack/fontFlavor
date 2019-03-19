@@ -71,8 +71,9 @@ public class BigButton implements EventBus {
                     + "Alt: " + RouteControl.activeFlightControl.lastAltitudeFt + " ft";
         }
         catch (Exception e ){
-            String s = Arrays.toString(Thread.currentThread().getStackTrace());
-            new FontLogAsync().execute(new EntityLogMessage(TAG, "StackTrace: "+s,'d'));
+            //String s = Arrays.toString(Thread.currentThread().getStackTrace());
+            new FontLogAsync().execute(new EntityLogMessage(TAG, "Big Button StackTrace: ",'d'));
+            Thread.dumpStack();
             new FontLogAsync().execute(new EntityLogMessage(TAG, "setTextGreen Exception: "+e.getMessage(), 'e'));
             return "Exception";
         }

@@ -29,7 +29,7 @@ public abstract class EventEnums {
         CLOCK_ONTICK,
         CLOCK_MODECLOCK_ONLY,
 
-        PROP_CHANGED_MULTILEG,
+        //PROP_CHANGED_MULTILEG,
         ROUTE_ONNEW,
         ROUTE_ONLEGLIMITREACHED,
         ROUTE_FLIGHTLIST_EMPTY,
