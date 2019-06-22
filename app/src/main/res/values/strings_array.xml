@@ -36,7 +36,7 @@
     <string-array name="posturl_array">
         <item>postnget.azurewebsites.net</item>
         <item>postnget-test.azurewebsites.net</item>
-        <item>192.168.2.101/PostngetWebApi</item>
+        <item>192.168.2.102/PostngetWebApi</item>
         <item>96.230.122.177/PostngetWebApi</item>
         <item>10.0.2.2/PostngetWebApi</item>
     </string-array>

@@ -16,6 +16,7 @@ import static com.flightontrack.definitions.Enums.*;
 import static com.flightontrack.definitions.EventEnums.*;
 import static com.flightontrack.shared.Props.*;
 import static com.flightontrack.shared.Props.SessionProp.*;
+import static com.flightontrack.control.RouteControl.*;
 
 import com.flightontrack.http.HttpJsonClient;
 //import com.flightontrack.communication.SvcComm;
@@ -291,6 +292,7 @@ public class Session implements EventBus{
                                 EventBus.distribute(new EntityEventMessage(EVENT.SESSION_ONSUCCESS_COMMAND)
                                         .setEventMessageValueString(response.responseCommand)
                                         .setEventMessageValueFlightNumString(response.responseCurrentFlightNum)
+                                        .setEventMessageValueObject(get_FlightInstanceByNumber(response.responseCurrentFlightNum))
                                 );
                             }
                             locRequestList.remove(k);

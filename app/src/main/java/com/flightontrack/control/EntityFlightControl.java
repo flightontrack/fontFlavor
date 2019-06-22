@@ -20,6 +20,14 @@ import static com.flightontrack.definitions.Finals.ROUTE_NUMBER_DEFAULT;
 public class EntityFlightControl {
     static final String TAG = "EntityFlightControl";
     public EntityFlightHist entityFlightHist;
+    public String flightNumber = FLIGHT_NUMBER_DEFAULT;
+    public FLIGHT_STATE flightState = FLIGHT_STATE.DEFAULT;
+    public FLIGHTNUMBER_SRC flightNumStatus = DEFAULT;
+    public String routeNumber;
+    public int legNumber;
+    boolean isLimitReached  = false;
+    public int  isJunk = 0;
+    public int  dbid;
 
     public enum FLIGHT_STATE {
         DEFAULT,
@@ -30,16 +38,14 @@ public class EntityFlightControl {
         READY_TOBECLOSED,
         CLOSING,
         CLOSED
-    }
+        }
     public enum FLIGHTNUMBER_SRC {
         DEFAULT,
         LOCAL,
         REMOTE
-    }
 
-    public String flightNumber = FLIGHT_NUMBER_DEFAULT;
-    public String routeNumber;
-    public int legNumber;
+
+        }
 
     public void setFlightState(FLIGHT_STATE fs) {
         if (this.flightState == fs) return;
@@ -47,6 +53,7 @@ public class EntityFlightControl {
         sqlFlightControllerEntity.updateFlightState(dbid,fs.name());
         flightControl.onFlightStateChanged();
     }
+
     public void setFlightState(FLIGHT_STATE fs, String reason) {
         new FontLogAsync().execute(new EntityLogMessage(TAG, "flightState reasoning : " + fs + ' ' + reason, 'd'));
         if (this.flightState == fs) return;
@@ -83,8 +90,6 @@ public class EntityFlightControl {
 
     }
 
-    public FLIGHT_STATE flightState = FLIGHT_STATE.DEFAULT;
-
     public void setFlightNumStatus(FLIGHTNUMBER_SRC fns, String fn) {
         setFlightNumber(fn);
         switch (fns) {
@@ -105,12 +110,6 @@ public class EntityFlightControl {
         this.flightNumStatus = fns;
         sqlFlightControllerEntity.updateFlightNumStatus(dbid,fns.name());
     }
-
-    public FLIGHTNUMBER_SRC flightNumStatus = DEFAULT;
-
-    boolean isLimitReached  = false;
-    public int    isJunk = 0;
-    public int    dbid;
 
     SQLFlightControllerEntity sqlFlightControllerEntity = new SQLFlightControllerEntity();
     SQLLocation sqlLocation = SQLLocation.getInstance();
