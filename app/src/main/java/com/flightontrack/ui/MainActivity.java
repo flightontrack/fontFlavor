@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             });
 
             AppConfig.pIsNFCcapable = AppConfig.pIsNFCEnabled && isNFCcapable();
-            SessionProp.get();
             if (!SessionProp.pIsActivityFinished) {
                 /// if previous session crashed reset session prop
                 clearOnDestroy();
-                SessionProp.get();
+                //SessionProp.get();
             }
+            SessionProp.get();
 
             new AppConfig(this);
             updFreqSpinnerSetup();

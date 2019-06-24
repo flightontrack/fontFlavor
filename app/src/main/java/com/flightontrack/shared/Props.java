@@ -124,6 +124,7 @@ public final class Props implements EventBus{
             new FontLogAsync().execute(new EntityLogMessage(TAG, "set_isMultileg: ",'d'));
             //Thread.dumpStack();
             pIsMultileg=isMultileg;
+            mainactivityInstance.chBoxIsMultiLeg.setChecked(isMultileg);
             return;
         }
 
@@ -142,7 +143,7 @@ public final class Props implements EventBus{
         }
 
         public static void clearOnDestroy() {
-            editor.remove("pIsMultileg").commit();
+            //editor.remove("pIsMultileg").commit();
             editor.remove("pIsEmptyAcftOk").commit();
             //editor.remove("pTextRed").commit();
             editor.remove("pTrackingButtonText").commit();
@@ -151,7 +152,7 @@ public final class Props implements EventBus{
             pIsDebug = false;
         }
         public static void clearToDefault() {
-            editor.remove("pIsMultileg");
+            //editor.remove("pIsMultileg");
             editor.remove("pIntervalLocationUpdateSec");
             editor.remove("pIntervalSelectedItem");
             editor.remove("pIsEmptyAcftOk");
