@@ -10,9 +10,11 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
+//import android.support.v7.widget.ActionMenuView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +36,8 @@ import com.flightontrack.shared.EventBus;
 import com.flightontrack.clock.SvcLocationClock;
 import com.flightontrack.objects.MyPhone;
 import com.flightontrack.objects.Pilot;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import shared.AppConfig;
 import ui.MainActivityExt;
 
@@ -80,7 +84,10 @@ public class MainActivity extends AppCompatActivity implements EventBus {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
         //Fabric.with(this, new Crashlytics());
+
+        FirebaseCrashlytics.getInstance().log("FirebaseCrashlytics.getInstance().log");
         try {
             //Log.d(TAG, "MainActivityThread:" + Thread.currentThread().getId());
             initProp(getApplicationContext(), this);
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
             minSpeedSpinnerSetup();
             //SessionProp.set_isMultileg(true);
             SessionProp.save();
+            //throw new RuntimeException("Test Crash"); // Force a crash
 
         } catch (Exception e) {
             new FontLogAsync().execute(new EntityLogMessage(TAG, "EXCEPTION!!!!: " + e.toString(), 'e'));
@@ -315,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements EventBus {
                 EventBus.distribute(new EntityEventMessage(EVENT.MACT_BIGBUTTON_ONCLICK_STOP));
                 break;
         }
+        throw new RuntimeException("Test Crash throw new RuntimeException"); // Force a crash
     }
     private boolean isGPSEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);

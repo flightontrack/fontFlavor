@@ -3,7 +3,8 @@ package shared;
 
         import android.app.Application;
         import android.os.Environment;
-        import com.crashlytics.android.Crashlytics;
+        //import com.crashlytics.android.Crashlytics;
+        import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
         import java.io.File;
         import java.io.IOException;

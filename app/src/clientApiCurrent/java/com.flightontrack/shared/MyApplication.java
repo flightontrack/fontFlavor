@@ -3,7 +3,8 @@ package shared;
 import android.app.Application;
 import android.os.Environment;
 //f import com.facebook.FacebookSdk;
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.facebook.FacebookSdk;
 
 import java.io.File;
@@ -57,7 +58,8 @@ public class MyApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler ((thread, e) -> {
             e.printStackTrace();
             startLogcat();
-            Crashlytics.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
+            //Crashlytics.logException(e);
             defaultHandler.uncaughtException(thread, e); //this will show crash dialog.
             System.exit(1); // kill off the crashed app
         });

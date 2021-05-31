@@ -3,7 +3,8 @@ package ui;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
+//import androidx.core.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import com.flightontrack.R;
@@ -26,7 +27,7 @@ public class FaceBookActivity extends FragmentActivity{
     private ShareDialog shareDialog;
     private static final String TAG = "<-----";
 
-    private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
+    private final FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
         @Override
         public void onCancel() {
             Log.d(TAG+"Sharer", "Canceled");

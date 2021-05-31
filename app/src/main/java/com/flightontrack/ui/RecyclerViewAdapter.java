@@ -1,5 +1,6 @@
 package com.flightontrack.ui;
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import java.util.List;
 import static com.flightontrack.shared.Props.ctxApp;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>  {
-    private List<EntityFlightHist> mDataset;
+    private final List<EntityFlightHist> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and

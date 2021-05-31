@@ -7,7 +7,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         >
-        <android.support.v7.widget.Toolbar
+        <androidx.recyclerview.widget.Toolbar
             android:id="@+id/toolbar_bottom"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -17,12 +17,12 @@
             app:popupTheme="@style/ToolbarPopupTheme">
             android:weightSum="1">
 
-            <android.support.v7.widget.ActionMenuView
+            <androidx.recyclerview.widget.ActionMenuView
                 android:id="@+id/bottomMenu"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 />
-        </android.support.v7.widget.Toolbar>
+        </androidx.recyclerview.widget.Toolbar>
     </FrameLayout >
 
 

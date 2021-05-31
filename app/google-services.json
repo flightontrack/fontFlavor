@@ -1,52 +1,37 @@
 {
   "project_info": {
-    "project_number": "88485071855",
-    "firebase_url": "https://font-e62ab.firebaseio.com",
-    "project_id": "font-e62ab",
-    "storage_bucket": "font-e62ab.appspot.com"
+    "project_number": "856824986175",
+    "firebase_url": "https://flightontrack-firebase.firebaseio.com",
+    "project_id": "flightontrack-firebase",
+    "storage_bucket": "flightontrack-firebase.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:88485071855:android:df560459cb050457",
+        "mobilesdk_app_id": "1:856824986175:android:40df41cae12486d07f168a",
         "android_client_info": {
           "package_name": "com.flightontrack"
         }
       },
       "oauth_client": [
         {
-          "client_id": "88485071855-kq82ejujakt9sf2lccrdae9ujjjips6g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.flightontrack",
-            "certificate_hash": "dd9c582e095937697fe81327b902f3807968cf44"
-          }
-        },
-        {
-          "client_id": "88485071855-k33j61s3884dnj4frnrc358q353jut1p.apps.googleusercontent.com",
+          "client_id": "856824986175-iu90i84behu0tvdr20d9ne28dlouk45f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCb3gFfSs0XvR-1_0jIZW2myZ5GPWndR64"
+          "current_key": "AIzaSyBYZ0Kh0GsuAlIGiNCdvGxLv-xZr_ScLIo"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "88485071855-k33j61s3884dnj4frnrc358q353jut1p.apps.googleusercontent.com",
+              "client_id": "856824986175-iu90i84behu0tvdr20d9ne28dlouk45f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
